@@ -1,0 +1,36 @@
+*{
+    background-color: black;
+    color: yellow;
+}
+
+body{
+    display: grid;
+    grid-area: 
+    "hdr"
+    "sec"
+    ;
+    grid-template-columns: 1fr;
+    grid-template-rows: 200px 1fr;
+}
+
+header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    border-bottom: 2px dotted yellow;
+}
+
+input{
+    height: 25px;
+    width: 150px;
+}
+
+input[type=text] {
+    float: right;
+    padding: 6px;
+    border-color: yellow;
+    margin-top: 8px;
+    margin-right: 16px;
+    font-size: 17px;
+}
