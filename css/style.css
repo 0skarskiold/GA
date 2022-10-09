@@ -34,3 +34,26 @@ input[type=text] {
     margin-right: 16px;
     font-size: 17px;
 }
+
+#movies_and_series{
+    display: grid;
+    grid-area: 
+    "big"
+    "small"
+    ;
+    grid-template-columns: 1fr;
+    grid-template-rows: 2fr 1fr;
+}
+
+#big{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#big img{
+    width: 70vw;
+}
+
+#big div{
+    padding: 20px;
+}
