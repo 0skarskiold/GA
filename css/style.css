@@ -21,6 +21,10 @@ header{
     border-bottom: 2px dotted yellow;
 }
 
+header img{
+    border-radius: 70px;
+}
+
 input{
     height: 25px;
     width: 150px;
