@@ -11,6 +11,8 @@ body{
     ;
     grid-template-columns: 1fr;
     grid-template-rows: 200px 1fr;
+    height: 100%;
+
 }
 
 header{
@@ -39,26 +41,43 @@ input[type=text] {
     font-size: 17px;
 }
 
-#movies_and_series{
-    display: grid;
-    grid-area: 
-    "big"
-    "small"
-    ;
-    grid-template-columns: 1fr;
-    grid-template-rows: 2fr 1fr;
-    padding-top: 20px;
-}
-
-#big{
+#welcome{
     display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#list{
+    display: flex;
+    flex-direction: row;
     justify-content: space-evenly;
-}
-
-#big img{
-    width: 70vw;
-}
-
-#big div{
+    align-items: center;
     padding: 20px;
+    overflow: auto;
+    white-space: nowrap;
+    width: 57%;
+    margin: auto;
 }
+
+/*Tar bort scrollbaren men ser till att den fortfarande funkar*/
+#list::-webkit-scrollbar {
+    display: none;
+}/*Fixa: ska man kunna scrolla manuellt????*/
+
+#list img{
+    border-radius: 20px;
+    height: 50vh;
+    width: auto;
+    margin: 0 20px 0 20px;
+}
+
+#arrow_left{
+    position: absolute;
+    left: 0;
+}
+
+#arrow_right{
+    position: absolute;
+    right: 0;
+}
+
