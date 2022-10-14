@@ -57,6 +57,7 @@ input[type=text] {
     white-space: nowrap;
     width: 57%;
     margin: auto;
+    scroll-behavior: smooth;
 }
 
 /*Tar bort scrollbaren men ser till att den fortfarande funkar*/
@@ -64,11 +65,12 @@ input[type=text] {
     display: none;
 }/*Fixa: ska man kunna scrolla manuellt????*/
 
-#list img{
+#list img{ /*Man kan scrolla typ 20pixlar efter sista trion*/
     border-radius: 20px;
     height: 50vh;
-    width: auto;
+    width: 205.5;
     margin: 0 20px 0 20px;
+    
 }
 
 #arrow_left{
