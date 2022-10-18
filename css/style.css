@@ -20,7 +20,7 @@ body{
     ;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 200px 4rem 1fr 4rem 1fr;
-    height: 150vh;
+    height: auto;
 
 }
 
