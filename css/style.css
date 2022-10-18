@@ -8,8 +8,8 @@ större font size
 Annan font??
 
 */
-
-body{
+/*Startsidan */
+#index_body{
     display: grid;
     grid-template-areas: 
     "hdr hdr"
@@ -31,11 +31,18 @@ header{
     justify-content: space-evenly;
     align-items: center;
     border-bottom: 2px dotted yellow;
+    font-size: larger;
+    width: 60vw;
+    margin: auto;
+
 }
 
 header img{
-    border-radius: 70px;
     height: 100px;
+}
+
+header h1 a{
+    text-decoration: none;
 }
 
 input{
@@ -90,6 +97,7 @@ input[type=text] {
     width: auto;
     margin: 0;
     padding: 0;
+    flex: none;
 }
 
 #arrow_left{
@@ -166,3 +174,26 @@ input[type=text] {
     padding-left: 3rem;
     padding-right: 3rem;
 }
+
+
+
+
+
+
+
+
+
+/*Login/signup-sidan*/
+
+
+#login_body{
+    display: grid;
+    grid-template-areas:
+    "hdr"
+    "log"
+    "sig"
+    ;
+    grid-template-columns: 1fr;
+    grid-template-rows: 200px 1fr 1fr;
+}
+
