@@ -16,12 +16,12 @@ body{
     "wel wel"
     "mov mov"
     "hey hey"
-    "rev wow"
+    "re1 re2"
     ;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 200px 4rem 1fr 4rem 1fr;
     height: auto;
-
+    width: auto;
 }
 
 header{
@@ -58,17 +58,23 @@ input[type=text] {
     align-items: center;
 }
 
-#list{
+#list_container{
     grid-area: mov;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    padding: 20px;
+    width: 100%;
+}
+
+#list{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
     overflow: auto;
     white-space: nowrap;
-    width: 57%;
-    margin: auto;
+    width: 100%;
     scroll-behavior: smooth;
 }
 
@@ -77,12 +83,12 @@ input[type=text] {
     display: none;
 }/*Fixa: ska man kunna scrolla manuellt????*/
 
-#list img{ /*Man kan scrolla typ 20pixlar efter sista trion*/
+.movie_poster{ /*Man kan scrolla typ 20pixlar efter sista trion*/
     border-radius: 20px;
     height: 50vh;
-    width: 205.5;
-    margin: 0 20px 0 20px;
-    
+    width: auto;
+    margin: 0;
+    padding: 0;
 }
 
 #arrow_left{
@@ -95,15 +101,23 @@ input[type=text] {
     right: 0;
 }
 
+#pop_reviews{
+    grid-area: hey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 2px dotted yellow;
+}
+
 #featured_review{
-    border-top: 2px dotted yellow;
     margin-top: 5vh;
     padding-top: 5vh;
-    grid-area: rev;
+    grid-area: re1;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: top;
+    border-right: 2px dotted yellow;
 }
 
 #featured_review img{
@@ -114,7 +128,6 @@ input[type=text] {
 }
 
 #featured_review article{
-    font-size: 1.2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -125,4 +138,30 @@ input[type=text] {
 
 #stars span{
     color: grey;
+}
+
+
+#featured_review2{
+    margin-top: 5vh;
+    padding: 5vh;
+    grid-area: re2;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: top;
+}
+
+#featured_review2 img{
+    border-radius: 20px;
+    height: 50vh;
+    width: 205.5;
+    margin-left: 1vw;
+}
+
+#featured_review2 article{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 3rem;
+    padding-right: 3rem;
 }
