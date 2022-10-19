@@ -1,0 +1,13 @@
+<?php
+session_start();
+
+$serverName = "localhost";
+$dBUsername = "root";
+$dBPassword = "root";
+$dBName = "gyart";
+
+$conn = mysqli_connect($serverName, $dBUsername, $dBPassword, $dBName);
+
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}

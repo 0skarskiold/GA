@@ -1,0 +1,3 @@
+public mappen inkluderar allt som är direkt tillgängligt genom HTTP/HTTPS
+t.ex css, js, img, och enkla php sidor
+
