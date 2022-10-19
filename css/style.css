@@ -31,7 +31,7 @@ header{
     justify-content: space-evenly;
     align-items: center;
     border-bottom: 2px dotted yellow;
-    font-size: larger;
+    font-size: 1.3rem;
     width: 60vw;
     margin: auto;
 
@@ -190,10 +190,52 @@ input[type=text] {
     display: grid;
     grid-template-areas:
     "hdr"
+    "wel"
     "log"
     "sig"
     ;
     grid-template-columns: 1fr;
-    grid-template-rows: 200px 1fr 1fr;
+    grid-template-rows: 200px 100px 1fr 1fr;
+    height: 100vh;
 }
 
+#join_us{
+    grid-area: wel;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.2rem;
+    font-style: italic;
+}
+
+#login{
+    grid-area: log;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}   
+
+#login form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 20vh;
+}
+
+#login form input{
+    width: inherit;
+    border-radius: 8px;
+}
+
+.submit_button{
+    background-color: yellow;
+    color: black;
+    border-radius: 8px;
+    height: 4vh;
+}
+
+.submit_button:hover{
+    cursor:pointer;
+}
