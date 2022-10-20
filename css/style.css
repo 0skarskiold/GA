@@ -24,6 +24,10 @@ Annan font??
     width: auto;
 }
 
+h2{
+    font-size: 2rem;
+}
+
 header{
     grid-area: hdr;
     display: flex;
@@ -45,18 +49,15 @@ header h1 a{
     text-decoration: none;
 }
 
-input{
-    height: 25px;
-    width: 150px;
-}
+
 
 input[type=text] {
     float: right;
     padding: 6px;
     border-color: yellow;
-    margin-top: 8px;
-    margin-right: 16px;
     font-size: 17px;
+    height: 25px;
+    width: 150px;
 }
 
 #welcome{
@@ -72,7 +73,9 @@ input[type=text] {
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    width: 100%;
+    width: 59.5vw;
+    margin: auto;
+    overflow-x: hidden;
 }
 
 #list{
@@ -82,8 +85,12 @@ input[type=text] {
     align-items: center;
     overflow: auto;
     white-space: nowrap;
-    width: 100%;
     scroll-behavior: smooth;
+    gap: 45px;
+    list-style: none;
+    margin-left: 20px;
+    width: inherit;
+    overflow-x: scroll;
 }
 
 /*Tar bort scrollbaren men ser till att den fortfarande funkar*/
@@ -102,12 +109,12 @@ input[type=text] {
 
 #arrow_left{
     position: absolute;
-    left: 0;
+    left: 10vw;
 }
 
 #arrow_right{
     position: absolute;
-    right: 0;
+    right: 10vw;
 }
 
 #pop_reviews{
@@ -223,9 +230,26 @@ input[type=text] {
     height: 20vh;
 }
 
-#login form input{
+.enter_field{
     width: inherit;
     border-radius: 8px;
+    height: 25px;
+}
+
+#signup{
+    grid-area: sig;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#signup form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 30vh;
 }
 
 .submit_button{
@@ -233,8 +257,10 @@ input[type=text] {
     color: black;
     border-radius: 8px;
     height: 4vh;
+    width: 150px;
 }
 
 .submit_button:hover{
     cursor:pointer;
+    font-style: bold;
 }
