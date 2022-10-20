@@ -8,8 +8,7 @@ if (isset($_POST["submit"])) {
     $pwd = $_POST["pwd"];
     $pwdRe = $_POST["pwdrepeat"];
 
-    require_once("modules/dbh.inc.php");
-    require_once("modules/auth/functions.php");
+    require_once("auth_functions.php");
 
     if (emptyInputSignup($name, $email, $username, $pwd, $pwdRe) !== false) {
         header("location: ../signup.php?error=emptyinput");

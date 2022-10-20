@@ -6,15 +6,15 @@
     <?php include_once("sections/header.php"); ?>
 
     <main>
-        <?php
+        <?php 
+            require_once ("listgen/listgen_functions.php");
             if (isset($_SESSION["useruid"])){
-                require_once ("inc/functions.inc.php");
-                $items = retrieveSortedList($conn, "*", "popularity_week", "desc", 7);
-                include_once("list_recent.php");
+                // $items = retrieveSortedList($conn, "*", "views_week", "desc", 7);
+                // include(""); // ADD: sidescroll for recent watches. Can you use same file?
+                echo 'hej';
             } 
+            include("sections/sidescroll.php"); 
         ?>
-
-        <?php include_once("sections/sidescroll.php"); ?>
 
     </main>
 
