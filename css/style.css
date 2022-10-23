@@ -34,11 +34,10 @@ header{
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    border-bottom: 2px dotted yellow;
+    border-bottom: 5px solid yellow;
     font-size: 1.3rem;
     width: 60vw;
     margin: auto;
-
 }
 
 header img{
@@ -51,10 +50,9 @@ header h1 a{
 
 
 
-input[type=text] {
+#search_bar{
     float: right;
     padding: 6px;
-    border-color: yellow;
     font-size: 17px;
     height: 25px;
     width: 150px;
