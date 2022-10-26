@@ -66,6 +66,8 @@ header h1 a{
     display: flex;
     justify-content: center;
     align-items: center;
+    text-decoration: underline;
+    text-underline-offset: 1vh;
 }
 
 #list_container{
@@ -123,7 +125,8 @@ header h1 a{
     display: flex;
     justify-content: center;
     align-items: center;
-
+    text-decoration: underline;
+    text-underline-offset: 1vh;
 }
 
 #featured_review{
@@ -134,7 +137,9 @@ header h1 a{
     flex-direction: row;
     justify-content: space-evenly;
     align-items: top;
-    border-right: 2px dotted yellow;
+    border-right: 2px solid yellow;
+    border-radius: 1px;
+    border-width: 0.3vw;
 }
 
 #featured_review img{
