@@ -3,7 +3,7 @@
 if(isset($_POST['submit-search'])){
 
     if (empty($_POST["search"])) {
-        header("location: /browse/search?error=emptyinput");
+        header("location: /search?error=emptyinput");
         exit();
     }
 
@@ -22,7 +22,7 @@ if(isset($_POST['submit-search'])){
     session_start();
     $_SESSION['items'] = $items;
 
-    header("location: /browse/search");
+    header("location: /search/".$_POST["search"]);
     exit();
 
 } else {
