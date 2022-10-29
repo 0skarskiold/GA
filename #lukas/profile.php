@@ -7,8 +7,7 @@
     <?php include_once("sections/header.php"); ?>
 
     <main>
-        <h2>item</h2>
-
+        <?php echo '<h2>'.$_GET['id'].'</h2>' ?>
     </main>
 
     <?php include_once("sections/footer.php"); ?>

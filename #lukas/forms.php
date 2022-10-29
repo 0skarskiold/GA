@@ -9,8 +9,8 @@
     <main>
 
         <ul id="form_choice">
-            <li><a href="login.php" class="button">Log in</a></li>
-            <li><a href="signup.php" class="button">Sign up</a></li>
+            <li><a href="" class="button">Log in</a></li>
+            <li><a href="" class="button">Sign up</a></li>
         </ul>
 
         <section>
@@ -24,7 +24,7 @@
 
         <section>
             <div class="sub_header"><h2>Sign Up</h2></div>
-            <form action="includes/acc/signup.inc.php" method="post" id="login_form">
+            <form action="includes/acc/signup.inc.php" method="post" id="signup_form">
                 <input type="text" name="name" placeholder="Full Name...">
                 <input type="text" name="email" placeholder="Email..">
                 <input type="text" name="uid" placeholder="Username..">

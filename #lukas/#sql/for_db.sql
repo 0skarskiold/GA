@@ -8,7 +8,7 @@ CREATE TABLE users (
 
 CREATE TABLE items (
     -- universella:
-    `type` varchar(128) NOT NULL CHECK (`type` IN ('Film', 'Short Film', 'Game', 'Series', 'Mini Series')), -- Film, ShortFilm, Game, Series, MiniSeries
+    `type` varchar(128) NOT NULL CHECK (`type` IN ('Film', 'Short Film', 'Game', 'Series', 'Mini-Series')),
     `id` int(11) NOT NULL,
     `name` varchar(128) NOT NULL,
     `date` date NOT NULL,
@@ -16,8 +16,8 @@ CREATE TABLE items (
     `bg_path` varchar(128) NOT NULL,
     `description` text NOT NULL,
     `rating` float(2) NOT NULL DEFAULT 0,
-    `popularity_all` int(11) NOT NULL DEFAULT 0,
-    `popularity_week` int(11) NOT NULL DEFAULT 0,
+    `views_all` int(11) NOT NULL DEFAULT 0,
+    `views_week` int(11) NOT NULL DEFAULT 0,
 
     -- `related` json NOT NULL, -- inkluderar både items i samma franchise och liknande items
     -- `cast` json NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE items (
 
     `length` int(5), -- för spel och filmer, i minuter. spels längd hämtad från howlongtobeat.com
 
-    `series_length_seasons` int(3),
+    `series_length_seasons` int(4),
     `series_length_eps` int(5),
     `series_ongoing` bit, -- 1: yes
     `series_date_last` date -- NULL if ongoing
@@ -40,7 +40,7 @@ CREATE TABLE seasons (
     `description` varchar(128) NOT NULL,
 );
 
-CREATE TABLE eps (
+CREATE TABLE episodes (
     `number_of_season` int(5) NOT NULL, -- vilket avsnitt av denna säsongen?
     `number_of_series` int(5) NOT NULL, -- vilket avsnitt av hela serien?
     `series_id` varchar(128) NOT NULL,

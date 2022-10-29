@@ -8,29 +8,27 @@ if (isset($_POST["submit"])) {
     $pwd = $_POST["pwd"];
     $pwdRe = $_POST["pwdrepeat"];
 
-    $dbh_path = $_SERVER['DOCUMENT_ROOT'];
-    $dbh_path .= "/includes/dbh.inc.php";
-    require_once($dbh_path);
+    require_once $_SERVER['DOCUMENT_ROOT'].'/includes/dbh.inc.php';
     require_once 'acc_functions.inc.php';
 
     if (emptyInputSignup($name, $email, $username, $pwd, $pwdRe) !== false) {
-        header("location: /forms.php?error=emptyinput");
+        header("location: /forms?error=emptyinput");
         exit();
     }
     if (invalidUid($username) !== false) {
-        header("location: /forms.php?error=invaliduid");
+        header("location: /forms?error=invaliduid");
         exit();
     }
     if (invalidEmail($email) !== false) {
-        header("location: /forms.php?error=invalidemail");
+        header("location: /forms?error=invalidemail");
         exit();
     }
     if (pwdMatch($pwd, $pwdRe) !== false) {
-        header("location: /forms.php?error=differentpasswords");
+        header("location: /forms?error=differentpasswords");
         exit();
     }
     if (uidExists($conn, $username, $email) !== false) {
-        header("location: /forms.php?error=usernametaken");
+        header("location: /forms?error=usernametaken");
         exit();
     }
 
@@ -38,6 +36,6 @@ if (isset($_POST["submit"])) {
 
 }
 else {
-    header("location: /index.php");
+    header("location: /");
     exit();
 }
