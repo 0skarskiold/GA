@@ -13,9 +13,9 @@ function retrieveSortedList($conn, $type, $factor, $order, $lim, $year, $add) {
         $decade = "";
         for($y = 0; $y < 10; $y++){
             if($y != 10){
-                $decade += "".$tmp+$y." OR ";
+                $decade += "'%".$tmp+$y."%' OR ";
             } else {
-                $decade += "".$tmp+$y."";
+                $decade += "'%".$tmp+$y."%'";
             } 
         }
         $year = $decade;
@@ -51,8 +51,8 @@ function retrieveSortedList($conn, $type, $factor, $order, $lim, $year, $add) {
 
     if ($type == "*" && $year == "*") {
         $sql = "SELECT * FROM `items` ORDER BY '$factor' $order LIMIT $lim;";
-    } else {
-        $sql = "SELECT * FROM `items` WHERE `type` = '$type' AND `date` LIKE '%$year%' ORDER BY '$factor' $order LIMIT $lim;";
+    } elseif ($type != "*" && $year != "*") {
+        $sql = "SELECT * FROM `items` WHERE `type` = '$type' AND `date` LIKE $year ORDER BY '$factor' $order LIMIT $lim;";
     }
 
     // utför query, hämtar resultat
