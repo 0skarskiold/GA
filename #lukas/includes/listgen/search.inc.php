@@ -1,6 +1,11 @@
 <?php
 
-if(isset($_POST['submit'])){
+if(isset($_POST['submit-search'])){
+
+    if (empty($_POST["search"])) {
+        header("location: /browse/search?error=emptyinput");
+        exit();
+    }
 
     unset($_SESSION['items']);
 
@@ -18,4 +23,9 @@ if(isset($_POST['submit'])){
     $_SESSION['items'] = $items;
 
     header("location: /browse/search");
+    exit();
+
+} else {
+    header("location: /");
+    exit();
 }

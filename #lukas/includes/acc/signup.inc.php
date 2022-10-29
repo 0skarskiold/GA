@@ -1,6 +1,6 @@
 <?php
 
-if (isset($_POST["submit"])) {
+if (isset($_POST["submit-signup"])) {
     
     $name = $_POST["name"];
     $email = $_POST["email"];
@@ -34,8 +34,7 @@ if (isset($_POST["submit"])) {
 
     createUser($conn, $name, $email, $username, $pwd);
 
-}
-else {
+} else {
     header("location: /");
     exit();
 }

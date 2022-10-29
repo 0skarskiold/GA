@@ -18,7 +18,7 @@
             <form action="includes/acc/login.inc.php" method="post" id="login_form">
                 <input type="text" name="uid" placeholder="Username/Email...">
                 <input type="password" name="pwd" placeholder="Password...">
-                <button type="submit" name="submit" class="button">Log In</button>
+                <button type="submit" name="submit-login" class="button">Log In</button>
             </form>
         </section>
 
@@ -30,7 +30,7 @@
                 <input type="text" name="uid" placeholder="Username..">
                 <input type="password" name="pwd" placeholder="Password..">
                 <input type="password" name="pwdrepeat" placeholder="Repeat Password...">
-                <button type="submit" name="submit" class="button">Sign Up</button>
+                <button type="submit" name="submit-signup" class="button">Sign Up</button>
             </form>
         </section>
 

@@ -12,8 +12,6 @@ CREATE TABLE items (
     `id` int(11) NOT NULL,
     `name` varchar(128) NOT NULL,
     `date` date NOT NULL,
-    `poster_path` varchar(128) NOT NULL,
-    `bg_path` varchar(128) NOT NULL,
     `description` text NOT NULL,
     `rating` float(2) NOT NULL DEFAULT 0,
     `views_all` int(11) NOT NULL DEFAULT 0,
@@ -47,7 +45,6 @@ CREATE TABLE episodes (
     `season` varchar(128) NOT NULL, -- vilken säsong
     `name` varchar(128) NOT NULL,
     `date` date NOT NULL,
-    `bg_path` varchar(128) NOT NULL,
     `description` varchar(128) NOT NULL,
     `length` int(5) NOT NULL,
     `rating` float(2) NOT NULL DEFAULT 0

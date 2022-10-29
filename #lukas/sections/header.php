@@ -9,7 +9,7 @@
         ?>
         <form action="/includes/listgen/search.inc.php" method="post" id="search_form">
             <input type="text" name="search" placeholder="Search">
-            <button type="submit" name="submit" class="button">Search</button>
+            <button type="submit" name="submit-search" class="button">Search</button>
         </form>
         <?php
             if (isset($_SESSION["useruid"])) {
