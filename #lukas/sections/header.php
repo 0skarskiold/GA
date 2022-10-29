@@ -1,7 +1,7 @@
 <header>
     <a href="index.php" class="logo"><img src="" alt="Website Logo"></a>
     <nav>
-        <a href="/templates/list.php" class="button">Browse</a>
+        <a href="/list.php" class="button">Browse</a>
         <?php
             if (isset($_SESSION["useruid"])) {
                 echo '<a href="profile.php" class="button">Profile</a>';
@@ -13,9 +13,9 @@
         </form>
         <?php
             if (isset($_SESSION["useruid"])) {
-                echo '<a href="../modules/logout.php" class="button">Log Out</a>';
+                echo '<a href="/includes/acc/logout.inc.php" class="button">Log Out</a>';
             } else {
-                echo '<a href="/templates/forms.php" class="button">Log in</a>';
+                echo '<a href="/forms.php" class="button">Log in</a>';
             }
         ?>
     </nav>

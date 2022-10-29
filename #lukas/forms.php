@@ -1,9 +1,7 @@
 <?php 
     session_start(); 
-    $path = $_SERVER['DOCUMENT_ROOT'];
-    $path .= "/modules/dbh.php";
-    include_once($path);
-    include_once("sections/contents.php"); 
+    require_once("includes/dbh.inc.php");
+    require_once("sections/contents.php"); 
 ?>
 <body>
     <?php include_once("sections/header.php"); ?>
@@ -17,7 +15,7 @@
 
         <section>
             <div class="sub_header"><h2>Log In</h2></div>
-            <form action="/modules/auth/login.php" method="post" id="login_form">
+            <form action="includes/acc/login.inc.php" method="post" id="login_form">
                 <input type="text" name="uid" placeholder="Username/Email...">
                 <input type="password" name="pwd" placeholder="Password...">
                 <button type="submit" name="submit" class="button">Log In</button>
@@ -26,7 +24,7 @@
 
         <section>
             <div class="sub_header"><h2>Sign Up</h2></div>
-            <form action="/modules/auth/signup.php" method="post" id="login_form">
+            <form action="includes/acc/signup.inc.php" method="post" id="login_form">
                 <input type="text" name="name" placeholder="Full Name...">
                 <input type="text" name="email" placeholder="Email..">
                 <input type="text" name="uid" placeholder="Username..">
@@ -41,7 +39,6 @@
     <?php include_once("sections/footer.php"); ?>
 </body>
 </html>
-
 
 
 

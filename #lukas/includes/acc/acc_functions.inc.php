@@ -45,7 +45,7 @@ function uidExists($conn, $username, $email) {
     $sql = "SELECT * FROM `users` WHERE `uid` = ? OR `email` = ?;";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("location: /templates/forms.php?error=stmtfailed");
+        header("location: /forms.php?error=stmtfailed");
         exit();
     }
     
@@ -70,7 +70,7 @@ function createUser($conn, $name, $email, $username, $pwd) {
     $sql = "INSERT INTO `users` (`name`, `email`, `uid`, `pwd`) VALUES (?, ?, ?, ?);";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("location: /templates/forms.php?error=stmtfailed");
+        header("location: /forms.php?error=stmtfailed");
         exit();
     }
 
@@ -79,7 +79,7 @@ function createUser($conn, $name, $email, $username, $pwd) {
     mysqli_stmt_bind_param($stmt, "ssss", $name, $email, $username, $hashedPwd);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
-    header("location: /templates/forms.php?error=none");
+    header("location: /forms.php?error=none");
     exit();
 }
 
@@ -99,7 +99,7 @@ function loginUser($conn, $username, $pwd) {
     $uidExists = uidExists($conn, $username, $username);
 
     if($uidExists === false) {
-        header("location: /templates/forms.php?error=wronglogin");
+        header("location: /forms.php?error=wronglogin");
         exit();
     }
 
@@ -107,13 +107,13 @@ function loginUser($conn, $username, $pwd) {
     $checkPwd = password_verify($pwd, $pwdHashed);
 
     if($checkPwd === false) {
-        header("location: /templates/forms.php?error=wronglogin");
+        header("location: /forms.php?error=wronglogin");
         exit();
     } else if ($checkPwd === true) {
         session_start();
         $_SESSION["userid"] = $uidExists["id"];
         $_SESSION["useruid"] = $uidExists["uid"];
-        header("location: /templates/index.php");
+        header("location: /index.php");
         exit();
     }
 }
