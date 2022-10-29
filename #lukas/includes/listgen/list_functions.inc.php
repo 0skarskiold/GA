@@ -6,20 +6,53 @@
 // argument 3: faktorn listan sorteras utefter
 // argument 4: ordning. ASC innebär ascending, nerifrån och upp, medan DESC innebär descending, uppifrån och ner
 // argument 5: gräns för arrayen. vi behöver inga oändliga listor
-function retrieveSortedList($conn, $item_type, $factor, $order, $lim) {
+function retrieveSortedList($conn, $type, $factor, $order, $lim, $year, $add) {
     
-    if ($order == "asc") {
-        if ($item_type == "*") {
-            $sql = "SELECT * FROM `items` ORDER BY '$factor' ASC LIMIT $lim;";
-        } else {
-            $sql = "SELECT * FROM `items` WHERE `type` = '$item_type' ORDER BY '$factor' ASC LIMIT $lim;";
+    if ($year[-1] == "s") {
+        $tmp = rtrim($year, "s");
+        $decade = "";
+        for($y = 0; $y < 10; $y++){
+            if($y != 10){
+                $decade += "".$tmp+$y." OR ";
+            } else {
+                $decade += "".$tmp+$y."";
+            } 
         }
-    } elseif ($order == "desc") {
-        if ($item_type == "*") {
-            $sql = "SELECT * FROM `items` ORDER BY '$factor' DESC LIMIT $lim;";
-        } else {
-            $sql = "SELECT * FROM `items` WHERE `type` = '$item_type' ORDER BY '$factor' DESC LIMIT $lim;";
-        }
+        $year = $decade;
+    }
+
+    // switch ($add) {
+    //     case "11":
+    //         $sql = 
+    //         "SELECT * FROM 
+    //         `seasons` WHERE `date` LIKE $year AND FROM 
+    //         `episodes` WHERE `date` LIKE $year AND FROM 
+    //         `items` WHERE `date` LIKE $year 
+    //         ORDER BY '$factor' $order LIMIT $lim;";
+    //         break;
+    //     case "10":
+    //         $sql = 
+    //         "SELECT * FROM 
+    //         `seasons` WHERE `date` LIKE $year AND FROM 
+    //         `episodes` WHERE `date` LIKE $year AND FROM 
+    //         `items` WHERE `date` LIKE $year 
+    //         ORDER BY '$factor' $order LIMIT $lim;";
+    //         break;
+    //     case "01":
+    //         $sql = 
+    //         "SELECT * FROM 
+    //         `episodes` WHERE `date` LIKE $year AND FROM 
+    //         `items` WHERE `date` LIKE $year 
+    //         ORDER BY '$factor' $order LIMIT $lim;";
+    //         break;
+    //     default:
+    //         break;
+    // }
+
+    if ($type == "*" && $year == "*") {
+        $sql = "SELECT * FROM `items` ORDER BY '$factor' $order LIMIT $lim;";
+    } else {
+        $sql = "SELECT * FROM `items` WHERE `type` = '$type' AND `date` LIKE '%$year%' ORDER BY '$factor' $order LIMIT $lim;";
     }
 
     // utför query, hämtar resultat

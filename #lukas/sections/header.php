@@ -1,7 +1,7 @@
 <header>
     <a href="/" class="logo"><img src="" alt="Website Logo"></a>
     <nav>
-        <a href="/browse" class="button">Browse</a>
+        <a href="/includes/listgen/browse.inc.php" class="button">Browse</a>
         <?php
             if (isset($_SESSION["useruid"])) {
                 echo '<a href="/profile/'.$_SESSION["useruid"].'" class="button">Profile</a>';

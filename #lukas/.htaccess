@@ -6,10 +6,8 @@ RewriteRule ^profile/([^/]+)/?$ profile.php?id=$1 [L]
 
 RewriteRule ^forms$ forms.php [L]
 
-RewriteRule ^search/([^/]+)/?$ browse.php$ [L]
+RewriteRule ^search/([^/]+)/?$ browse.php [L]
 
 RewriteRule ^browse$ browse.php [L]
-
-RewriteRule ^browse/([^/]+)/([^/]+)/([^/]+)/([^/]+)/?$ browse.php?type=$1&genre=$2&&year=$3&sortby=$4 [L]
 
 RewriteRule ^/?([^/]+)/([^/]+)/?$ item.php?type=$1&id=$2 [L]

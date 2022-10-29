@@ -1,7 +1,6 @@
 <?php 
     session_start(); 
     require_once("includes/dbh.inc.php");
-    require_once("includes/listgen/browse.inc.php");
     require_once("sections/contents.php"); 
 ?>
 <body>
@@ -13,19 +12,52 @@
                 <label for="avarage_rating">Avarage Rating</label>
                 <option value="rating_hi">Highest First</option>
                 <option value="rating_lo">Lowest First</option>
-                <label for="title">Popularite</label>
+                <label for="popularity">Popularity</label>
                 <option value="popularity">All Time</option>
                 <option value="popularity_week">This Week</option>
                 <option value="title">Title</option>
             </select>
             <select name="genre">
+                <option value="*">Any</option>
+                <option value="action">Action</option>
+                <option value="adventure">Adventure</option>
+                <option value="animation">Animation</option>
+                <option value="comedy">Comedy</option>
+                <option value="crime">Crime</option>
+                <option value="documentary">Documentary</option>
+                <option value="fantasy">Fantasy</option>
+                <option value="history">History</option>
+                <option value="horror">Horror</option>
+                <option value="music">Music</option>
+                <option value="romance">Romance</option>
+                <option value="sci-fi">Science Fiction</option>
+                <option value="thriller">Thriller</option>
+                <option value="war">War</option>
+                <option value="western">Western</option>
             </select>
             <select name="year">
+                <option value="*">Any</option>
+                <?php 
+                    for ($y = 1870; $y < date("Y")+2; $y++){
+                        if ($y % 10 == 0){
+                            echo '<option value="'.$y.'s">'.$y.'s</option>';
+                        }
+                        echo '<option value="'.$y.'">'.$y.'</option>';
+                    }
+                ?>
             </select>
             <select name="type">
+                <option value="*">Any</option>
+                <option value="Film">Film</option>
+                <option value="Short-Film">Short Film</option>
+                <option value="Series">Series</option>
+                <option value="Seasons">Seasons & Mini-Series</option>
+                <option value="Game">Game</option>
             </select>
-            <input type="checkbox" name="seasons" placeholder="Include seasons?"> <!--only if type=all-->
-            <input type="checkbox" name="episodes" placeholder="Include episodes?">
+            <label for="seasons">Include Seasons?</label>
+            <input type="checkbox" name="seasons"> <!--only if type=all-->
+            <label for="episodes">Include Episodes?</label>
+            <input type="checkbox" name="episodes">
             <button type="submit" name="submit-browse">Apply</button>
         </form>
         <?php 

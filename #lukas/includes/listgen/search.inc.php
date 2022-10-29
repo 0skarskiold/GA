@@ -13,7 +13,7 @@ if(isset($_POST['submit-search'])){
 
     $search = mysqli_real_escape_string($conn, $_POST['search']);
 
-    $sql = "SELECT * FROM `items` WHERE `name` LIKE '%$search%' OR `date` LIKE '%$search%' LIMIT 100;";
+    $sql = "SELECT * FROM `items` WHERE `name` LIKE '%$search%' OR `date` LIKE '%$search%' LIMIT 160;";
 
     $result = mysqli_query($conn, $sql);
 
