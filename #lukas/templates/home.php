@@ -1,7 +1,10 @@
-<?php include_once("../modules/dbh.php"); // is this okay to do? ?>
-<!DOCTYPE html>
-<html lang="en">
-<?php include_once("sections/contents.php"); ?>
+<?php 
+    session_start(); 
+    $path = $_SERVER['DOCUMENT_ROOT'];
+    $path .= "/modules/dbh.php";
+    include_once($path);
+    include_once("sections/contents.php"); 
+?>
 <body>
     <?php include_once("sections/header.php"); ?>
 

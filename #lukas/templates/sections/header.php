@@ -15,7 +15,7 @@
             if (isset($_SESSION["useruid"])) {
                 echo '<a href="../modules/logout.php" class="button">Log Out</a>';
             } else {
-                echo '<a href="forms.php" class="button">Log in</a>';
+                echo '<a href="/templates/forms.php" class="button">Log in</a>';
             }
         ?>
     </nav>
