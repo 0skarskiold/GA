@@ -13,7 +13,7 @@
         </form>
         <?php
             if (isset($_SESSION["useruid"])) {
-                echo '<a href="/includes/acc/logout.inc.php" class="button">Log Out</a>';
+                echo '<a href="/includes/account/logout.inc.php" class="button">Log Out</a>';
             } else {
                 echo '<a href="/forms" class="button">Log in</a>';
             }
