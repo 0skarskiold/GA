@@ -7,7 +7,7 @@
                 echo '<a href="/profile/'.$_SESSION["useruid"].'" class="button">Profile</a>';
             }
         ?>
-        <form action="/includes/listgen/search.inc.php" method="post" id="search_form">
+        <form action="/includes/listgen/search.inc.php" method="get" id="search_form">
             <input type="text" name="search" placeholder="Search">
             <button type="submit" name="submit-search" class="button">Search</button>
         </form>

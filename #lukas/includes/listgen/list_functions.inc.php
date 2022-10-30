@@ -51,8 +51,12 @@ function retrieveSortedList($conn, $type, $factor, $order, $lim, $year, $add) {
 
     if ($type == "*" && $year == "*") {
         $sql = "SELECT * FROM `items` ORDER BY '$factor' $order LIMIT $lim;";
+    } elseif ($type != "*" && $year == "*") {
+        $sql = "SELECT * FROM `items` WHERE `type` = '$type' ORDER BY '$factor' $order LIMIT $lim;";
+    } elseif ($type == "*" && $year != "*") {
+        $sql = "SELECT * FROM `items` WHERE `date` LIKE '%$year%' ORDER BY '$factor' $order LIMIT $lim;";
     } elseif ($type != "*" && $year != "*") {
-        $sql = "SELECT * FROM `items` WHERE `type` = '$type' AND `date` LIKE $year ORDER BY '$factor' $order LIMIT $lim;";
+        $sql = "SELECT * FROM `items` WHERE `type` = '$type' AND `date` LIKE '%$year%' ORDER BY '$factor' $order LIMIT $lim;";
     }
 
     // utför query, hämtar resultat

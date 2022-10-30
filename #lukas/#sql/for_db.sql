@@ -34,8 +34,6 @@ CREATE TABLE seasons (
     `series_id` varchar(128) NOT NULL,
     `length_eps` int(5) NOT NULL,
     `date` date NOT NULL,
-    `bg_path` varchar(128) NOT NULL,
-    `description` varchar(128) NOT NULL,
 );
 
 CREATE TABLE episodes (

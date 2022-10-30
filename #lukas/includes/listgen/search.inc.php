@@ -1,8 +1,8 @@
 <?php
 
-if(isset($_POST['submit-search'])){
+if(isset($_GET['submit-search'])){
 
-    if (empty($_POST["search"])) {
+    if (empty($_GET["search"])) {
         header("location: /search?error=emptyinput");
         exit();
     }
@@ -11,7 +11,7 @@ if(isset($_POST['submit-search'])){
 
     require_once $_SERVER['DOCUMENT_ROOT'].'/includes/dbh.inc.php';
 
-    $search = mysqli_real_escape_string($conn, $_POST['search']);
+    $search = mysqli_real_escape_string($conn, $_GET['search']);
 
     $sql = "SELECT * FROM `items` WHERE `name` LIKE '%$search%' OR `date` LIKE '%$search%' LIMIT 160;";
 
@@ -22,7 +22,7 @@ if(isset($_POST['submit-search'])){
     session_start();
     $_SESSION['items'] = $items;
 
-    header("location: /search/".$_POST["search"]);
+    header("location: /search/".$_GET["search"]);
     exit();
 
 } else {

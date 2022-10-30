@@ -5,12 +5,12 @@ unset($_SESSION['items']);
 require_once $_SERVER['DOCUMENT_ROOT'].'/includes/dbh.inc.php';
 require_once 'list_functions.inc.php';
 
-if (isset($_POST['submit-browse'])){
+if (isset($_GET['submit-browse'])){
 
-    $sortBy = $_POST["sortby"];
-    $type = $_POST["type"];
-    $genre = $_POST["genre"];
-    $year = $_POST["year"];
+    $sortBy = $_GET["sortby"];
+    $type = $_GET["type"];
+    $genre = $_GET["genre"];
+    $year = $_GET["year"];
 
     switch ($sortBy) {
         case "rating_hi":
@@ -38,10 +38,10 @@ if (isset($_POST['submit-browse'])){
     $add = "00";
 
     if ($type == "*") {
-        if ($_POST["seasons"] == "on") {
+        if ($_GET["seasons"] == "on") {
             $add[0] = "1";
         } 
-        if ($_POST["episodes"] == "on") {
+        if ($_GET["episodes"] == "on") {
             $add[1] = "1";
         }
     }
