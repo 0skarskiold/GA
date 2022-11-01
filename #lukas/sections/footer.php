@@ -3,4 +3,4 @@
     <a href="#" class="button">Contacts</a>
 </footer>
 
-<script src="js/script.js"></script>
+<script src="public/js/script.js"></script>
