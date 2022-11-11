@@ -23,8 +23,7 @@ CREATE TABLE favorites (
     `user_id` int(11) NOT NULL,
     `item_type` varchar(128) NOT NULL,
     `item_id` int(11) NOT NULL,
-    `number` int(1),
-    CHECK `number` IN (1,2,3,4)
+    `number` int(1)
 );
 
 CREATE TABLE themes (
@@ -145,7 +144,7 @@ CREATE TABLE subgenres (
     `name` varchar(128) NOT NULL
 );
 
-CREATE TABLE attach_genre_subgenres (
+CREATE TABLE attach_genres_subgenres (
     `genre_id` int(11) NOT NULL,
     `sub_id` int(11) NOT NULL
     -- exempel: mystery och whodunit
@@ -181,7 +180,7 @@ CREATE TABLE crew (
     `name` varchar(128) NOT NULL
 );
 
-CREATE TABLE attach_items_crew_roles (
+CREATE TABLE attach_items_crew (
     `item_type` varchar(128) NOT NULL,
     `item_id` int(11) NOT NULL,
     `person_id` int(11) NOT NULL,
@@ -241,7 +240,7 @@ CREATE TABLE lists (
     `name` varchar(128) NOT NULL,
     `description` text NOT NULL,
     `date` date NOT NULL,
-    `private` bit NOT NULL -- 1 om den är privat, 0 om public
+    `private` bit NOT NULL, -- 1 om den är privat, 0 om public
     `ranking` bit NOT NULL -- 1 om den är rankad, 0 om vanlig
 );
 
