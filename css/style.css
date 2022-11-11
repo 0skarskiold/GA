@@ -9,6 +9,11 @@ Annan font??
 
 */
 /*Startsidan */
+
+body {
+    --color1: black;
+}
+
 #index_body{
     display: grid;
     grid-template-areas: 
@@ -48,7 +53,17 @@ header h1 a{
     text-decoration: none;
 }
 
+#search_bar_parent{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
 
+#search_icon{
+    height:25px;
+    position: relative;
+    left: -30px;
+}
 
 #search_bar{
     float: right;
@@ -203,29 +218,26 @@ header h1 a{
     display: grid;
     grid-template-areas:
     "hdr"
-    "wel"
     "log"
     "sig"
     ;
     grid-template-columns: 1fr;
-    grid-template-rows: 200px 100px 1fr 1fr;
-    height: 100vh;
+    grid-template-rows: 200px 50vh 100px;
+    height: auto;
+    background-image: url(/img/poster_background2.jpg);
 }
 
-#join_us{
-    grid-area: wel;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2.2rem;
-}
 
 #login{
     grid-area: log;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
+    width: 20vw;
+    margin: auto;
+    opacity: 92%;
+    border-radius: 10px;
 }   
 
 #login form{
@@ -233,40 +245,88 @@ header h1 a{
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    height: 20vh;
+    height: auto;
+    gap: 2vh;
 }
 
 .enter_field{
     width: inherit;
     border-radius: 8px;
-    height: 25px;
-}
-
-#signup{
-    grid-area: sig;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-#signup form{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    height: 30vh;
+    height: 8vh;  
 }
 
 .submit_button{
     background-color: yellow;
     color: black;
     border-radius: 8px;
-    height: 4vh;
+    height: 8vh;
     width: 150px;
+    font-size: 1rem;
 }
 
 .submit_button:hover{
     cursor:pointer;
     font-style: bold;
+}
+
+
+#signup{
+    grid-area: sig;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.2rem;
+    width: 20vw;
+    height: 14vh;
+    margin: auto;
+    opacity: 92%;
+    border-radius: 10px;
+}
+
+#signup a{
+    background-color: yellow;
+    color: black;
+    text-decoration: none;
+    height: 2rem;
+    width: 10vw;
+    border-radius: 5px;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#signup_body{
+    display: grid;
+    grid-template-areas:
+    "hdr"
+    "sig"
+    ;
+    grid-template-columns: 1fr;
+    grid-template-rows: 200px 50vh;
+    height: 120vh;
+    background-image: url(/img/poster_background2.jpg);
+}
+
+#signup_form{
+    grid-area: sig;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 20vw;
+    margin: auto;
+    opacity: 92%;
+    border-radius: 10px;
+    padding-bottom: 2vh;
+}
+
+#signup_form form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: auto;
+    gap: 2vh;
 }
