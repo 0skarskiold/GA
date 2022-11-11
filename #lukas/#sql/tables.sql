@@ -1,7 +1,6 @@
 CREATE TABLE users (
     `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    `first_name` varchar(128) NOT NULL,
-    `last_name` varchar(128), -- kan vara tom
+    `name` varchar(128) NOT NULL,
     `email` varchar(128) NOT NULL,
     `uid` varchar(128) NOT NULL,
     `pwd` varchar(128) NOT NULL

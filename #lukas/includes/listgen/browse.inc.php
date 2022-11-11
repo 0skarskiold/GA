@@ -8,7 +8,7 @@ require_once 'list_functions.inc.php';
 if (isset($_GET['submit-browse'])){
 
     $sortBy = $_GET["sortby"];
-    $type = $_GET["type"];
+    $types = $_GET["types"]; #array
     $genre = $_GET["genre"];
     $year = $_GET["year"];
 
@@ -48,20 +48,10 @@ if (isset($_GET['submit-browse'])){
 
     $items = retrieveSortedList($conn, $type, $factor, $order, 160, $year, $add);
 
-    session_start();
-    $_SESSION['items'] = $items;
-
-    header("location: /browse");
-    exit();
-
 } else {
 
     $items = retrieveSortedList($conn, "*", "rating", "desc", 160, "*", "00");
 
-    session_start();
-    $_SESSION['items'] = $items;
-
-    header("location: /browse");
     exit();
 
 }

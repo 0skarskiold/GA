@@ -25,9 +25,9 @@
         <section>
             <div class="sub_header"><h2>Sign Up</h2></div>
             <form action="includes/account/signup.inc.php" method="post" id="signup_form">
-                <input type="text" name="name" placeholder="Full Name...">
+                <input type="text" name="name" placeholder="Name/Nickname...">
                 <input type="text" name="email" placeholder="Email..">
-                <input type="text" name="uid" placeholder="Username..">
+                <input type="text" name="uid" placeholder="Usertag..">
                 <input type="password" name="pwd" placeholder="Password..">
                 <input type="password" name="pwdrepeat" placeholder="Repeat Password...">
                 <button type="submit" name="submit-signup" class="button">Sign Up</button>
