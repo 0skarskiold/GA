@@ -6,26 +6,26 @@ CREATE TABLE users (
     `pwd` varchar(128) NOT NULL
 );
 
-CREATE TABLE settings (
+CREATE TABLE user_settings (
     `user_id` int(11) PRIMARY KEY NOT NULL,
-    `theme_id` int(11) NOT NULL DEFAULT 0
-    -- potentiella:
-    -- pronouns
-    -- profilbild
-    -- bakgrundsbild
-    -- biografi
-    -- länkar (till typ portfolio/arbete)
-    -- land
+    `pronouns` varchar(128) NOT NULL DEFAULT "They/Them",
+    `profile_img` bit NOT NULL DEFAULT 0, -- 0 innebär att de inte har en profilbild
+    `bg_img` bit NOT NULL DEFAULT 0, -- 0 innebär att de inte har en bakgrundsbild -- ska vara baserat på ett item
+    `biography` text NOT NULL,
+    `country` varchar(128) NOT NULL,
+    `language_id` int(11) ENUM("Swedish", "English") DEFAULT "English",
+    `links` varchar(128) NOT NULL, -- till typ portfolio/arbete
+    `color_theme_id` int(11) NOT NULL DEFAULT 0
 );
 
-CREATE TABLE favorites (
+CREATE TABLE user_favorites (
     `user_id` int(11) NOT NULL,
     `item_type` varchar(128) NOT NULL,
     `item_id` int(11) NOT NULL,
-    `number` int(1)
+    `number` ENUM('1', '2', '3', '4')
 );
 
-CREATE TABLE themes (
+CREATE TABLE color_themes (
     `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     `name` varchar(128) NOT NULL,
     `first_color_hex` varchar(128) NOT NULL, 
@@ -41,78 +41,40 @@ CREATE TABLE follow ( -- för att kolla vem som följer vem
 
 -- CREATE TABLE chats (); -- så att folk kan diskutera
 
-CREATE TABLE films_feature (
-    `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL, -- identifierande nummer
-    `name` varchar(128) NOT NULL,  -- namnet på filmen
-    `date` date NOT NULL, -- släppsdatum
-    `description` text NOT NULL, -- beskrivning
-    `length` int(5) NOT NULL, -- i minuter
-    `rating` float(2) NOT NULL DEFAULT 0, -- medelvärde på betyg från användare -- ?: uppdateras antingen varje gång någon betygsätter eller en gång per dag
-    `multi` bit NOT NULL -- om det finns flera versioner kommer denna vara 1
-    -- IMAGES: sökvägar för affischer, bakgrundsbilder och andra relaterade bilder kommer struktureras efter typ (film, serie, osv.) och id
-    -- VIEWS: visningar räknas ut baserat på views-bordet, både popularitet över lag, samt popularitet över senaste veckan
+CREATE TABLE items (
+    `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `type` ENUM('feature_film', 'short_film', 'series', 'season', 'episode', 'mini_series', 'game', 'other'),
+    `name` varchar(128) NOT NULL, -- säsonger: nummret
+    `url_name` varchar(128) NOT NULL, -- exempelvis breaking-bad-2008 -- ska vara unikt inom typgruppen -- om det finns två av samma titel från samma år: example-title-20XX och example-title-20XX-2
+    `year` int(5) NOT NULL,
+    `month` int(2) NOT NULL,
+    `day` int(2) NOT NULL,
+    `description` text, -- beskrivning -- NULL för säsonger
+    `length` int(6) NOT NULL, -- filmer: minuter, serier: antal säsonger, säsonger: antal avsnitt, avsnitt: minuter, spel: timmar (genomsnitt, avrundas uppåt)
+    `completions` int(11) NOT NULL DEFAULT 0,
+    `completions_week` int(11) NOT NULL DEFAULT 0,
+    `completions_month` int(11) NOT NULL DEFAULT 0,
+    `rating` float(5) NOT NULL DEFAULT 0
+    -- IMAGES: sökvägar för affischer, bakgrundsbilder och andra relaterade bilder kommer struktureras efter typ (film, serie, osv.) och url-namn
 );
 
-CREATE TABLE films_alternate ( -- exempelvis theatrical version eller director's cut
-    `film_id` int(11) NOT NULL, -- vilken film som versionen tillhör
-    `version_name` varchar(128) NOT NULL, -- exempelvis "director's cut"
-    `date` date NOT NULL, -- släppsdatum på versionen
-    `description` text NOT NULL, -- förklarar hur denna versionen skiljer sig från den/de andra
-    `length` int(5) NOT NULL, -- längden på versionen
-    `rating` float(2) NOT NULL DEFAULT 0
+CREATE TABLE attributes_series (
+    `id` int(11) NOT NULL, -- för att koppla
+    `length_episodes` int(6) NOT NULL, -- längden i antal avsnitt
+    `length_avg_minutes` int(6) NOT NULL, -- avsnittens genomsnittliga längd
+    `finale_year` int(5), -- NULL om pågående
+    `finale_month` int(2),
+    `finale_day` int(2)
 );
 
-CREATE TABLE films_short (
-    `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    `name` varchar(128) NOT NULL,
-    `date` date NOT NULL,
-    `description` text NOT NULL,
-    `length` int(5) NOT NULL,
-    `rating` float(2) NOT NULL DEFAULT 0
+CREATE TABLE attach_seasons_series (
+    `id` int(11) NOT NULL, -- för att koppla till item
+    `series_id` int(11) NOT NULL, -- för att koppla till serie
 );
 
-CREATE TABLE series (
-    `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    `name` varchar(128) NOT NULL,  -- namnet på serien
-    `description` text NOT NULL, -- beskrivning på serien
-    `ongoing` bit NOT NULL DEFAULT 0, -- om serien är pågående -- 0 innebär att den inte är pågående
-    `rating` float(2) NOT NULL DEFAULT 0 -- tar medelvärdet mellan medelvärdet på säsongerna och medelvärdet på användar-betyg för serien i helhet
-    -- DATE: datumet för när den började, samt datumet för när den slutade baseras på avsnittent, samt om den är pågående
-    -- LENGTH: längden i antal säsonger, samt längden i antal avsnitt baseras på series_seasons och series_episodes borden
-);
-
-CREATE TABLE series_mini (
-    `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    `name` varchar(128) NOT NULL,  -- namnet på serien
-    `description` text NOT NULL, -- beskrivning på serien
-    `rating` float(2) NOT NULL DEFAULT 0
-    -- DATE: datum för när den började baseras på det första avsnittet
-    -- LENGTH: längden i antal avsnitt baseras på series_episodes bordet
-);
-
-CREATE TABLE series_seasons (
-    `series_id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    `season_number` int(5) NOT NULL, -- säsongens nummer
-    `rating` float(2) NOT NULL DEFAULT 0 -- tar medelvärdet mellan medelvärdet på avsnitten och medelvärdet på användar-betyg för säsongen i helhet
-    -- DATE: datum för när den började baseras på det första avsnittet
-    -- LENGTH: längden i antal avsnitt baseras på series_episodes bordet
-);
-
-CREATE TABLE series_episodes (
-    `series_id` int(11) NOT NULL,
-    `season_number` int(11) NOT NULL,
-    `description` text NOT NULL, -- beskrivning på avsnittet
-    `length` int(5) NOT NULL, -- i minuter
-    `rating` float(2) NOT NULL DEFAULT 0 -- medelvärdet på användarnas betyg
-);
-
-CREATE TABLE games (
-    `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    `name` varchar(128) NOT NULL,
-    `date` date NOT NULL,
-    `description` text NOT NULL,
-    `rating` float(2) NOT NULL DEFAULT 0
-    -- LÄNGD: den genomsnittliga längden kommer utvinnas ur användarnas loggningar
+CREATE TABLE attach_films_versions (
+    `original_id` int(11) NOT NULL, -- t.ex. theatrical cut
+    `alternate_id` int(11) NOT NULL -- t.ex. director's cut
 );
 
 CREATE TABLE collections (
@@ -177,6 +139,7 @@ CREATE TABLE crew_roles (
 CREATE TABLE crew (
     `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
     `name` varchar(128) NOT NULL
+    `info` text NOT NULL
 );
 
 CREATE TABLE attach_items_crew (
@@ -188,7 +151,8 @@ CREATE TABLE attach_items_crew (
 
 CREATE TABLE studios (
     `id` int(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    `name` varchar(128) NOT NULL
+    `name` varchar(128) NOT NULL,
+    `info` text NOT NULL
 );
 
 CREATE TABLE attach_items_studios (
@@ -199,7 +163,7 @@ CREATE TABLE attach_items_studios (
 
 -- CREATE TABLE extras (); -- behind the scenes och featurette
 
-CREATE TABLE views (
+CREATE TABLE completions (
     `user_id` int(11) NOT NULL,
     `item_type` varchar(128) NOT NULL,
     `item_id` int(11) NOT NULL,
@@ -245,77 +209,19 @@ CREATE TABLE lists (
 
 CREATE TABLE attach_lists_items (
     `list_id` int(11) NOT NULL,
-    `item_type` int(11) NOT NULL,
+    `item_type` varchar(128) NOT NULL,
     `item_id` int(11) NOT NULL,
     `number` int(11) NOT NULL,
     `note` text NOT NULL -- listskaparen kan koppla en anteckning som exempelvis beskriver varför saken är inkluderad
 );
 
+CREATE TABLE game_platforms (
+    `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `name` varchar(128) NOT NULL,
+    `studio_id` int(11),
+);
 
-
-
-
--- old:
--- CREATE TABLE items (
---     -- universella:
---     `type` varchar(128) NOT NULL CHECK (`type` IN ('Film', 'Short Film', 'Game', 'Series', 'Mini-Series')),
---     `id` int(11) NOT NULL,
---     `name` varchar(128) NOT NULL,
---     `date` date NOT NULL,
---     `description` text NOT NULL,
---     `rating` float(2) NOT NULL DEFAULT 0,
---     `views_all` int(11) NOT NULL DEFAULT 0,
---     `views_week` int(11) NOT NULL DEFAULT 0,
-
---     -- `related` json NOT NULL, -- inkluderar både items i samma franchise och liknande items
---     -- `cast` json NOT NULL,
---     -- `crew` json NOT NULL,
-
---     `length` int(5), -- för spel och filmer, i minuter. spels längd hämtad från howlongtobeat.com
-
---     `series_length_seasons` int(4),
---     `series_length_eps` int(5),
---     `series_ongoing` bit, -- 1: yes
---     `series_date_last` date -- NULL if ongoing
--- );
-
--- CREATE TABLE seasons (
---     `number` int(4) NOT NULL,
---     `series_id` varchar(128) NOT NULL,
---     `length_eps` int(5) NOT NULL,
---     `date` date NOT NULL,
--- );
-
--- CREATE TABLE episodes (
---     `number_of_season` int(5) NOT NULL, -- vilket avsnitt av denna säsongen?
---     `number_of_series` int(5) NOT NULL, -- vilket avsnitt av hela serien?
---     `series_id` varchar(128) NOT NULL,
---     `season` varchar(128) NOT NULL, -- vilken säsong
---     `name` varchar(128) NOT NULL,
---     `date` date NOT NULL,
---     `description` varchar(128) NOT NULL,
---     `length` int(5) NOT NULL,
---     `rating` float(2) NOT NULL DEFAULT 0
--- );
-
--- CREATE TABLE ratings (
---     `user_id` int(11) NOT NULL,
---     `item_type` varchar(128) NOT NULL,
---     `item_id` int(11) NOT NULL,
---     `rating` float(2), -- mellan 1 och 5. halvpoäng funkar. om 0 => NULL, räknas inte med i avg. 
---     `like` bit NOT NULL
--- );
-
--- CREATE TABLE entries (
---     `user_id` int(11) NOT NULL,
---     `item_type` varchar(128) NOT NULL,
---     `item_id` int(11) NOT NULL,
---     `rating` float(2) NOT NULL,
---     `like` bit NOT NULL,
---     `date_completion` date NOT NULL,
---     `date_start` date, -- optional
---     `re` bit NOT NULL DEFAULT 0 -- is it a rewatch? 1: yes
-
---     -- `review` bit NOT NULL,
---     -- `review_id` int(11),
--- );
+CREATE TABLE attach_games_platforms (
+    `game_id` int(11) NOT NULL,
+    `platform_id` int(11) NOT NULL,
+);

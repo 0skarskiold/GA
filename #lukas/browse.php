@@ -12,13 +12,14 @@
         <section>
             <?php 
                 foreach($items as $item){
-                    if ($item['type'] == "season"){
+                    echo $items;
+                    if ($item['type'] === "season"){
 
-                    } elseif ($item['type'] == "episode"){
+                    } elseif ($item['type'] === "episode"){
 
                     } else {
-                        $path = "/public/img/metadata/".strtolower($item['type'])."/".$item['id'].".jpg";
-                        echo "<a href='/".strtolower($item['type'])."/".$item['id']."' class='poster_container'><h2>".$item['name']." (".date("Y", strtotime($item['date'])).")</h2><img src='".$path."' alt='Poster'></a>";
+                        $path = "/public/img/metadata/".$item['type']."/".$item['url_name']."/poster.jpg";
+                        echo "<a href='/".$item['type']."/".$item['url_name']."' class='poster_container'><h2>".$item['name']." (".$item['year'].")</h2><img src='".$path."' alt='Poster'></a>";
                     }
                 }
             ?>

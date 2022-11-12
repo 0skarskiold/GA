@@ -1,63 +1,60 @@
 <?php
 
 // returnerar en tvådimensionell, associativ array av "items", dvs filmer, serier och spel, sorterad utefter angiven faktor, exempelvis genomsnittligt betyg eller popularitet
-// argument 1: koppling till databasen
-// argument 2: item:ets typ, dvs film, serie eller spel
-// argument 3: faktorn listan sorteras utefter
-// argument 4: ordning. ASC innebär ascending, nerifrån och upp, medan DESC innebär descending, uppifrån och ner
-// argument 5: gräns för arrayen. vi behöver inga oändliga listor
-function retrieveSortedList($conn, $type, $factor, $order, $lim, $year, $add) {
-    
-    if ($year[-1] == "s") {
-        $tmp = rtrim($year, "s");
-        $decade = "";
-        for($y = 0; $y < 10; $y++){
-            if($y != 10){
-                $decade += "'%".$tmp+$y."%' OR ";
+function retrieveSortedList($conn, $types, $year, $factor, $order, $lim) {
+
+    // validering
+    if($order !== "DESC" && $order !== "ASC") {
+        // meddelande?
+        exit();
+    }
+
+    $filter_str = "";
+
+    if($types !== "any" && is_array($types)) {
+
+        $t = "";
+        foreach($types as &$type) {
+            if($type !== array_key_last($types)) {
+                $t += $type." OR `type` = ";
             } else {
-                $decade += "'%".$tmp+$y."%'";
-            } 
+                $t += $type;
+            }
         }
-        $year = $decade;
+
+        $filter_str += "WHERE `type` = ".$t;
+
     }
 
-    // switch ($add) {
-    //     case "11":
-    //         $sql = 
-    //         "SELECT * FROM 
-    //         `seasons` WHERE `date` LIKE $year AND FROM 
-    //         `episodes` WHERE `date` LIKE $year AND FROM 
-    //         `items` WHERE `date` LIKE $year 
-    //         ORDER BY '$factor' $order LIMIT $lim;";
-    //         break;
-    //     case "10":
-    //         $sql = 
-    //         "SELECT * FROM 
-    //         `seasons` WHERE `date` LIKE $year AND FROM 
-    //         `episodes` WHERE `date` LIKE $year AND FROM 
-    //         `items` WHERE `date` LIKE $year 
-    //         ORDER BY '$factor' $order LIMIT $lim;";
-    //         break;
-    //     case "01":
-    //         $sql = 
-    //         "SELECT * FROM 
-    //         `episodes` WHERE `date` LIKE $year AND FROM 
-    //         `items` WHERE `date` LIKE $year 
-    //         ORDER BY '$factor' $order LIMIT $lim;";
-    //         break;
-    //     default:
-    //         break;
-    // }
+    if($year !== "any") {
 
-    if ($type == "*" && $year == "*") {
-        $sql = "SELECT * FROM `items` ORDER BY '$factor' $order LIMIT $lim;";
-    } elseif ($type != "*" && $year == "*") {
-        $sql = "SELECT * FROM `items` WHERE `type` = '$type' ORDER BY '$factor' $order LIMIT $lim;";
-    } elseif ($type == "*" && $year != "*") {
-        $sql = "SELECT * FROM `items` WHERE `date` LIKE '%$year%' ORDER BY '$factor' $order LIMIT $lim;";
-    } elseif ($type != "*" && $year != "*") {
-        $sql = "SELECT * FROM `items` WHERE `type` = '$type' AND `date` LIKE '%$year%' ORDER BY '$factor' $order LIMIT $lim;";
+        if($year[-1] === "s") {
+
+            $tmp = intval(rtrim($year, "s"));
+            $decade = "";
+
+            for($y = 0; $y < 9; $y++) {
+                $decade += "'%".strval($tmp + $y)."%' OR `year` LIKE ";
+            }
+
+            $year = $decade."'%".strval($tmp + $y)."%'";
+
+        } else {
+            $tmp = $year;
+            $year = "'%".$tmp."%'";
+        }
+
+        if($filter_str !== "") {
+            $filter_str += " AND WHERE `year` LIKE ".$year;
+        } else {
+            $filter_str += "WHERE `year` LIKE ".$year;
+        }
+        
     }
+
+    $select = "`id`, `name`, `type`, `url_name`, `year`, `rating`";
+
+    $sql = "SELECT ".$select." FROM `items` ".$filter_str." ORDER BY ".$factor." ".$order." LIMIT ".$lim.";";
 
     // utför query, hämtar resultat
     $result = mysqli_query($conn, $sql);

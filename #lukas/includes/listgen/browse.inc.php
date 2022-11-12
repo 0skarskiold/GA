@@ -1,57 +1,72 @@
 <?php
 
-unset($_SESSION['items']);
+// require_once($_SERVER['DOCUMENT_ROOT']."/includes/dbh.inc.php"); // behövs inte eftersom den inkluderas ovanför i browse.php
+require_once("list_functions.inc.php");
 
-require_once $_SERVER['DOCUMENT_ROOT'].'/includes/dbh.inc.php';
-require_once 'list_functions.inc.php';
+if (isset($_GET["submit-browse"])){
 
-if (isset($_GET['submit-browse'])){
-
-    $sortBy = $_GET["sortby"];
-    $types = $_GET["types"]; #array
+    $sortby = $_GET["sortby"];
     $genre = $_GET["genre"];
     $year = $_GET["year"];
 
-    switch ($sortBy) {
-        case "rating_hi":
-            $factor = "rating";
-            $order = "DESC";
-            break;
-        case "rating_lo":
-            $factor = "rating";
-            $order = "ASC";
-            break;
-        case "popularity":
-            $factor = "views";
-            $order = "DESC";
-            break;
-        case "popularity_week":
-            $factor = "views_week";
-            $order = "DESC";
-            break;
-        case "title":
-            $factor = "name";
-            $order = "DESC";
-            break;
-    }
-
-    $add = "00";
-
-    if ($type == "*") {
-        if ($_GET["seasons"] == "on") {
-            $add[0] = "1";
-        } 
-        if ($_GET["episodes"] == "on") {
-            $add[1] = "1";
+    if (isset($_GET["type_any"])){
+        $types = "any";
+    } else {
+        $types = [];
+        if ($_GET["type_feature_film"]){
+            join($types, ["feature_film"]);
+        }
+        if ($_GET["type_short_film"]){
+            join($types, ["short_film"]);
+        }
+        if ($_GET["type_series"]){
+            join($types, ["series"]);
+        }
+        if ($_GET["type_mini_series"]){
+            join($types, ["mini_series"]);
+        }
+        if ($_GET["type_season"]){
+            join($types, ["season"]);
+        }
+        if ($_GET["type_episode"]){
+            join($types, ["episode"]);
+        }
+        if ($_GET["type_game"]){
+            join($types, ["game"]);
         }
     }
 
-    $items = retrieveSortedList($conn, $type, $factor, $order, 160, $year, $add);
+    switch ($sortby) {
+        case "rating_hi":
+            $factor = "`rating`";
+            $order = "DESC";
+            break;
+        case "rating_lo":
+            $factor = "`rating`";
+            $order = "ASC";
+            break;
+        case "popularity":
+            $factor = "`completions`";
+            $order = "DESC";
+            break;
+        case "popularity_week":
+            $factor = "`completions_week`";
+            $order = "DESC";
+            break;
+        case "title":
+            $factor = "`name`";
+            $order = "DESC";
+            break;
+        default:
+            $factor = "`completions`";
+            $order = "DESC";
+            break;
+    }
+
+    $items = retrieveSortedList($conn, $types, $year, $factor, $order, 160);
 
 } else {
 
-    $items = retrieveSortedList($conn, "*", "rating", "desc", 160, "*", "00");
-
-    exit();
+    $items = retrieveSortedList($conn, "any", "any", "'rating'", "DESC", 160);
 
 }

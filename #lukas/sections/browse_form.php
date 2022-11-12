@@ -1,4 +1,4 @@
-<form action="/includes/listgen/browse.inc.php" method="get">
+<form action="/browse" method="get">
     <label for="sortby">Sort By</label>
     <select name="sortby">
         <option value="title">Title</option>
@@ -11,7 +11,7 @@
     </select>
     <label for="genre">Genre</label>
     <select name="genre">
-        <option value="*">Any</option>
+        <option value="any">Any</option>
         <option value="action">Action</option>
         <option value="adventure">Adventure</option>
         <option value="animation">Animation</option>
@@ -31,7 +31,7 @@
     </select>
     <label for="subgenre">Subgenre</label>
     <select name="subgenre">
-        <option value="*">Any</option>
+        <option value="any">Any</option>
         <option value="whodunit">Whodunit</option>
         <option value="superhero">Superhero</option>
         <option value="creature-feature">Creature-Feature</option>
@@ -68,7 +68,7 @@
     </select>
     <label for="year">Year</label>
     <select name="year">
-        <option value="*">Any</option>
+        <option value="any">Any</option>
         <?php 
             for ($y = 1870; $y < date("Y")+2; $y++){
                 if ($y % 10 == 0){
@@ -78,18 +78,31 @@
             }
         ?>
     </select>
-    <label for="type">Type</label>
+    <!-- <label for="type">Type</label>
     <select name="type">
-        <option value="*">Any</option>
-        <option value="Film">Film</option>
-        <option value="Short-Film">Short Film</option>
-        <option value="Series">Series</option>
-        <option value="Seasons">Seasons & Mini-Series</option>
-        <option value="Game">Game</option>
-    </select>
-    <label for="seasons">Include Seasons?</label>
-    <input type="checkbox" name="seasons"> <!--only if type=all-->
-    <label for="episodes">Include Episodes?</label>
-    <input type="checkbox" name="episodes">
+        <option value="any">Any</option>
+        <option value="feature_film">Feature Films</option>
+        <option value="short_film">Short-films</option>
+        <option value="series">Series</option>
+        <option value="season">Seasons</option>
+        <option value="episode">Episodes</option>
+        <option value="game">Games</option>
+    </select> -->
+    <label for="type_any">Any?</label>
+    <input type="checkbox" name="type_any">
+    <label for="type_feature_film">Films?</label>
+    <input type="checkbox" name="type_feature_film">
+    <label for="type_short_film">Short-films?</label>
+    <input type="checkbox" name="type_short_film">
+    <label for="type_series">Series?</label>
+    <input type="checkbox" name="type_series">
+    <label for="type_mini_series">Mini-series?</label>
+    <input type="checkbox" name="type_mini_series">
+    <label for="type_season">Seasons?</label>
+    <input type="checkbox" name="type_season">
+    <label for="type_episode">Episodes?</label>
+    <input type="checkbox" name="type_episode">
+    <label for="type_game">Games?</label>
+    <input type="checkbox" name="type_game">
     <button type="submit" name="submit-browse">Apply</button>
 </form>
