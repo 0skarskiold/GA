@@ -223,8 +223,9 @@ header h1 a{
     ;
     grid-template-columns: 1fr;
     grid-template-rows: 200px 50vh 100px;
-    height: auto;
+    height: 100vh;
     background-image: url(/img/poster_background2.jpg);
+    overflow-y: hidden;
 }
 
 
@@ -252,23 +253,17 @@ header h1 a{
 .enter_field{
     width: inherit;
     border-radius: 8px;
-    height: 8vh;  
+    height: 3rem;  
 }
 
 .submit_button{
     background-color: yellow;
     color: black;
     border-radius: 8px;
-    height: 8vh;
+    height: 3rem;
     width: 150px;
     font-size: 1rem;
 }
-
-.submit_button:hover{
-    cursor:pointer;
-    font-style: bold;
-}
-
 
 #signup{
     grid-area: sig;
@@ -329,4 +324,19 @@ header h1 a{
     align-items: center;
     height: auto;
     gap: 2vh;
+}
+
+/*Sök-sidan*/
+
+#search_body{
+    display: grid;
+    grid-template-areas:
+    "hdr hdr"
+    "mov mov"
+    "pro pro"
+    ;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 200px 4rem 1fr 1fr;
+    height: auto;
+    width: auto;
 }
