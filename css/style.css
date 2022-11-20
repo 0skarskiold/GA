@@ -332,11 +332,75 @@ header h1 a{
     display: grid;
     grid-template-areas:
     "hdr hdr"
-    "mov mov"
-    "pro pro"
+    "nam nam"
+    "moi mov"
+    "pri pro"
     ;
-    grid-template-columns: 1fr 4fr;
+    grid-template-columns: 1fr 6fr;
     grid-template-rows: 200px 4rem 1fr 1fr;
-    height: auto;
+    height: 100vh;
     width: auto;
+    overflow-y: hidden;
+}
+
+#search_name{
+    grid-area: nam;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#result_movies{
+    grid-area: moi;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#result_profiles{
+    grid-area: pri;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#result_movie_posters{
+    grid-area: mov;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#result_movie_posters img{
+    height: 300px;
+    width: 400px;
+}
+
+#result_profiles_section{
+    grid-area: pro;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.profile_section{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    border-style: solid;
+    border-radius: 5px;
+    border-color: yellow;
+    height: 15vh;
+    width: 20vw;
+}
+
+.profile_section img{
+    height: 100px;
+}
+
+.profile_section div{
+    width: 10vw;
 }
