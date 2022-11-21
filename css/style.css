@@ -338,9 +338,8 @@ header h1 a{
     ;
     grid-template-columns: 1fr 6fr;
     grid-template-rows: 200px 4rem 1fr 1fr;
-    height: 100vh;
+    height: 120vh;
     width: auto;
-    overflow-y: hidden;
 }
 
 #search_name{
@@ -385,7 +384,7 @@ header h1 a{
     align-items: center;
 }
 
-.profile_section{
+.profile_items{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -393,14 +392,15 @@ header h1 a{
     border-style: solid;
     border-radius: 5px;
     border-color: yellow;
-    height: 15vh;
+    height: 20vh;
     width: 20vw;
 }
 
-.profile_section img{
+.profile_items img{
     height: 10vh;
 }
 
-.profile_section div{
+.profile_items div{
     width: 10vw;
+    max-height: 20vh;
 }
