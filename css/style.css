@@ -373,8 +373,8 @@ header h1 a{
 }
 
 #result_movie_posters img{
-    height: 300px;
-    width: 400px;
+    height: 28vh;
+    border-radius: 5px;
 }
 
 #result_profiles_section{
@@ -398,7 +398,7 @@ header h1 a{
 }
 
 .profile_section img{
-    height: 100px;
+    height: 10vh;
 }
 
 .profile_section div{
