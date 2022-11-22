@@ -1,13 +1,13 @@
 <form action="/browse" method="get">
     <label for="sortby">Sort By</label>
     <select name="sortby">
-        <option value="title">Title</option>
-        <label for="avarage_rating">Avarage Rating</label>
-        <option value="rating_hi">Highest First</option>
-        <option value="rating_lo">Lowest First</option>
         <label for="popularity">Popularity</label>
         <option value="popularity">All Time</option>
         <option value="popularity_week">This Week</option>
+        <label for="avarage_rating">Avarage Rating</label>
+        <option value="rating_hi">Highest First</option>
+        <option value="rating_lo">Lowest First</option>
+        <option value="title">Title</option>
     </select>
     <label for="genre">Genre</label>
     <select name="genre">

@@ -9,30 +9,37 @@ if (isset($_GET["submit-browse"])){
     $genre = $_GET["genre"];
     $year = $_GET["year"];
 
+    if($_GET["subgenre"] !== "any") {
+        $genre = "subgenre_".$_GET["subgenre"];
+    }
+
     if (isset($_GET["type_any"])){
         $types = "any";
     } else {
         $types = [];
-        if ($_GET["type_feature_film"]){
-            join($types, ["feature_film"]);
+        if (isset($_GET["type_feature_film"])){
+            array_push($types,"feature_film");
         }
-        if ($_GET["type_short_film"]){
-            join($types, ["short_film"]);
+        if (isset($_GET["type_short_film"])){
+            array_push($types,"short_film");
         }
-        if ($_GET["type_series"]){
-            join($types, ["series"]);
+        if (isset($_GET["type_series"])){
+            array_push($types,"series");
         }
-        if ($_GET["type_mini_series"]){
-            join($types, ["mini_series"]);
+        if (isset($_GET["type_mini_series"])){
+            array_push($types,"mini_series");
         }
-        if ($_GET["type_season"]){
-            join($types, ["season"]);
+        if (isset($_GET["type_season"])){
+            array_push($types,"season");
         }
-        if ($_GET["type_episode"]){
-            join($types, ["episode"]);
+        if (isset($_GET["type_episode"])){
+            array_push($types,"episode");
         }
-        if ($_GET["type_game"]){
-            join($types, ["game"]);
+        if (isset($_GET["type_game"])){
+            array_push($types,"game");
+        }
+        if ($types === []){
+            $types = "any";
         }
     }
 
@@ -63,10 +70,10 @@ if (isset($_GET["submit-browse"])){
             break;
     }
 
-    $items = retrieveSortedList($conn, $types, $year, $factor, $order, 160);
+    $items = retrieveSortedList($conn, $search, $types, $year, $genre, $factor, $order, 160);
 
 } else {
 
-    $items = retrieveSortedList($conn, "any", "any", "'rating'", "DESC", 160);
+    $items = retrieveSortedList($conn, "any", "any", "any", "any", "`rating`", "DESC", 160);
 
 }
