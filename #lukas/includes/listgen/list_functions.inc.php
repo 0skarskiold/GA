@@ -11,7 +11,7 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $factor, $ord
     if(is_array($types)) {
         foreach($types as $type) {
             $enum = ['feature_film','short_film','series','season','episode','mini_series','game','other'];
-            if(!in_array($type,$enum,true)) {
+            if(!in_array($type,$enum,true)) { // om type inte finns i listan
                 header("location: /browse?error=type");
                 exit();
             }
