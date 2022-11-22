@@ -56,7 +56,7 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $factor, $ord
 
     if($genre !== "any") {
         if($filter_str !== "") {
-            // $filter_str .= " AND INNER JOIN `attach_items_genres` ON `table`.`column` = `table`.`column`;";
+            // $filter_str .= " AND INNER JOIN `attach_items_genres` ON `table`.`column` = `table`.`column` WHERE ;";
         } else {
             // $filter_str = " WHERE `year`".$year;
         }
