@@ -10,4 +10,4 @@ RewriteRule ^search/([^/]+)/?$ browse.php?search=$1 [L]
 
 RewriteRule ^browse$ browse.php [L]
 
-RewriteRule ^/?([^/]+)/([^/]+)/?$ item.php?type=$1&id=$2 [L]
+RewriteRule ^/?([^/]+)/([^/]+)/?$ item.php?type=$1&uid=$2 [L]

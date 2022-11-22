@@ -12,15 +12,8 @@
         <section>
             <?php 
                 foreach($items as $item){
-                    echo $items;
-                    if ($item['type'] === "season"){
-
-                    } elseif ($item['type'] === "episode"){
-
-                    } else {
-                        $path = "/public/img/metadata/".$item['type']."/".$item['url_name']."/poster.jpg";
-                        echo "<a href='/".$item['type']."/".$item['url_name']."' class='poster_container'><h2>".$item['name']." (".$item['year'].")</h2><img src='".$path."' alt='Poster'></a>";
-                    }
+                    $path = "/public/img/metadata/".$item['type']."/".$item['uid']."/poster.jpg";
+                    echo "<a href='/".str_replace("_","-",$item['type'])."/".$item['uid']."' class='poster_container'><h2>".$item['name']." (".$item['year'].")</h2><img src='".$path."' alt='Poster'></a>";
                 }
             ?>
         </section>
