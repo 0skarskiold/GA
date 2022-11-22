@@ -43,6 +43,7 @@ header{
     font-size: 1.3rem;
     width: 60vw;
     margin: auto;
+    font-family: 'Oxygen', sans-serif;
 }
 
 header img{
@@ -223,8 +224,9 @@ header h1 a{
     ;
     grid-template-columns: 1fr;
     grid-template-rows: 200px 50vh 100px;
-    height: auto;
+    height: 100vh;
     background-image: url(/img/poster_background2.jpg);
+    overflow-y: hidden;
 }
 
 
@@ -252,23 +254,17 @@ header h1 a{
 .enter_field{
     width: inherit;
     border-radius: 8px;
-    height: 8vh;  
+    height: 3rem;  
 }
 
 .submit_button{
     background-color: yellow;
     color: black;
     border-radius: 8px;
-    height: 8vh;
+    height: 3rem;
     width: 150px;
     font-size: 1rem;
 }
-
-.submit_button:hover{
-    cursor:pointer;
-    font-style: bold;
-}
-
 
 #signup{
     grid-area: sig;
@@ -329,4 +325,83 @@ header h1 a{
     align-items: center;
     height: auto;
     gap: 2vh;
+}
+
+/*Sök-sidan*/
+
+#search_body{
+    display: grid;
+    grid-template-areas:
+    "hdr hdr"
+    "nam nam"
+    "moi mov"
+    "pri pro"
+    ;
+    grid-template-columns: 1fr 6fr;
+    grid-template-rows: 200px 4rem 1fr 1fr;
+    height: 120vh;
+    width: auto;
+}
+
+#search_name{
+    grid-area: nam;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#result_movies{
+    grid-area: moi;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#result_profiles{
+    grid-area: pri;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#result_movie_posters{
+    grid-area: mov;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#result_movie_posters img{
+    height: 28vh;
+    border-radius: 5px;
+}
+
+#result_profiles_section{
+    grid-area: pro;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.profile_items{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    border-style: solid;
+    border-radius: 5px;
+    border-color: yellow;
+    height: 20vh;
+    width: 20vw;
+}
+
+.profile_items img{
+    height: 10vh;
+}
+
+.profile_items div{
+    width: 10vw;
+    max-height: 20vh;
 }
