@@ -417,11 +417,11 @@ h3{
     grid-template-areas:
     "hdr"
     "img"
+    "ttl"
     "txt"
-    "rvw"
     ;
     grid-template-columns: 1fr;
-    grid-template-rows: 200px auto 25vh 20vh;
+    grid-template-rows: 200px auto 3rem 25vh;
     height: 120vh;
     width: 100%;
     overflow-x: hidden;
@@ -431,4 +431,18 @@ h3{
     grid-area: img;
     width: 70vw;
     margin: auto;
+}
+
+#description_and_reviews{
+    grid-area: txt;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#movie_title{
+    grid-area: ttl;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
