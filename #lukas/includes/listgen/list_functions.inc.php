@@ -56,9 +56,9 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $factor, $ord
 
     if($genre !== "any") {
         if($filter_str !== "") {
-            // $filter_str .= " AND INNER JOIN `attach_items_genres` ON `table`.`column` = `table`.`column` WHERE ;";
+            $filter_str .= " AND INNER JOIN `attach_items_genres` ON `items`.`id` = `attach_items_genres`.`item_id` INNER JOIN `genres` ON `attach_items_genres`.`genre_id` = `genres`.`id` WHERE `genres`.`id` = ".$genre.";";
         } else {
-            // $filter_str = " WHERE `year`".$year;
+            $filter_str = " INNER JOIN `attach_items_genres` ON `items`.`id` = `attach_items_genres`.`item_id` INNER JOIN `genres` ON `attach_items_genres`.`genre_id` = `genres`.`id` WHERE `genres`.`id` = ".$genre.";";
         }
     }
 

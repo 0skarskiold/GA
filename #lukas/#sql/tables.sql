@@ -96,7 +96,6 @@ CREATE TABLE attach_items_collections (
 
 CREATE TABLE genres (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `type` ENUM('feature_film', 'short_film', 'series', 'season', 'episode', 'mini_series', 'game', 'other'),
     `name` text NOT NULL
 );
 
