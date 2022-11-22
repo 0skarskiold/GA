@@ -332,14 +332,16 @@ header h1 a{
 #search_body{
     display: grid;
     grid-template-areas:
-    "hdr hdr"
-    "nam nam"
-    "moi mov"
-    "pri pro"
+    "hdr"
+    "nam"
+    "moi"
+    "mov"
+    "pri"
+    "pro"
     ;
-    grid-template-columns: 1fr 6fr;
-    grid-template-rows: 200px 4rem 1fr 1fr;
-    height: 120vh;
+    grid-template-columns: 1fr;
+    grid-template-rows: 200px 4rem 3rem 1fr 3rem 1fr;
+    height: 150vh;
     width: auto;
 }
 
@@ -404,4 +406,29 @@ header h1 a{
 .profile_items div{
     width: 10vw;
     max-height: 20vh;
+}
+
+h3{
+    font-size: 1.6rem;
+}
+
+#movie_body{
+    display: grid;
+    grid-template-areas:
+    "hdr"
+    "img"
+    "txt"
+    "rvw"
+    ;
+    grid-template-columns: 1fr;
+    grid-template-rows: 200px auto 25vh 20vh;
+    height: 120vh;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+#big_movie_poster{
+    grid-area: img;
+    width: 70vw;
+    margin: auto;
 }
