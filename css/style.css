@@ -433,6 +433,13 @@ h3{
     margin: auto;
 }
 
+#movie_title{
+    grid-area: ttl;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 #description_and_reviews{
     grid-area: txt;
     display: flex;
@@ -440,9 +447,3 @@ h3{
     align-items: center;
 }
 
-#movie_title{
-    grid-area: ttl;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
