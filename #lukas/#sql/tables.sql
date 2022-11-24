@@ -99,22 +99,6 @@ CREATE TABLE genres (
     `name` text NOT NULL
 );
 
-CREATE TABLE attach_items_genres (
-    `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `item_id` int NOT NULL,
-    `genre_id` int NOT NULL
-);
-
-CREATE TABLE subgenres (
-    `id` int UNIQUE NOT NULL,
-    `name` text NOT NULL,
-    `genre_id` int NOT NULL
-    -- exempel: mystery och whodunit
-    -- exempel: crime och whodunit
-    -- exempel: crime och heist
-    -- exempel: animation och 2D, cel, 3D eller stop-motion
-);
-
 CREATE TABLE attach_items_subgenres (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `item_id` int NOT NULL,

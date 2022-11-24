@@ -1,7 +1,7 @@
 <?php
 
 // returnerar en tvådimensionell, associativ array av "items", dvs filmer, serier och spel, sorterad utefter angiven faktor, exempelvis genomsnittligt betyg eller popularitet
-function retrieveSortedList($conn, $search, $types, $year, $genre, $factor, $order, $lim) {
+function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $factor, $order, $lim) {
 
     // validering
     if($order !== "DESC" && $order !== "ASC") {
@@ -79,7 +79,21 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $factor, $ord
 
 function retrieveGenres($conn) {
 
-    $sql = "SELECT * FROM `genres`;";
+    $sql = "SELECT * FROM `genres` ORDER BY `name`;";
+
+    $result = mysqli_query($conn, $sql);
+
+    $genres = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_free_result($result);
+
+    return $genres;
+
+}
+
+function retrieveTags($conn) {
+
+    $sql = "SELECT * FROM `tags` ORDER BY `name`;";
 
     $result = mysqli_query($conn, $sql);
 

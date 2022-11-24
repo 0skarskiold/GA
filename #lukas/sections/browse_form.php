@@ -14,47 +14,18 @@
         <option value="any">Any</option>
         <?php 
             foreach($genres as $genre) {
-                echo "<option value='".$genre['id']."'>".ucwords($genre['name'])."</option>";
+                echo "<option value='".$genre['id']."'>".$genre['name']."</option>";
             }
         ?>
     </select>
-    <label for="subgenre">Subgenre</label>
-    <select name="subgenre"> <!--gör att denna modifieras utefter vad för genre som valts-->
+    <label for="tag">Tag</label>
+    <select name="tag"> <!--gör att denna modifieras utefter vad för genre som valts-->
         <option value="any">Any</option>
-        <option value="whodunit">Whodunit</option>
-        <option value="superhero">Superhero</option>
-        <option value="creature-feature">Creature-Feature</option>
-        <option value="vampires">Vampires</option>
-        <option value="zombies">Zombies</option>
-        <option value="aliens">Aliens</option>
-        <option value="samurai">Samurai</option>
-        <option value="pirates">Pirates</option>
-        <option value="vikings">Vikings</option>
-        <option value="ghosts">Ghosts</option>
-        <option value="found-footage">Found Footage</option>
-        <option value="werewolf">Werewolf</option>
-        <option value="dinosaurs">Dinosaurs</option>
-        <option value="cars">Cars</option>
-        <option value="time-travel">Time Travel</option>
-        <option value="slasher">Slasher</option>
-        <option value="splatter">Splatter</option>
-        <option value="disaster">Disaster</option>
-        <option value="spy">Spy</option>
-        <option value="martial-arts">Martial Arts</option>
-        <option value="cga">CG Animation</option>
-        <option value="traditional">Traditional Animation</option>
-        <option value="stop-motion">Stop-Motion</option>
-        <option value="black-comedy">Black Comedy</option>
-        <option value="slapstick">Slapstick</option>
-        <option value="mockumentary">Mockumentary</option>
-        <option value="biopic">Biopic</option>
-        <option value="dystopian">Dystopian</option>
-        <option value="utopian">Utopian</option>
-        <option value="psychological">Psychological</option>
-        <option value="spaghetti">Spaghetti</option>
-        <option value="post-apocalypse">Post-Apocalypse</option>
-        <option value="teen-drama">Teen Drama</option>
-        <option value="coming-of-age">Coming of Age</option>
+        <?php 
+            foreach($tags as $tag) {
+                echo "<option value='".$tag['id']."'>".$tag['name']."</option>";
+            }
+        ?>
     </select>
     <label for="year">Year</label>
     <select name="year">

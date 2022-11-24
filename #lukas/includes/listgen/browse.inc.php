@@ -4,15 +4,20 @@
 require_once("list_functions.inc.php");
 
 $genres = retrieveGenres($conn);
+$tags = retrieveTags($conn);
 
 if (isset($_GET["submit-browse"])){
 
     $sortby = $_GET["sortby"];
 
-    if($_GET["genre"] !== "any" && $_GET["subgenre"] === "any") {
+    if($_GET["tag"] !== "any") {
+        $tag = $_GET["tag"];
+    } else {
+        $tag = false;
+    }
+
+    if($_GET["genre"] !== "any") {
         $genre = $_GET["genre"];
-    } elseif($_GET["subgenre"] !== "any") {
-        $genre = "subgenre_".$_GET["subgenre"];
     } else {
         $genre = false;
     }
@@ -28,8 +33,6 @@ if (isset($_GET["submit-browse"])){
     } else {
         $search = false;
     }
-
-
 
     if(isset($_GET["type_any"])) {
         $types = false;
@@ -88,10 +91,10 @@ if (isset($_GET["submit-browse"])){
             break;
     }
 
-    $items = retrieveSortedList($conn, $search, $types, $year, $genre, $factor, $order, 160);
+    $items = retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $factor, $order, 160);
 
 } else {
 
-    $items = retrieveSortedList($conn, false, false, false, false, "`rating`", "DESC", 160);
+    $items = retrieveSortedList($conn, false, false, false, false, false, "`rating`", "DESC", 160);
 
 }
