@@ -3,43 +3,61 @@
 // require_once($_SERVER['DOCUMENT_ROOT']."/includes/dbh.inc.php"); // behövs inte eftersom den inkluderas ovanför i browse.php
 require_once("list_functions.inc.php");
 
+$genres = retrieveGenres($conn);
+
 if (isset($_GET["submit-browse"])){
 
     $sortby = $_GET["sortby"];
-    $genre = $_GET["genre"];
-    $year = $_GET["year"];
 
-    if($_GET["subgenre"] !== "any") {
+    if($_GET["genre"] !== "any" && $_GET["subgenre"] === "any") {
+        $genre = $_GET["genre"];
+    } elseif($_GET["subgenre"] !== "any") {
         $genre = "subgenre_".$_GET["subgenre"];
+    } else {
+        $genre = false;
     }
 
-    if (isset($_GET["type_any"])){
-        $types = "any";
+    if($_GET["year"] !== "any") {
+        $year = $_GET["year"];
+    } else {
+        $year = false;
+    }
+
+    if(isset($_GET["submit-search"])) {
+        $search = $_GET["search"];
+    } else {
+        $search = false;
+    }
+
+
+
+    if(isset($_GET["type_any"])) {
+        $types = false;
     } else {
         $types = [];
-        if (isset($_GET["type_feature_film"])){
+        if(isset($_GET["type_feature_film"])) {
             array_push($types,"feature_film");
         }
-        if (isset($_GET["type_short_film"])){
+        if(isset($_GET["type_short_film"])) {
             array_push($types,"short_film");
         }
-        if (isset($_GET["type_series"])){
+        if(isset($_GET["type_series"])) {
             array_push($types,"series");
         }
-        if (isset($_GET["type_mini_series"])){
+        if(isset($_GET["type_mini_series"])) {
             array_push($types,"mini_series");
         }
-        if (isset($_GET["type_season"])){
+        if(isset($_GET["type_season"])) {
             array_push($types,"season");
         }
-        if (isset($_GET["type_episode"])){
+        if(isset($_GET["type_episode"])) {
             array_push($types,"episode");
         }
-        if (isset($_GET["type_game"])){
+        if(isset($_GET["type_game"])) {
             array_push($types,"game");
         }
-        if ($types === []){
-            $types = "any";
+        if($types === []) {
+            $types = false;
         }
     }
 
@@ -62,7 +80,7 @@ if (isset($_GET["submit-browse"])){
             break;
         case "title":
             $factor = "`name`";
-            $order = "DESC";
+            $order = "ASC";
             break;
         default:
             $factor = "`completions`";
@@ -74,6 +92,6 @@ if (isset($_GET["submit-browse"])){
 
 } else {
 
-    $items = retrieveSortedList($conn, "any", "any", "any", "any", "`rating`", "DESC", 160);
+    $items = retrieveSortedList($conn, false, false, false, false, "`rating`", "DESC", 160);
 
 }

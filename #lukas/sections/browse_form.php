@@ -12,25 +12,14 @@
     <label for="genre">Genre</label>
     <select name="genre">
         <option value="any">Any</option>
-        <option value="action">Action</option>
-        <option value="adventure">Adventure</option>
-        <option value="animation">Animation</option>
-        <option value="comedy">Comedy</option>
-        <option value="crime">Crime</option>
-        <option value="documentary">Documentary</option>
-        <option value="fantasy">Fantasy</option>
-        <option value="history">History</option>
-        <option value="horror">Horror</option>
-        <option value="music">Music</option>
-        <option value="noir">Noir</option>
-        <option value="romance">Romance</option>
-        <option value="sci-fi">Science/Fiction</option>
-        <option value="thriller">Thriller</option>
-        <option value="war">War</option>
-        <option value="western">Western</option>
+        <?php 
+            foreach($genres as $genre) {
+                echo "<option value='".$genre['id']."'>".ucwords($genre['name'])."</option>";
+            }
+        ?>
     </select>
     <label for="subgenre">Subgenre</label>
-    <select name="subgenre">
+    <select name="subgenre"> <!--gör att denna modifieras utefter vad för genre som valts-->
         <option value="any">Any</option>
         <option value="whodunit">Whodunit</option>
         <option value="superhero">Superhero</option>
@@ -62,9 +51,10 @@
         <option value="dystopian">Dystopian</option>
         <option value="utopian">Utopian</option>
         <option value="psychological">Psychological</option>
-        <option value="spaghetti">Spagghetti</option>
+        <option value="spaghetti">Spaghetti</option>
         <option value="post-apocalypse">Post-Apocalypse</option>
         <option value="teen-drama">Teen Drama</option>
+        <option value="coming-of-age">Coming of Age</option>
     </select>
     <label for="year">Year</label>
     <select name="year">

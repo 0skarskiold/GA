@@ -108,7 +108,7 @@ CREATE TABLE attach_items_genres (
 CREATE TABLE subgenres (
     `id` int UNIQUE NOT NULL,
     `name` text NOT NULL,
-    `genre_id` text NOT NULL
+    `genre_id` int NOT NULL
     -- exempel: mystery och whodunit
     -- exempel: crime och whodunit
     -- exempel: crime och heist

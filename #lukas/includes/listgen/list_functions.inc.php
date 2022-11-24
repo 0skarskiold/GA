@@ -8,7 +8,7 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $factor, $ord
         header("location: /browse?error=order");
         exit();
     }
-    if(is_array($types)) {
+    if($types) {
         foreach($types as $type) {
             $enum = ['feature_film','short_film','series','season','episode','mini_series','game','other'];
             if(!in_array($type,$enum,true)) { // om type inte finns i listan
@@ -20,12 +20,12 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $factor, $ord
 
     $filter_str = "";
 
-    if($search !== "any") {
+    if($search) {
         $filter_str = " WHERE `name` OR `year` LIKE '%".$search."%'"; // kan man använda or såhär?
     }
 
     // fixar sql-string för typ -- lägg till validering som kollar om alla element är vad som står inom enum på databasen
-    if($types !== "any") {
+    if($types) {
         $types_str = " IN ('".implode("','", $types)."')";
         if($filter_str !== "") {
             $filter_str .= " AND WHERE  `type`".$types_str;
@@ -35,7 +35,7 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $factor, $ord
     }
 
     // fixar sql-string för årtal
-    if($year !== "any") {
+    if($year) {
         if($year[-1] === "s") {
             $tmp = intval(rtrim($year, "s"));
             $decade = " IN (";
@@ -54,13 +54,13 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $factor, $ord
         }
     }
 
-    if($genre !== "any") {
-        if($filter_str !== "") {
-            $filter_str .= " AND INNER JOIN `attach_items_genres` ON `items`.`id` = `attach_items_genres`.`item_id` INNER JOIN `genres` ON `attach_items_genres`.`genre_id` = `genres`.`id` WHERE `genres`.`id` = ".$genre.";";
-        } else {
-            $filter_str = " INNER JOIN `attach_items_genres` ON `items`.`id` = `attach_items_genres`.`item_id` INNER JOIN `genres` ON `attach_items_genres`.`genre_id` = `genres`.`id` WHERE `genres`.`id` = ".$genre.";";
-        }
-    }
+    // if($genre) {
+    //     if($filter_str !== "") {
+    //         $filter_str .= " AND INNER JOIN `attach_items_genres` ON `items`.`id` = `attach_items_genres`.`item_id` INNER JOIN `genres` ON `attach_items_genres`.`genre_id` = `genres`.`id` WHERE `genres`.`name` = ".$genre.";";
+    //     } else {
+    //         $filter_str = " INNER JOIN `attach_items_genres` ON `items`.`id` = `attach_items_genres`.`item_id` INNER JOIN `genres` ON `attach_items_genres`.`genre_id` = `genres`.`id` WHERE `genres`.`id` = ".$genre.";";
+    //     }
+    // }
 
     $select = "`id`, `name`, `type`, `uid`, `year`, `rating`";
 
@@ -75,4 +75,18 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $factor, $ord
     mysqli_free_result($result);
 
     return $items;
+}
+
+function retrieveGenres($conn) {
+
+    $sql = "SELECT * FROM `genres`;";
+
+    $result = mysqli_query($conn, $sql);
+
+    $genres = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_free_result($result);
+
+    return $genres;
+
 }
