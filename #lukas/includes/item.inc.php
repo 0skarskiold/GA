@@ -11,4 +11,17 @@ $item = mysqli_fetch_assoc($result);
 
 mysqli_free_result($result);
 
+$sql = "SELECT `genres`.`id`, `genres`.`name` FROM `genres` 
+INNER JOIN `attach_items_genres` 
+    ON `genres`.`id` = `attach_items_genres`.`genre_id` 
+INNER JOIN `items` 
+    ON `attach_items_genres`.`item_id` = `items`.`id` 
+WHERE `attach_items_genres`.`item_id` = ".$item['id'].";";
+
+$result = mysqli_query($conn, $sql);
+
+$genres = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+mysqli_free_result($result);
+
 ?>
