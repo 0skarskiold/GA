@@ -28,7 +28,7 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $factor
     if($types) {
         $types_str = " IN ('".implode("','", $types)."')";
         if($filter_str !== "") {
-            $filter_str .= " AND WHERE  `type`".$types_str;
+            $filter_str .= " AND WHERE `type`".$types_str;
         } else {
             $filter_str = " WHERE `type`".$types_str;
         }
@@ -54,13 +54,21 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $factor
         }
     }
 
-    // if($genre) {
-    //     if($filter_str !== "") {
-    //         $filter_str .= " AND INNER JOIN `attach_items_genres` ON `items`.`id` = `attach_items_genres`.`item_id` INNER JOIN `genres` ON `attach_items_genres`.`genre_id` = `genres`.`id` WHERE `genres`.`name` = ".$genre.";";
-    //     } else {
-    //         $filter_str = " INNER JOIN `attach_items_genres` ON `items`.`id` = `attach_items_genres`.`item_id` INNER JOIN `genres` ON `attach_items_genres`.`genre_id` = `genres`.`id` WHERE `genres`.`id` = ".$genre.";";
-    //     }
-    // }
+    if($genre) {
+        if($filter_str !== "") {
+            $filter_str .= " AND INNER JOIN `attach_items_genres` 
+                ON `items`.`id` = `attach_items_genres`.`item_id` 
+            INNER JOIN `genres` 
+                ON `attach_items_genres`.`genre_id` = `genres`.`id` 
+            WHERE `attach_items_genres`.`genre_id` = ".$genre.";";
+        } else {
+            $filter_str = " INNER JOIN `attach_items_genres` 
+                ON `items`.`id` = `attach_items_genres`.`item_id` 
+            INNER JOIN `genres` 
+                ON `attach_items_genres`.`genre_id` = `genres`.`id` 
+            WHERE `attach_items_genres`.`genre_id` = ".$genre.";";
+        }
+    }
 
     $select = "`id`, `name`, `type`, `uid`, `year`, `rating`";
 
@@ -97,10 +105,10 @@ function retrieveTags($conn) {
 
     $result = mysqli_query($conn, $sql);
 
-    $genres = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $tags = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     mysqli_free_result($result);
 
-    return $genres;
+    return $tags;
 
 }
