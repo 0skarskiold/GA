@@ -8,27 +8,27 @@ $tags = retrieveTags($conn);
 
 switch ($_GET["sortby"]) {
     case "rating-hi":
-        $factor = "`rating`";
+        $factor = "`items`.`rating`";
         $order = "DESC";
         break;
     case "rating-lo":
-        $factor = "`rating`";
+        $factor = "`items`.`rating`";
         $order = "ASC";
         break;
     case "popularity":
-        $factor = "`completions`";
+        $factor = "`items`.`completions`";
         $order = "DESC";
         break;
     case "popularity-week":
-        $factor = "`completions_week`";
+        $factor = "`items`.`completions_week`";
         $order = "DESC";
         break;
     case "title":
-        $factor = "`name`";
+        $factor = "`items`.`name`";
         $order = "ASC";
         break;
     default:
-        $factor = "`completions`";
+        $factor = "`items`.`completions`";
         $order = "DESC";
         break;
 }

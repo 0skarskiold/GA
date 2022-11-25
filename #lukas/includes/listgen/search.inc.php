@@ -1,3 +1,1 @@
-<?php
-
-header("location: /search/".$_GET["search"]);
+<?php header("location: /search/".$_GET["search"]);

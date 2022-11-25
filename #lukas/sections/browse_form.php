@@ -46,23 +46,13 @@ echo "<form action='".$action."' method='get'>";
             }
         ?>
     </select>
-    <!-- <label for="type">Type</label>
-    <select name="type">
-        <option value="any">Any</option>
-        <option value="feature_film">Feature Films</option>
-        <option value="short_film">Short-films</option>
-        <option value="series">Series</option>
-        <option value="season">Seasons</option>
-        <option value="episode">Episodes</option>
-        <option value="game">Games</option>
-    </select> -->
     <label for="type--feature-film">Films</label>
     <input type="checkbox" name="type--feature-film">
     <label for="type--short-film">Short-films</label>
     <input type="checkbox" name="type--short-film">
     <label for="type--series">Series</label>
     <input type="checkbox" name="type--series">
-    <label for="type--mini_series">Mini-series</label>
+    <label for="type--mini-series">Mini-series</label>
     <input type="checkbox" name="type--mini-series">
     <label for="type--season">Seasons</label>
     <input type="checkbox" name="type--season">

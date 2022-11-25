@@ -5,32 +5,51 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $factor
     
     // validering
     if($order !== "DESC" && $order !== "ASC") {
-        header("location: /browse?error=order");
+        header("location: /?error=order");
         exit();
     }
     if($types) {
         foreach($types as $type) {
             $enum = ['feature_film','short_film','series','season','episode','mini_series','game','other'];
             if(!in_array($type,$enum,true)) { // om type inte finns i listan
-                header("location: /browse?error=type");
+                header("location: /?error=type");
                 exit();
             }
         }
     }
 
-    $filter_str = "";
+    $select = "`items`.`id`, `items`.`name`, `items`.`type`, `items`.`uid`, `items`.`year`";
+    $from = "FROM `items`";
+    $where = "";
+
+    if($genre) {
+        $from .= " INNER JOIN `items_genres` ON `items`.`id` = `items_genres`.`item_id`";
+        $where = "WHERE `items_genres`.`genre_id` = ".$genre;
+    }
+    if($tag) {
+        $from .= " INNER JOIN `items_tags` ON `items`.`id` = `items_tags`.`item_id`";
+        if($where !== "") {
+            $where .= " AND WHERE `items_tags`.`tag_id` = ".$tag;
+        } else {
+            $where = "WHERE `items_tags`.`tag_id` = ".$tag;
+        }
+    }
 
     if($search) {
-        $filter_str = " WHERE `name` LIKE '%".$search."%'"; // kan man använda or såhär?
+        if($where !== "") {
+            $where .= " AND WHERE `name` LIKE '%".$search."%'";
+        } else {
+            $where = "WHERE `name` LIKE '%".$search."%'";
+        }
     }
 
     // fixar sql-string för typ -- lägg till validering som kollar om alla element är vad som står inom enum på databasen
     if($types) {
-        $types_str = " IN ('".implode("','", $types)."')";
-        if($filter_str !== "") {
-            $filter_str .= " AND WHERE `type`".$types_str;
+        $types_str = "IN ('".implode("','", $types)."')";
+        if($where !== "") {
+            $where .= " AND WHERE `type` ".$types_str;
         } else {
-            $filter_str = " WHERE `type`".$types_str;
+            $where = "WHERE `type` ".$types_str;
         }
     }
 
@@ -38,41 +57,23 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $factor
     if($year) {
         if($year[-1] === "s") {
             $tmp = intval(rtrim($year, "s"));
-            $decade = " IN (";
+            $decade = "IN (";
             for($y = 0; $y < 9; $y++) {
                 $decade .= strval($tmp + $y).", ";
             }
             $year = $decade.strval($tmp + 9).")";
         } else {
             $tmp = $year;
-            $year = "=".$tmp;
+            $year = "= ".$tmp;
         }
-        if($filter_str !== "") {
-            $filter_str .= " AND WHERE `year`".$year;
+        if($where !== "") {
+            $where .= " AND WHERE `year` ".$year;
         } else {
-            $filter_str = " WHERE `year`".$year;
+            $where = "WHERE `year` ".$year;
         }
     }
 
-    if($genre) {
-        if($filter_str !== "") {
-            $filter_str .= " AND INNER JOIN `attach_items_genres` 
-                ON `items`.`id` = `attach_items_genres`.`item_id` 
-            INNER JOIN `genres` 
-                ON `attach_items_genres`.`genre_id` = `genres`.`id` 
-            WHERE `attach_items_genres`.`genre_id` = ".$genre.";";
-        } else {
-            $filter_str = " INNER JOIN `attach_items_genres` 
-                ON `items`.`id` = `attach_items_genres`.`item_id` 
-            INNER JOIN `genres` 
-                ON `attach_items_genres`.`genre_id` = `genres`.`id` 
-            WHERE `attach_items_genres`.`genre_id` = ".$genre.";";
-        }
-    }
-
-    $select = "`id`, `name`, `type`, `uid`, `year`, `rating`";
-
-    $sql = "SELECT ".$select." FROM `items`".$filter_str." ORDER BY ".$factor." ".$order." LIMIT ".$lim.";";
+    $sql = "SELECT ".$select." ".$from." ".$where." ORDER BY ".$factor." ".$order." LIMIT ".$lim.";";
 
     // utför query, hämtar resultat
     $result = mysqli_query($conn, $sql);

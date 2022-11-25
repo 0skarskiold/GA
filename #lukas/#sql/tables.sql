@@ -126,7 +126,8 @@ CREATE TABLE items_crew (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `item_id` int NOT NULL,
     `person_id` int NOT NULL,
-    `role` ENUM('director','writer','cinematographer','composer','actor')
+    `role` ENUM('director','writer','cinematographer','composer','actor'),
+    `character` text -- om skådis
 );
 
 CREATE TABLE studios (
