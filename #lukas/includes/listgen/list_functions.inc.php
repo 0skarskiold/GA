@@ -2,7 +2,7 @@
 
 // returnerar en tvådimensionell, associativ array av "items", dvs filmer, serier och spel, sorterad utefter angiven faktor, exempelvis genomsnittligt betyg eller popularitet
 function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $factor, $order, $lim) {
-
+    
     // validering
     if($order !== "DESC" && $order !== "ASC") {
         header("location: /browse?error=order");
@@ -21,7 +21,7 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $factor
     $filter_str = "";
 
     if($search) {
-        $filter_str = " WHERE `name` OR `year` LIKE '%".$search."%'"; // kan man använda or såhär?
+        $filter_str = " WHERE `name` LIKE '%".$search."%'"; // kan man använda or såhär?
     }
 
     // fixar sql-string för typ -- lägg till validering som kollar om alla element är vad som står inom enum på databasen

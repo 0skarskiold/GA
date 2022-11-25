@@ -10,7 +10,7 @@
     <main>
         <?php echo '<h2>'.$item['name'].'</h2>'; ?>
         <?php echo '<h2>'.$item['name'].'</h2>'; ?>
-        <?php echo '<h2>'.$genres[0]['name'].'</h2>'; ?>
+        <?php echo '<h2>'.$genres[0].'</h2>'; ?>
     </main>
 
     <?php include_once("sections/footer.php"); ?>

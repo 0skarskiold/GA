@@ -1,12 +1,19 @@
-<form action="/browse" method="get">
+<?php 
+if(isset($_GET["search"])) {
+    $action = "/search/".$_GET["search"];
+} else {
+    $action = "/browse";
+}
+echo "<form action='".$action."' method='get'>";
+?>
     <label for="sortby">Sort By</label>
     <select name="sortby">
         <label for="popularity">Popularity</label>
         <option value="popularity">All Time</option>
-        <option value="popularity_week">This Week</option>
-        <label for="avarage_rating">Avarage Rating</label>
-        <option value="rating_hi">Highest First</option>
-        <option value="rating_lo">Lowest First</option>
+        <option value="popularity-week">This Week</option>
+        <label for="avarage-rating">Avarage Rating</label>
+        <option value="rating-hi">Highest First</option>
+        <option value="rating-lo">Lowest First</option>
         <option value="title">Title</option>
     </select>
     <label for="genre">Genre</label>
@@ -49,21 +56,19 @@
         <option value="episode">Episodes</option>
         <option value="game">Games</option>
     </select> -->
-    <label for="type_any">Any?</label>
-    <input type="checkbox" name="type_any">
-    <label for="type_feature_film">Films?</label>
-    <input type="checkbox" name="type_feature_film">
-    <label for="type_short_film">Short-films?</label>
-    <input type="checkbox" name="type_short_film">
-    <label for="type_series">Series?</label>
-    <input type="checkbox" name="type_series">
-    <label for="type_mini_series">Mini-series?</label>
-    <input type="checkbox" name="type_mini_series">
-    <label for="type_season">Seasons?</label>
-    <input type="checkbox" name="type_season">
-    <label for="type_episode">Episodes?</label>
-    <input type="checkbox" name="type_episode">
-    <label for="type_game">Games?</label>
-    <input type="checkbox" name="type_game">
-    <button type="submit" name="submit-browse">Apply</button>
+    <label for="type--feature-film">Films</label>
+    <input type="checkbox" name="type--feature-film">
+    <label for="type--short-film">Short-films</label>
+    <input type="checkbox" name="type--short-film">
+    <label for="type--series">Series</label>
+    <input type="checkbox" name="type--series">
+    <label for="type--mini_series">Mini-series</label>
+    <input type="checkbox" name="type--mini-series">
+    <label for="type--season">Seasons</label>
+    <input type="checkbox" name="type--season">
+    <label for="type--episode">Episodes</label>
+    <input type="checkbox" name="type--episode">
+    <label for="type--game">Games</label>
+    <input type="checkbox" name="type--game">
+    <button type="submit">Apply</button>
 </form>

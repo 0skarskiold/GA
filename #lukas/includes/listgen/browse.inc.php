@@ -6,95 +6,81 @@ require_once("list_functions.inc.php");
 $genres = retrieveGenres($conn);
 $tags = retrieveTags($conn);
 
-if (isset($_GET["submit-browse"])){
-
-    $sortby = $_GET["sortby"];
-
-    if($_GET["tag"] !== "any") {
-        $tag = $_GET["tag"];
-    } else {
-        $tag = false;
-    }
-
-    if($_GET["genre"] !== "any") {
-        $genre = $_GET["genre"];
-    } else {
-        $genre = false;
-    }
-
-    if($_GET["year"] !== "any") {
-        $year = $_GET["year"];
-    } else {
-        $year = false;
-    }
-
-    if(isset($_GET["submit-search"])) {
-        $search = $_GET["search"];
-    } else {
-        $search = false;
-    }
-
-    if(isset($_GET["type_any"])) {
-        $types = false;
-    } else {
-        $types = [];
-        if(isset($_GET["type_feature_film"])) {
-            array_push($types,"feature_film");
-        }
-        if(isset($_GET["type_short_film"])) {
-            array_push($types,"short_film");
-        }
-        if(isset($_GET["type_series"])) {
-            array_push($types,"series");
-        }
-        if(isset($_GET["type_mini_series"])) {
-            array_push($types,"mini_series");
-        }
-        if(isset($_GET["type_season"])) {
-            array_push($types,"season");
-        }
-        if(isset($_GET["type_episode"])) {
-            array_push($types,"episode");
-        }
-        if(isset($_GET["type_game"])) {
-            array_push($types,"game");
-        }
-        if($types === []) {
-            $types = false;
-        }
-    }
-
-    switch ($sortby) {
-        case "rating_hi":
-            $factor = "`rating`";
-            $order = "DESC";
-            break;
-        case "rating_lo":
-            $factor = "`rating`";
-            $order = "ASC";
-            break;
-        case "popularity":
-            $factor = "`completions`";
-            $order = "DESC";
-            break;
-        case "popularity_week":
-            $factor = "`completions_week`";
-            $order = "DESC";
-            break;
-        case "title":
-            $factor = "`name`";
-            $order = "ASC";
-            break;
-        default:
-            $factor = "`completions`";
-            $order = "DESC";
-            break;
-    }
-
-    $items = retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $factor, $order, 160);
-
-} else {
-
-    $items = retrieveSortedList($conn, false, false, false, false, false, "`rating`", "DESC", 160);
-
+switch ($_GET["sortby"]) {
+    case "rating-hi":
+        $factor = "`rating`";
+        $order = "DESC";
+        break;
+    case "rating-lo":
+        $factor = "`rating`";
+        $order = "ASC";
+        break;
+    case "popularity":
+        $factor = "`completions`";
+        $order = "DESC";
+        break;
+    case "popularity-week":
+        $factor = "`completions_week`";
+        $order = "DESC";
+        break;
+    case "title":
+        $factor = "`name`";
+        $order = "ASC";
+        break;
+    default:
+        $factor = "`completions`";
+        $order = "DESC";
+        break;
 }
+
+if(isset($_GET["tag"]) && $_GET["tag"] !== "any") {
+    $tag = $_GET["tag"];
+} else {
+    $tag = false;
+}
+
+if(isset($_GET["genre"]) && $_GET["genre"] !== "any") {
+    $genre = $_GET["genre"];
+} else {
+    $genre = false;
+}
+
+if(isset($_GET["year"]) && $_GET["year"] !== "any") {
+    $year = $_GET["year"];
+} else {
+    $year = false;
+}
+
+if(isset($_GET["search"])) {
+    $search = $_GET["search"];
+} else {
+    $search = false;
+}
+
+$types = [];
+if(isset($_GET["type--feature-film"])) {
+    array_push($types,"feature_film");
+}
+if(isset($_GET["type--short-film"])) {
+    array_push($types,"short_film");
+}
+if(isset($_GET["type--series"])) {
+    array_push($types,"series");
+}
+if(isset($_GET["type--mini-series"])) {
+    array_push($types,"mini_series");
+}
+if(isset($_GET["type--season"])) {
+    array_push($types,"season");
+}
+if(isset($_GET["type--episode"])) {
+    array_push($types,"episode");
+}
+if(isset($_GET["type--game"])) {
+    array_push($types,"game");
+}
+if($types === []) {
+    $types = false;
+}
+
+$items = retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $factor, $order, 160);
