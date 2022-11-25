@@ -83,7 +83,7 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $factor
 
     mysqli_free_result($result);
 
-    return $items;
+    return [$items, $sql];
 }
 
 function retrieveGenres($conn) {

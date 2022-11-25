@@ -11,6 +11,7 @@
         <?php include_once("sections/browse_form.php"); ?>
         <section>
             <?php 
+                echo $items[1];
                 foreach($items as $item){
                     $path = "/public/img/metadata/".$item['type']."/".$item['uid']."/poster.jpg";
                     echo "<a href='/".str_replace("_","-",$item['type'])."/".$item['uid']."' class='poster_container'><h2>".$item['name']." (".$item['year'].")</h2><img src='".$path."' alt='Poster'></a>";
