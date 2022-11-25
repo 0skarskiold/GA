@@ -1,7 +1,7 @@
 
 -- template:
-INSERT INTO `items` (`type`, `name`, `uid`, `year`, `month`, `day`, `description`, `tagline`, `length`, `completions`, `completions_week`, `completions_month`, `rating`) 
-VALUES ('', '', '', '', '', '', '', '', '0', '0', '0', '0');
+INSERT INTO `items` (`id`, `type`, `name`, `uid`, `year`, `month`, `day`, `description`, `tagline`, `length`, `completions`, `completions_week`, `completions_month`, `rating`) 
+VALUES ('', '', '', '', '', '', '', '', '', '0', '0', '0', '0');
 
 -- breaking bad:
 INSERT INTO `items` (`id`, `type`, `name`, `uid`, `year`, `month`, `day`, `description`, `tagline`, `length`, `completions`, `completions_week`, `completions_month`, `rating`) 
@@ -10,13 +10,17 @@ VALUES ('1', 'series', 'Breaking Bad', 'breaking-bad-2008', '2008', '1', '20', "
 INSERT INTO `attributes_series` (`series_id`, `length_episodes`, `length_avg_minutes`, `finale_year`, `finale_month`, `finale_day`) 
 VALUES ('1', '62', '45', '2013', '9', '29');
 
+INSERT INTO `items_genres` (`item_id`, `genre_id`) VALUES ('1', '7');
+INSERT INTO `items_genres` (`item_id`, `genre_id`) VALUES ('1', '6');
+INSERT INTO `items_genres` (`item_id`, `genre_id`) VALUES ('1', '5');
+
 -- breakfast club:
 INSERT INTO `items` (`id`, `type`, `name`, `uid`, `year`, `month`, `day`, `description`, `tagline`, `length`, `completions`, `completions_week`, `completions_month`, `rating`) 
 VALUES ('2', 'feature_film', 'The Breakfast Club', 'breakfast-club-1985', '1985', '7', '5', 'Five high school students meet in Saturday detention and discover how they have a lot more in common than they thought.', 'They only met once, but it changed their lives forever.', '97', '0', '0', '0', '0');
 
 -- barbarian:
-INSERT INTO `items` (`type`, `name`, `uid`, `year`, `month`, `day`, `description`, `tagline`, `length`, `completions`, `completions_week`, `completions_month`, `rating`) 
-VALUES ('feature_film', 'Barbarian', 'barbarian-2022', '2022', '9', '9', 'In town for a job interview, a young woman arrives at her Airbnb late at night only to find that it has been mistakenly double-booked.', 'Come for a night. Stay forever.', '103', '0', '0', '0', '0');
+INSERT INTO `items` (`id`, `type`, `name`, `uid`, `year`, `month`, `day`, `description`, `tagline`, `length`, `completions`, `completions_week`, `completions_month`, `rating`) 
+VALUES ('3', 'feature_film', 'Barbarian', 'barbarian-2022', '2022', '9', '9', 'In town for a job interview, a young woman arrives at her Airbnb late at night only to find that it has been mistakenly double-booked.', 'Come for a night. Stay forever.', '103', '0', '0', '0', '0');
 
 -- genres:
 INSERT INTO `genres` (`id`, `name`) VALUES ('1', 'Action');
@@ -84,7 +88,3 @@ INSERT INTO `tags` (`id`, `name`) VALUES ('41', 'Disaster');
 INSERT INTO `tags` (`id`, `name`) VALUES ('42', 'Historical');
 INSERT INTO `tags` (`id`, `name`) VALUES ('43', 'Future');
 INSERT INTO `tags` (`id`, `name`) VALUES ('44', 'Anime');
-
-INSERT INTO `attach_items_genres` (`item_id`, `genre_id`) VALUES ('1', '7');
-INSERT INTO `attach_items_genres` (`item_id`, `genre_id`) VALUES ('1', '6');
-INSERT INTO `attach_items_genres` (`item_id`, `genre_id`) VALUES ('1', '5');

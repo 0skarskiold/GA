@@ -76,10 +76,10 @@ CREATE TABLE attributes_episodes (
     `number_total` int NOT NULL
 );
 
-CREATE TABLE attach_films_versions (
+CREATE TABLE versions (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `original_id` int NOT NULL, -- t.ex. theatrical cut
-    `alternate_id` int NOT NULL -- t.ex. director's cut
+    `item_id_1` int NOT NULL, -- t.ex. theatrical cut
+    `item_id_2` int NOT NULL -- t.ex. director's cut
 );
 
 CREATE TABLE collections (
@@ -88,7 +88,7 @@ CREATE TABLE collections (
     `description` text NOT NULL
 );
 
-CREATE TABLE attach_items_collections (
+CREATE TABLE items_collections (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `item_id` int NOT NULL,
     `collection_id` int NOT NULL
@@ -99,10 +99,10 @@ CREATE TABLE genres (
     `name` text NOT NULL
 );
 
-CREATE TABLE attach_items_subgenres (
+CREATE TABLE items_genres (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `item_id` int NOT NULL,
-    `sub_id` int NOT NULL
+    `genre_id` int NOT NULL
 );
 
 CREATE TABLE tags (
@@ -110,7 +110,7 @@ CREATE TABLE tags (
     `name` text NOT NULL
 );
 
-CREATE TABLE attach_items_tags (
+CREATE TABLE items_tags (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `item_id` int NOT NULL,
     `tag_id` int NOT NULL
@@ -118,11 +118,11 @@ CREATE TABLE attach_items_tags (
 
 CREATE TABLE crew (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `name` text NOT NULL,
-    `info` text NOT NULL
+    `name` text NOT NULL
+    -- plats för info.txt och bild.jpg kommer genereras utefter id
 );
 
-CREATE TABLE attach_items_crew (
+CREATE TABLE items_crew (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `item_id` int NOT NULL,
     `person_id` int NOT NULL,
@@ -132,11 +132,11 @@ CREATE TABLE attach_items_crew (
 CREATE TABLE studios (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `name` text NOT NULL,
-    `info` text NOT NULL,
     `link` text NOT NULL
+    -- plats för info och logga genereras utefter id:t
 );
 
-CREATE TABLE attach_items_studios (
+CREATE TABLE items_studios (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `item_id` int NOT NULL,
     `studio_id` int NOT NULL
@@ -171,7 +171,7 @@ CREATE TABLE reviews (
     `text` text NOT NULL
 );
 
-CREATE TABLE attach_logs_reviews ( -- man ska kunna koppla flera recensioner till en logg
+CREATE TABLE logs_reviews ( -- man ska kunna koppla flera recensioner till en logg
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `log_id` int NOT NULL,
     `review_id` int NOT NULL
@@ -187,7 +187,7 @@ CREATE TABLE lists (
     `ranking` bit NOT NULL -- 1 om den är rankad, 0 om vanlig
 );
 
-CREATE TABLE attach_lists_items (
+CREATE TABLE lists_items (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `list_id` int NOT NULL,
     `item_id` int NOT NULL,
@@ -195,13 +195,13 @@ CREATE TABLE attach_lists_items (
     `note` text NOT NULL -- listskaparen kan koppla en anteckning som exempelvis beskriver varför saken är inkluderad
 );
 
-CREATE TABLE game_platforms (
+CREATE TABLE platforms (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `name` text NOT NULL,
     `studio_id` int
 );
 
-CREATE TABLE attach_games_platforms (
+CREATE TABLE games_platforms (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `game_id` int NOT NULL,
     `platform_id` int NOT NULL
