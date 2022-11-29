@@ -9,6 +9,15 @@
 
     <main>
         <?php echo var_dump($item); ?>
+        <?php echo var_dump($genres); ?>
+        <?php echo var_dump($tags); ?>
+        <ul>
+            <?php
+                foreach($genres as $genre) {
+                    echo '<a href="/genre/'.$genre['id'].'"><li>'.$genre['name'].'</li></a>';
+                }
+            ?>
+        </ul>
     </main>
 
     <?php include_once("sections/footer.php"); ?>

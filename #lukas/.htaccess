@@ -8,6 +8,10 @@ RewriteRule ^forms$ forms.php [L]
 
 RewriteRule ^search/([^/]+)/?$ browse.php?search=$1 [QSA,L]
 
+RewriteRule ^genre/([^/]+)/?$ browse.php?genre=$1 [L]
+
 RewriteRule ^browse$ browse.php [L]
 
-RewriteRule ^/?([^/]+)/([^/]+)/?$ item.php?type=$1&uid=$2 [L]
+RewriteRule ^series/([^/]+)/?$ item.php?type=series&uid=$1 [L]
+
+RewriteRule ^/([^/]+)/([^/]+)/?$ item.php?type=$1&uid=$2 [L]
