@@ -8,9 +8,7 @@
     <?php include_once("sections/header.php"); ?>
 
     <main>
-        <?php echo '<h2>'.$item['name'].'</h2>'; ?>
-        <?php echo '<h2>'.$item['name'].'</h2>'; ?>
-        <?php echo '<h2>'.$genres[0].'</h2>'; ?>
+        <?php echo var_dump($item); ?>
     </main>
 
     <?php include_once("sections/footer.php"); ?>
