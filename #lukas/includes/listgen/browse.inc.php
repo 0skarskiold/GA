@@ -5,6 +5,7 @@ require_once("list_functions.inc.php");
 
 $genres = retrieveGenres($conn);
 $tags = retrieveTags($conn);
+$users = retrieveUsers($conn, $search, $factor, $order, 160);
 
 switch ($_GET["sortby"]) {
     case "rating-hi":
@@ -93,4 +94,10 @@ if(isset($_GET["artist"])) {
     $artist = false;
 }
 
-$items = retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $artist, $factor, $order, 160);
+if(isset($_GET["collection"])) {
+    $collection = $_GET["collection"];
+} else {
+    $collection = false;
+}
+
+$items = retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $artist, $collection, $factor, $order, 160);

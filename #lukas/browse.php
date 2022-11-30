@@ -8,16 +8,17 @@
     <?php include_once("sections/header.php"); ?>
 
     <main>
-        <?php include_once("sections/browse_crew.php"); ?>
+        <?php include_once("sections/browse_sp.php"); ?>
         <?php include_once("sections/browse_form.php"); ?>
         <section>
             <?php 
-                // echo $items[0];
-                // echo var_dump($items[1]);
-                // echo var_dump($items[2]);
                 foreach($items as $item){
                     $path = "/public/img/metadata/".$item['type']."/".$item['uid']."/poster.jpg";
                     echo "<a href='/".str_replace("_","-",$item['type'])."/".$item['uid']."' class='poster_container'><h2>".$item['name']." (".$item['year'].")</h2><img src='".$path."' alt='Poster'></a>";
+                }
+                foreach($users as $user){
+                    $path = "/public/img/users/".$user['uid']."/profile.jpg";
+                    echo "<a href='/users/".$user['uid']."' class='user_container'><h2>".$user['name']." (".$user['uid'].")</h2><img src='".$path."' alt='Profile Image'></a>";
                 }
             ?>
         </section>

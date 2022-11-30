@@ -12,7 +12,7 @@ function emptyInputSignup($name, $email, $username, $pwd, $pwdRe) {
 
 // kollar om användarnamnet använder godkända tecken
 function invalidUid($username) {
-    if (!preg_match("/^[a-zA-Z0-9]*$/", $username)) {
+    if(!preg_match("/^[a-zA-Z0-9]*$/", $username)) {
         $result = true;
     } else {
         $result = false;

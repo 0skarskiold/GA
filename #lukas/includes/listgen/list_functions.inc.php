@@ -1,7 +1,7 @@
 <?php
 
 // returnerar en tvådimensionell, associativ array av "items", dvs filmer, serier och spel, sorterad utefter angiven faktor, exempelvis genomsnittligt betyg eller popularitet
-function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $artist, $factor, $order, $lim) {
+function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $artist, $collection, $factor, $order, $lim) {
     
     // validering
     if($order !== "DESC" && $order !== "ASC") {
@@ -18,12 +18,14 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $artist
         }
     }
 
+
     $stmt = mysqli_stmt_init($conn);
 
     $select = "`items`.`id`, `items`.`name`, `items`.`type`, `items`.`uid`, `items`.`year`";
     $from = "FROM `items`";
     $where = "";
     $values = [];
+
 
     if($genre) {
         $from .= " INNER JOIN `items_genres` ON `items`.`id` = `items_genres`.`item_id`";
@@ -48,6 +50,16 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $artist
         }
         array_push($values,$artist); 
     }
+    if($collection) {
+        $from .= " INNER JOIN `items_collections` ON `items`.`id` = `items_collections`.`item_id`";
+        if($where !== "") {
+            $where .= " AND `items_collections`.`collection_id` = ?";
+        } else {
+            $where = "WHERE `items_collections`.`collection_id` = ?";
+        }
+        array_push($values,$collection); 
+    }
+
 
     if($search) {
         if($where !== "") {
@@ -58,8 +70,6 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $artist
         $search_str = "'%".$search."%'";
         array_push($values,$search_str); 
     }
-
-    // fixar sql-string för typ -- lägg till validering som kollar om alla element är vad som står inom enum på databasen
     if($types) {
         $tmp = "IN (".str_repeat('?, ', count($types)-1)."?)";
         // $types_str = "IN ('".implode("','", $types)."')";
@@ -70,16 +80,11 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $artist
         }
         array_push($values,$types);
     }
-
-    // fixar sql-string för årtal
     if($year) {
         if($year[-1] === "s") {
             $tmp = intval(rtrim($year, "s"));
             $years = [];
-            for($y = 0; $y <= 9; $y++) {
-                array_push($years, $tmp+$y);
-            }
-
+            for($y = 0; $y <= 9; $y++) { array_push($years, $tmp+$y); }
             $tmp = "IN (".str_repeat('?, ', 9)."?)";
         } else {
             $years = $year;
@@ -93,13 +98,14 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $artist
         array_push($values,$years);
     }
 
+
     $sql = "SELECT ".$select." ".$from." ".$where." ORDER BY ".$factor." ".$order." LIMIT ".$lim.";";
 
-    // if(!mysqli_stmt_prepare($stmt, $sql)) {
-    //     header("location: /?error=stmtfailed");
-    //     exit();
-    // }
 
+    if(!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: /?error=stmtfailed");
+        exit();
+    }
     $val_types = "";
     foreach($values as $val) {
         if(gettype($val) === "integer") {
@@ -113,11 +119,7 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $artist
             exit();
         }
     }
-
-    if(strlen($val_types) > 0) {
-        mysqli_stmt_bind_param($stmt, $val_types, ...$values);
-    }
-
+    if(strlen($val_types) > 0) { mysqli_stmt_bind_param($stmt, $val_types, ...$values); }
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     mysqli_stmt_close($stmt);
@@ -151,5 +153,19 @@ function retrieveTags($conn) {
     mysqli_free_result($result);
 
     return $tags;
+
+}
+
+function retrieveUsers($conn, $search, $factor, $order, $lim) {
+
+    $sql = "SELECT `id`, `name`, `uid` FROM `users` ORDER BY `name`;";
+
+    $result = mysqli_query($conn, $sql);
+
+    $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_free_result($result);
+
+    return $users;
 
 }

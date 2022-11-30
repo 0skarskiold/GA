@@ -2,7 +2,7 @@ RewriteEngine on
 
 RewriteRule ^dummy.html$ http://www.google.com/ [R=301]
 
-RewriteRule ^profile/([^/]+)/?$ profile.php?id=$1 [L]
+RewriteRule ^users/([^/]+)/?$ profile.php?uid=$1 [L]
 
 RewriteRule ^forms$ forms.php [L]
 
@@ -11,6 +11,7 @@ RewriteRule ^search/([^/]+)/?$ browse.php?search=$1 [QSA,L]
 RewriteRule ^genres/([^/]+)/?$ browse.php?genre=$1 [L]
 RewriteRule ^tags/([^/]+)/?$ browse.php?tag=$1 [L]
 RewriteRule ^crew/([^/]+)/?$ browse.php?artist=$1 [L]
+RewriteRule ^collections/([^/]+)/?$ browse.php?collection=$1 [L]
 
 RewriteRule ^browse$ browse.php [L]
 
