@@ -1,7 +1,7 @@
 <?php
 
 // returnerar en tvådimensionell, associativ array av "items", dvs filmer, serier och spel, sorterad utefter angiven faktor, exempelvis genomsnittligt betyg eller popularitet
-function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $factor, $order, $lim) {
+function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $artist, $factor, $order, $lim) {
     
     // validering
     if($order !== "DESC" && $order !== "ASC") {
@@ -18,71 +18,111 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $factor
         }
     }
 
+    $stmt = mysqli_stmt_init($conn);
+
     $select = "`items`.`id`, `items`.`name`, `items`.`type`, `items`.`uid`, `items`.`year`";
     $from = "FROM `items`";
     $where = "";
+    $values = [];
 
     if($genre) {
         $from .= " INNER JOIN `items_genres` ON `items`.`id` = `items_genres`.`item_id`";
-        $where = "WHERE `items_genres`.`genre_id` = ".$genre;
+        $where = "WHERE `items_genres`.`genre_id` = ?";
+        array_push($values,$genre); 
     }
     if($tag) {
         $from .= " INNER JOIN `items_tags` ON `items`.`id` = `items_tags`.`item_id`";
         if($where !== "") {
-            $where .= " AND `items_tags`.`tag_id` = ".$tag;
+            $where .= " AND `items_tags`.`tag_id` = ?";
         } else {
-            $where = "WHERE `items_tags`.`tag_id` = ".$tag;
+            $where = "WHERE `items_tags`.`tag_id` = ?";
         }
+        array_push($values,$tag); 
+    }
+    if($artist) {
+        $from .= " INNER JOIN `items_crew` ON `items`.`id` = `items_crew`.`item_id`";
+        if($where !== "") {
+            $where .= " AND `items_crew`.`artist_id` = ?";
+        } else {
+            $where = "WHERE `items_crew`.`artist_id` = ?";
+        }
+        array_push($values,$artist); 
     }
 
     if($search) {
         if($where !== "") {
-            $where .= " AND `items`.`name` LIKE '%".$search."%'";
+            $where .= " AND `items`.`name` LIKE ?";
         } else {
-            $where = "WHERE `items`.`name` LIKE '%".$search."%'";
+            $where = "WHERE `items`.`name` LIKE ?";
         }
+        $search_str = "'%".$search."%'";
+        array_push($values,$search_str); 
     }
 
     // fixar sql-string för typ -- lägg till validering som kollar om alla element är vad som står inom enum på databasen
     if($types) {
-        $types_str = "IN ('".implode("','", $types)."')";
+        $tmp = "IN (".str_repeat('?, ', count($types)-1)."?)";
+        // $types_str = "IN ('".implode("','", $types)."')";
         if($where !== "") {
-            $where .= " AND `items`.`type` ".$types_str;
+            $where .= " AND `items`.`type` ".$tmp;
         } else {
-            $where = "WHERE `items`.`type` ".$types_str;
+            $where = "WHERE `items`.`type` ".$tmp;
         }
+        array_push($values,$types);
     }
 
     // fixar sql-string för årtal
     if($year) {
         if($year[-1] === "s") {
             $tmp = intval(rtrim($year, "s"));
-            $decade = "IN (";
-            for($y = 0; $y < 9; $y++) {
-                $decade .= strval($tmp + $y).", ";
+            $years = [];
+            for($y = 0; $y <= 9; $y++) {
+                array_push($years, $tmp+$y);
             }
-            $year = $decade.strval($tmp + 9).")";
+
+            $tmp = "IN (".str_repeat('?, ', 9)."?)";
         } else {
-            $tmp = $year;
-            $year = "= ".$tmp;
+            $years = $year;
+            $tmp = "= ?";
         }
         if($where !== "") {
-            $where .= " AND `items`.`year` ".$year;
+            $where .= " AND `items`.`year` ".$tmp;
         } else {
-            $where = "WHERE `items`.`year` ".$year;
+            $where = "WHERE `items`.`year` ".$tmp;
         }
+        array_push($values,$years);
     }
 
     $sql = "SELECT ".$select." ".$from." ".$where." ORDER BY ".$factor." ".$order." LIMIT ".$lim.";";
 
-    // utför query, hämtar resultat
-    $result = mysqli_query($conn, $sql);
+    // if(!mysqli_stmt_prepare($stmt, $sql)) {
+    //     header("location: /?error=stmtfailed");
+    //     exit();
+    // }
 
-    // skapar arrayen
+    $val_types = "";
+    foreach($values as $val) {
+        if(gettype($val) === "integer") {
+            $val_types .= "i";
+        } elseif(gettype($val) === "string") {
+            $val_types .= "s";
+        } elseif(gettype($val) === "float") {
+            $val_types .= "f";
+        } else {
+            header("location: /?error=stmtfailed");
+            exit();
+        }
+    }
+
+    if(strlen($val_types) > 0) {
+        mysqli_stmt_bind_param($stmt, $val_types, ...$values);
+    }
+
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    mysqli_stmt_close($stmt);
     $items = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
     mysqli_free_result($result);
-
     return $items;
 }
 

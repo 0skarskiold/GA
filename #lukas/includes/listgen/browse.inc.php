@@ -40,13 +40,17 @@ if(isset($_GET["tag"]) && $_GET["tag"] !== "any") {
 }
 
 if(isset($_GET["genre"]) && $_GET["genre"] !== "any") {
-    $genre = $_GET["genre"];
+    $genre = intval($_GET["genre"]);
 } else {
     $genre = false;
 }
 
 if(isset($_GET["year"]) && $_GET["year"] !== "any") {
-    $year = $_GET["year"];
+    if(is_numeric($_GET["year"])) {
+        $year = intval($_GET["year"]);
+    } else {
+        $year = $_GET["year"];
+    }
 } else {
     $year = false;
 }
@@ -83,4 +87,10 @@ if($types === []) {
     $types = false;
 }
 
-$items = retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $factor, $order, 160);
+if(isset($_GET["artist"])) {
+    $artist = $_GET["artist"];
+} else {
+    $artist = false;
+}
+
+$items = retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $artist, $factor, $order, 160);

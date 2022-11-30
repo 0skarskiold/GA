@@ -8,7 +8,9 @@ RewriteRule ^forms$ forms.php [L]
 
 RewriteRule ^search/([^/]+)/?$ browse.php?search=$1 [QSA,L]
 
-RewriteRule ^genre/([^/]+)/?$ browse.php?genre=$1 [L]
+RewriteRule ^genres/([^/]+)/?$ browse.php?genre=$1 [L]
+RewriteRule ^tags/([^/]+)/?$ browse.php?tag=$1 [L]
+RewriteRule ^crew/([^/]+)/?$ browse.php?artist=$1 [L]
 
 RewriteRule ^browse$ browse.php [L]
 

@@ -10,9 +10,11 @@ VALUES ('1', 'series', 'Breaking Bad', 'breaking-bad-2008', '2008', '1', '20', "
 INSERT INTO `attributes_series` (`series_id`, `length_episodes`, `length_avg_minutes`, `finale_year`, `finale_month`, `finale_day`) 
 VALUES ('1', '62', '45', '2013', '9', '29');
 
-INSERT INTO `items_genres` (`item_id`, `genre_id`) VALUES ('1', '8');
 INSERT INTO `items_genres` (`item_id`, `genre_id`) VALUES ('1', '6');
+INSERT INTO `items_genres` (`item_id`, `genre_id`) VALUES ('1', '8');
 INSERT INTO `items_genres` (`item_id`, `genre_id`) VALUES ('1', '17');
+
+INSERT INTO `items_crew` (`item_id`, `artist_id`, `role`, `character`) VALUES ('1', '1', 'actor', 'Walter White');
 
 -- breakfast club:
 INSERT INTO `items` (`id`, `type`, `name`, `uid`, `year`, `month`, `day`, `description`, `tagline`, `length`, `completions`, `completions_week`, `completions_month`, `rating`) 
@@ -25,6 +27,18 @@ VALUES ('3', 'feature_film', 'Barbarian', 'barbarian-2022', '2022', '9', '9', 'I
 INSERT INTO `items_genres` (`item_id`, `genre_id`) VALUES ('3', '11');
 INSERT INTO `items_genres` (`item_id`, `genre_id`) VALUES ('3', '13');
 INSERT INTO `items_genres` (`item_id`, `genre_id`) VALUES ('3', '17');
+
+-- better call saul:
+INSERT INTO `items` (`id`, `type`, `name`, `uid`, `year`, `month`, `day`, `description`, `tagline`, `length`, `completions`, `completions_week`, `completions_month`, `rating`) 
+VALUES ('4', 'series', 'Better Call Saul', 'better-call-saul-2015', '2015', '2', '8', "The trials and tribulations of criminal lawyer Jimmy McGill in the years leading up to his fateful run-in with Walter White and Jesse Pinkman.", 'Make the Call', '6', '0', '0', '0', '0');
+
+INSERT INTO `attributes_series` (`series_id`, `length_episodes`, `length_avg_minutes`, `finale_year`, `finale_month`, `finale_day`) 
+VALUES ('4', '62', '45', '2013', '9', '29');
+
+INSERT INTO `items_genres` (`item_id`, `genre_id`) VALUES ('4', '6');
+INSERT INTO `items_genres` (`item_id`, `genre_id`) VALUES ('4', '8');
+
+INSERT INTO `items_crew` (`item_id`, `artist_id`, `role`, `character`) VALUES ('4', '2', 'actor', 'Jimmy McGill');
 
 -- genres:
 INSERT INTO `genres` (`id`, `name`) VALUES ('1', 'Action');
@@ -92,3 +106,12 @@ INSERT INTO `tags` (`id`, `name`) VALUES ('41', 'Disaster');
 INSERT INTO `tags` (`id`, `name`) VALUES ('42', 'Historical');
 INSERT INTO `tags` (`id`, `name`) VALUES ('43', 'Future');
 INSERT INTO `tags` (`id`, `name`) VALUES ('44', 'Anime');
+
+-- crew:
+INSERT INTO `crew` (`id`, `name`) VALUES ('1', 'Bryan Cranston');
+INSERT INTO `crew` (`id`, `name`) VALUES ('2', 'Bob Odenkirk');
+
+-- collections: 
+INSERT INTO `collections` (`id`, `name`) VALUES ('1', 'Breakage Collection');
+INSERT INTO `items_collections` (`item_id`, `collection_id`) VALUES ('1', '1');
+INSERT INTO `items_collections` (`item_id`, `collection_id`) VALUES ('4', '1');

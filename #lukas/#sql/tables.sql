@@ -85,7 +85,7 @@ CREATE TABLE versions (
 CREATE TABLE collections (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `name` text NOT NULL,
-    `description` text NOT NULL
+    `description` text
 );
 
 CREATE TABLE items_collections (
@@ -119,13 +119,14 @@ CREATE TABLE items_tags (
 CREATE TABLE crew (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `name` text NOT NULL
+    `description` text
     -- plats för info.txt och bild.jpg kommer genereras utefter id
 );
 
 CREATE TABLE items_crew (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `item_id` int NOT NULL,
-    `person_id` int NOT NULL,
+    `artist_id` int NOT NULL,
     `role` ENUM('director','writer','cinematographer','composer','actor'),
     `character` text -- om skådis
 );

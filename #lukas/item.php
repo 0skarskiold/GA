@@ -14,7 +14,16 @@
         <ul>
             <?php
                 foreach($genres as $genre) {
-                    echo '<a href="/genre/'.$genre['id'].'"><li>'.$genre['name'].'</li></a>';
+                    echo '<a href="/genres/'.$genre['id'].'"><li>'.$genre['name'].'</li></a>';
+                }
+                foreach($tags as $tag) {
+                    echo '<a href="/tags/'.$tag['id'].'"><li>'.$tag['name'].'</li></a>';
+                }
+                foreach($crew as $artist) {
+                    echo '<a href="/crew/'.$artist['id'].'"><li>'.ucfirst($artist['role']).": ".$artist['name'].'</li></a>';
+                }
+                foreach($collections as $collection) {
+                    echo '<a href="/collections/'.$collection['id'].'"><li>'.$collection['name'].'</li></a>';
                 }
             ?>
         </ul>
