@@ -429,8 +429,9 @@ h3{
 
 #big_movie_poster{
     grid-area: img;
-    width: 70vw;
+    width: 60vw;
     margin: auto;
+    border-radius: 10px;
 }
 
 #movie_title{
@@ -440,7 +441,7 @@ h3{
     align-items: center;
 }
 
-#description_and_reviews{
+#description_and_info{
     grid-area: txt;
     display: flex;
     flex-direction: row;
@@ -450,4 +451,10 @@ h3{
 
 #description{
     width: 30vw;
+}
+
+#movie_info_p{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
