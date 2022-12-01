@@ -86,16 +86,16 @@ function retrieveSortedList($conn, $search, $types, $year, $genre, $tag, $artist
             $years = [];
             for($y = 0; $y <= 9; $y++) { array_push($years, $tmp+$y); }
             $tmp = "IN (".str_repeat('?, ', 9)."?)";
+            array_push($values,...$years);
         } else {
-            $years = $year;
             $tmp = "= ?";
+            array_push($values,$year);
         }
         if($where !== "") {
             $where .= " AND `items`.`year` ".$tmp;
         } else {
             $where = "WHERE `items`.`year` ".$tmp;
         }
-        array_push($values,$years);
     }
 
 

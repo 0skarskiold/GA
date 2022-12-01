@@ -12,9 +12,9 @@
 
         <?php 
         if(!$following) {
-            echo '<button type="submit" name="follow" formaction="includes/account/follow.inc.php&id='.$user['id'].'" formmethod="post">Follow</button>';
+            echo '<button type="submit" name="follow" formaction="includes/account/follow.inc.php?id='.$user['id'].'" formmethod="post">Follow</button>';
         } else {
-            echo '<button type="submit" name="unfollow" formaction="includes/account/follow.inc.php&id='.$user['id'].'" formmethod="post">Unfollow</button>';
+            echo '<button type="submit" name="unfollow" formaction="includes/account/follow.inc.php?id='.$user['id'].'" formmethod="post">Unfollow</button>';
         }
         ?>
     </main>
