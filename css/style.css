@@ -470,11 +470,14 @@ h3{
 }
 
 .single_review{
-    height: 18vh;
+    position: relative;
+    top: 10vh;
+    height: auto;
     width: 20vw;
     border: 3px solid yellow;
     border-radius: 5px;
     padding: 10px;
+    
 }
 
 .single_review h4{
