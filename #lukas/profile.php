@@ -7,10 +7,18 @@
 <body>
     <?php include_once("sections/header.php"); ?>
 
-    <main>
-        <?php echo '<h2>'.$user['name'].'</h2>' ?>
 
+    <main>
+
+        
+        <div id="test">
+            <p>no</p>
+        </div>
+        <button id="btn">hey</button>
+
+        <?php echo '<h2>'.$user['name'].'</h2>' ?>
         <?php 
+        echo $tmp;
         if(!$following) {
             echo '<button type="submit" name="follow" formaction="includes/account/follow.inc.php?id='.$user['id'].'" formmethod="post">Follow</button>';
         } else {
