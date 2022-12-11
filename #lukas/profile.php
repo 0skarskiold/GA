@@ -19,10 +19,12 @@
         <?php echo '<h2>'.$user['name'].'</h2>' ?>
         <?php 
         echo $tmp;
+        echo $_SESSION['userid'];
+        echo $user['id'];
         if(!$following) {
-            echo '<button type="submit" name="follow" formaction="includes/account/follow.inc.php?id='.$user['id'].'" formmethod="post">Follow</button>';
+            echo '<button type="button" class="follow" id="follow_'.$user['uid'].'" data-userid="'.$user['id'].'">Follow</button>';
         } else {
-            echo '<button type="submit" name="unfollow" formaction="includes/account/follow.inc.php?id='.$user['id'].'" formmethod="post">Unfollow</button>';
+            echo '<button type="button" name="unfollow" formaction="includes/account/follow.inc.php?id='.$user['id'].'" formmethod="post">Unfollow</button>';
         }
         ?>
     </main>

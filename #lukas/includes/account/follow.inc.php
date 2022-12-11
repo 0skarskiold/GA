@@ -1,21 +1,9 @@
 <?php
 
-// $id = $_GET['id'];
-// $stmt = mysqli_stmt_init($conn);
+require_once $_SERVER['DOCUMENT_ROOT'].'/includes/dbh.inc.php';
+require_once("acc_functions.inc.php");
 
-// if(isset($_POST['follow'])) {
-//     $sql = "INSERT INTO `follow` (`from_id`, `to_id`) VALUES (?, ?);";
-// } elseif(isset($_POST['unfollow'])) {
-//     $sql = "DELETE FROM `follow` WHERE `from_id` = ? AND `to_id = ?;";
-// }
+$from_id = $_SESSION['userid'];
+$to_id = $_POST['toid'];
 
-// if(!mysqli_stmt_prepare($stmt, $sql)) {
-//     header("location: /?error=stmtfailed");
-//     exit();
-// }
-
-// mysqli_stmt_bind_param($stmt, "ss", $_SESSION['userid'], $id);
-// mysqli_stmt_execute($stmt);
-// mysqli_stmt_close($stmt);
-
-// unset($_POST['follow']);
+followUser($conn, $from_id, $to_id);

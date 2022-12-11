@@ -117,3 +117,37 @@ function loginUser($conn, $username, $pwd) {
         exit();
     }
 }
+
+function isFollowing() {
+    
+}
+
+function followUser($conn, $from_id, $to_id) {
+
+    $stmt = mysqli_stmt_init($conn);
+    $sql = "INSERT INTO `follow` (`from_id`, `to_id`) VALUES (?, ?);";
+    
+    if(!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: /?error=stmtfailed");
+        exit();
+    }
+    
+    mysqli_stmt_bind_param($stmt, "ss", $from_id, $to_id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+}
+
+function unfollowUser($conn, $from_id, $to_id) {
+    
+    $stmt = mysqli_stmt_init($conn);
+    $sql = "DELETE FROM `follow` WHERE `from_id` = ? AND `to_id = ?;";
+    
+    if(!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: /?error=stmtfailed");
+        exit();
+    }
+    
+    mysqli_stmt_bind_param($stmt, "ss", $from_id, $to_id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+}
