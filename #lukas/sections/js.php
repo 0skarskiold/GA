@@ -2,29 +2,29 @@
 
 <script>
     $(document).ready(function() {
-        
-        $("#btn").click(function() {
-            $("#test").load("/data.txt");
-        });
 
         $("#btn_r").click(function() {
             $('.item_list').animate({left: "+=550px"});
         });
+
         $("#btn_l").click(function() {
             $('.item_list').animate({left: "-=550px"});
         });
 
-        $("#test").load("/data.txt");
-
+    });
     $(document).on('click', '.follow', function() {
-        var toid = $(this).data("userid");	
-        $("#test").text(toid);
+        if($(this).hasClass('insert')) {
+            var action = "follow";
+        } else if($(this).hasClass('delete')) {
+            var action = "unfollow";
+        }
+        var to_id = $(this).data("userid");
+        var from_id = <?php echo $_SESSION['userid']; ?>;	
         $.ajax({
             url:'/includes/account/follow.inc.php',
             method:"POST",
-            data:{toid:toid},
-            // dataType:"json",
-            success:$("#test").text(6)
+            data:{to_id:to_id, from_id:from_id, action:action},
+            success: console.log(action)
         });
     });
 </script>

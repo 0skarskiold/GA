@@ -10,23 +10,18 @@
 
     <main>
 
-        
-        <div id="test">
-            <p>no</p>
-        </div>
-        <button id="btn">hey</button>
-
-        <?php echo '<h2>'.$user['name'].'</h2>' ?>
         <?php 
-        echo $tmp;
-        echo $_SESSION['userid'];
-        echo $user['id'];
+
+        echo '<h2>'.$user['name'].'</h2>';
+
         if(!$following) {
-            echo '<button type="button" class="follow" id="follow_'.$user['uid'].'" data-userid="'.$user['id'].'">Follow</button>';
+            echo '<button type="button" class="follow insert" id="follow_'.$user['uid'].'" data-userid="'.$user['id'].'">Follow</button>';
         } else {
-            echo '<button type="button" name="unfollow" formaction="includes/account/follow.inc.php?id='.$user['id'].'" formmethod="post">Unfollow</button>';
+            echo '<button type="button" class="follow delete" id="unfollow_'.$user['uid'].'" data-userid="'.$user['id'].'">Unfollow</button>';
         }
+
         ?>
+
     </main>
 
     <?php include_once("sections/footer.php"); ?>

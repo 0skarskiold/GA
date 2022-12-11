@@ -118,8 +118,51 @@ function loginUser($conn, $username, $pwd) {
     }
 }
 
-function isFollowing() {
-    
+function isFollowing($conn, $from_id, $to_id) {
+
+    $stmt = mysqli_stmt_init($conn);
+    $sql = "SELECT COUNT(`to_id`) FROM `follow` WHERE `from_id` = ? AND `to_id` = ? LIMIT 1;";
+
+    if(!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: /?error=stmtfailed");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "ii", $from_id, $to_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    mysqli_stmt_close($stmt);
+    $tmp = mysqli_fetch_row($result)[0];
+    mysqli_free_result($result);
+
+    if($tmp === 1) {
+        return true;
+    } elseif($tmp < 1) {
+        return false;
+    } elseif($tmp > 1) {
+        header("location: /?error=dbmistake");
+        exit();
+    }
+}
+
+function fetchUser($conn, $uid) {
+
+    $stmt = mysqli_stmt_init($conn);
+    $sql = "SELECT `id`, `name`, `uid` FROM `users` WHERE `uid` = ? ORDER BY `name` LIMIT 1;";
+
+    if(!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: /?error=stmtfailed");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $uid);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    mysqli_stmt_close($stmt);
+    $user = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+
+    return $user;
 }
 
 function followUser($conn, $from_id, $to_id) {
@@ -132,7 +175,7 @@ function followUser($conn, $from_id, $to_id) {
         exit();
     }
     
-    mysqli_stmt_bind_param($stmt, "ss", $from_id, $to_id);
+    mysqli_stmt_bind_param($stmt, "ii", $from_id, $to_id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 }
@@ -140,14 +183,14 @@ function followUser($conn, $from_id, $to_id) {
 function unfollowUser($conn, $from_id, $to_id) {
     
     $stmt = mysqli_stmt_init($conn);
-    $sql = "DELETE FROM `follow` WHERE `from_id` = ? AND `to_id = ?;";
+    $sql = "DELETE FROM `follow` WHERE `from_id` = ? AND `to_id` = ?;";
     
     if(!mysqli_stmt_prepare($stmt, $sql)) {
         header("location: /?error=stmtfailed");
         exit();
     }
     
-    mysqli_stmt_bind_param($stmt, "ss", $from_id, $to_id);
+    mysqli_stmt_bind_param($stmt, "ii", $from_id, $to_id);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 }

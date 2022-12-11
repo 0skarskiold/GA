@@ -4,7 +4,7 @@
         <a href="/browse" class="button">Browse</a>
         <?php
             if (isset($_SESSION["useruid"])) {
-                echo '<a href="/profile/'.$_SESSION["useruid"].'" class="button">Profile</a>';
+                echo '<a href="/users/'.$_SESSION["useruid"].'" class="button">Profile</a>';
             }
         ?>
         <form action="/includes/listgen/search.inc.php" method="get" id="search_form">

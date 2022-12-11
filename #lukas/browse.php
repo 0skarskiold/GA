@@ -8,8 +8,12 @@
     <?php include_once("sections/header.php"); ?>
 
     <main>
-        <?php include_once("sections/browse_sp.php"); ?>
-        <?php include_once("sections/browse_form.php"); ?>
+        <?php if(isset($_GET['artist'])) {
+            echo '<h2>'.$crew['name'].'</h2>';
+        } elseif(isset($_GET['collection'])) {
+
+        }
+        include_once("sections/filter.php"); ?>
         <section>
             <?php 
                 foreach($items as $item){
