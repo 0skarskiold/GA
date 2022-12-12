@@ -19,7 +19,7 @@
             var action = "unfollow";
         }
         var to_id = $(this).data("userid");
-        var from_id = <?php echo $_SESSION['userid']; ?>;	
+        var from_id = <?php if(isset($_SESSION['userid'])) { echo $_SESSION['userid']; } else { echo "null"; } ?>;	
         $.ajax({
             url:'/includes/account/follow.inc.php',
             method:"POST",

@@ -5,6 +5,11 @@ li { list-style-type: none; }
 ul { list-style-type: none; }
 button { border: none; }
 
+#btn_l, #btn_r {
+    width: 40px; height: 25px;
+    background-color: aquamarine;
+}
+
 .item_list_container {
     border: solid 1px red;
     margin: 0 auto;
