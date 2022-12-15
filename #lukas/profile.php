@@ -13,11 +13,12 @@
         <?php 
 
         echo '<h2>'.$user['name'].'</h2>';
-
-        if(!$following) {
-            echo '<button type="button" class="follow insert" id="follow_'.$user['uid'].'" data-userid="'.$user['id'].'">Follow</button>';
-        } else {
-            echo '<button type="button" class="follow delete" id="unfollow_'.$user['uid'].'" data-userid="'.$user['id'].'">Unfollow</button>';
+        if(isset($_SESSION['userid'])) {
+            if(!$following) {
+                echo '<button type="button" class="follow insert" data-userid="'.$user['id'].'">Follow</button>';
+            } else {
+                echo '<button type="button" class="follow delete" data-userid="'.$user['id'].'">Unfollow</button>';
+            }
         }
 
         ?>

@@ -140,8 +140,19 @@ function isFollowing($conn, $from_id, $to_id) {
     } elseif($tmp < 1) {
         return false;
     } elseif($tmp > 1) {
-        header("location: /?error=dbmistake");
-        exit();
+        $stmt = mysqli_stmt_init($conn);
+        $sql = "DELETE FROM `follow` WHERE `from_id` = ? AND `to_id` = ? ORDER BY `id` DESC LIMIT ".($tmp-1).";";
+
+        if(!mysqli_stmt_prepare($stmt, $sql)) {
+            header("location: /?error=stmtfailed");
+            exit();
+        }
+
+        mysqli_stmt_bind_param($stmt, "ii", $from_id, $to_id);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+
+        return true;
     }
 }
 

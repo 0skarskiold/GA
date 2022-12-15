@@ -3,7 +3,7 @@
 a { text-decoration: none; }
 li { list-style-type: none; }
 ul { list-style-type: none; }
-button { border: none; }
+/* button { border: none; } */
 
 #btn_l, #btn_r {
     width: 40px; height: 25px;

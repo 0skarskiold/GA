@@ -6,6 +6,7 @@ RewriteRule ^users/([^/]+)/?$ profile.php?uid=$1 [L]
 
 RewriteRule ^forms$ forms.php [L]
 
+RewriteRule ^browse.php?search=$1/?$ search/([^/]+)/? [R=301]
 RewriteRule ^search/([^/]+)/?$ browse.php?search=$1 [QSA,L]
 
 RewriteRule ^genres/([^/]+)/?$ browse.php?genre=$1 [L]

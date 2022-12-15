@@ -21,10 +21,24 @@
         var to_id = $(this).data("userid");
         var from_id = <?php if(isset($_SESSION['userid'])) { echo $_SESSION['userid']; } else { echo "null"; } ?>;	
         $.ajax({
+            context: this,
             url:'/includes/account/follow.inc.php',
             method:"POST",
             data:{to_id:to_id, from_id:from_id, action:action},
-            success: console.log(action)
+            success: function() {
+                console.log(action);
+                if(action === "follow") {
+                    $(this).removeClass('insert');
+                    $(this).addClass('delete');
+                    $(this).text('Unfollow');
+                    action = "unfollow";
+                } else if(action === "unfollow") {
+                    $(this).removeClass('delete');
+                    $(this).addClass('insert');
+                    $(this).text('Follow');
+                    action = "follow";
+                }
+            }
         });
     });
 </script>
