@@ -9,8 +9,7 @@
 
 
     <main>
-        <img src="https://img.icons8.com/ios-glyphs/30/null/hearts.png"/>
-        <img src="https://img.icons8.com/ios-glyphs/30/null/like--v1.png"/>
+        <img id="like" class="inactive" src="https://img.icons8.com/ios-glyphs/30/null/hearts.png"/>
 
         <section class="create-log inactive" hidden>
             <button>Attach Review</button>
@@ -22,7 +21,7 @@
             <button type="button" name="toggle_rating" class="add">Add Rating</button>
             <div id="star_container" class="inactive">
                 <div id="stars_false">
-                    <div class="half-star r" data-nbr="0"></div>
+                    <div class="half-star r activated" data-nbr="0"></div>
                     <?php 
                         for($i=1; $i<=10; $i+=2) {
                             echo '<div class="half-star l" data-nbr="'.$i.'"></div>
@@ -40,7 +39,10 @@
             </div>
             <form action="/includes/create.inc.php" method="post">
                 <?php echo '<input type="hidden" value="'.$_GET['item_id'].'" name="item_id" />'; ?>
-                <textarea name="review_text" id="" cols="30" rows="10" style="resize: none;"></textarea>
+                <input type="hidden" value="off" name="like">
+                <input type="hidden" value="null" name="rating">
+                <textarea name="review_text" maxlength="10000" cols="30" rows="10" style="resize: none;"></textarea>
+                <input type="checkbox" name="spoilers">Includes Spoilers</input>
                 <button type="submit" name="submit-review">Submit</button>
             </form>
         </section>
