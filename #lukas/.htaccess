@@ -16,6 +16,8 @@ RewriteRule ^collections/([^/]+)/?$ browse.php?collection=$1 [L]
 
 RewriteRule ^browse$ browse.php [L]
 
+RewriteRule ^create$ create.php [L]
+
 RewriteRule ^series/([^/]+)/?$ item.php?type=series&uid=$1 [L]
 
 RewriteRule ^/([^/]+)/([^/]+)/?$ item.php?type=$1&uid=$2 [L]
