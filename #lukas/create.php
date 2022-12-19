@@ -1,7 +1,6 @@
 <?php 
     session_start(); 
     require_once("includes/dbh.inc.php");
-    require_once("includes/create.inc.php");
     require_once("sections/contents.php"); 
 ?>
 <body>
@@ -39,6 +38,7 @@
             </div>
             <form action="/includes/create.inc.php" method="post">
                 <?php echo '<input type="hidden" value="'.$_GET['item_id'].'" name="item_id" />'; ?>
+                <?php echo '<input type="hidden" value="'.$_SESSION['userid'].'" name="user_id" />'; ?>
                 <input type="hidden" value="off" name="like">
                 <input type="hidden" value="null" name="rating">
                 <textarea name="review_text" maxlength="10000" cols="30" rows="10" style="resize: none;"></textarea>
