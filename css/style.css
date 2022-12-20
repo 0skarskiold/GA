@@ -477,7 +477,7 @@ h3{
     border: 3px solid yellow;
     border-radius: 5px;
     padding: 10px;
-    
+    text-decoration: none;
 }
 
 .single_review h4{
