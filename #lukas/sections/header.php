@@ -18,5 +18,9 @@
                 echo '<a href="/forms" class="button">Log in</a>';
             }
         ?>
+        <p>create:</p>
+        <a href="/create?default=log">Diary Entry</a>
+        <a href="/create?default=review">Review</a>
+        <a href="/create?default=list">List</a>
     </nav>
 </header>

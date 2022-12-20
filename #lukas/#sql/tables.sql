@@ -173,12 +173,6 @@ CREATE TABLE reviews (
     `text` text NOT NULL
 );
 
-CREATE TABLE logs_reviews ( -- man ska kunna koppla flera recensioner till en logg
-    `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `log_id` int NOT NULL,
-    `review_id` int NOT NULL
-);
-
 CREATE TABLE lists (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `user_id` int NOT NULL,
@@ -195,6 +189,14 @@ CREATE TABLE lists_items (
     `item_id` int NOT NULL,
     `number` int NOT NULL,
     `note` text NOT NULL -- listskaparen kan koppla en anteckning som exempelvis beskriver varför saken är inkluderad
+);
+
+CREATE TABLE logs_reviews_lists ( -- man ska kunna koppla flera recensioner till en logg
+    `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `log_id` int NOT NULL,
+    `review_id` int NOT NULL,
+    `list_id` int NOT NULL,
+    `list_number` int NOT NULL -- detta item måste vara samma som itemet för recensionen
 );
 
 CREATE TABLE platforms (
