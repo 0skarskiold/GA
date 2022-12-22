@@ -8,7 +8,8 @@
 
 
     <main>
-        <img id="like" class="inactive" src="https://img.icons8.com/ios-glyphs/30/null/hearts.png"/>
+
+        <?php if(isset($_GET['item_id'])): ?>
 
         <section class="create-log inactive" hidden>
             <button>Attach Review</button>
@@ -17,6 +18,7 @@
         <section class="create-review active">
             <button>Attach Diary Entry</button>
             <button>Attach List</button>
+            <img id="like" class="inactive" src="https://img.icons8.com/ios-glyphs/30/null/hearts.png"/>
             <button type="button" name="toggle_rating" class="add">Add Rating</button>
             <div id="star_container" class="inactive">
                 <div id="stars_false">
@@ -36,7 +38,7 @@
                     <div class="star"></div>
                 </div>
             </div>
-            <form action="/includes/create.inc.php" method="post">
+            <form action="includes/create.inc.php" method="post">
                 <?php echo '<input type="hidden" value="'.$_GET['item_id'].'" name="item_id" />'; ?>
                 <?php echo '<input type="hidden" value="'.$_SESSION['userid'].'" name="user_id" />'; ?>
                 <input type="hidden" value="off" name="like">
@@ -49,6 +51,8 @@
         <section class="create-list inactive" hidden>
             <button>Attach Review</button>
         </section>
+
+        <?php endif; ?>
 
     </main>
 
