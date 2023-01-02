@@ -128,4 +128,31 @@
         });
     });
 
+    $(document).ready(function() {
+        $("#csearch").focus(function() {
+            $(this).keyup(function() {
+
+                console.log('hey');
+                $('#box').css("background-color", "blue");
+                
+                let str = $(this).val()
+                str.length()
+
+                $.ajax({
+
+                    context: this,
+                    url:'/includes/listgen/csearch.inc.php',
+                    method:"POST",
+                    data:{scsearch:"on", input:str},
+
+                    success: function(items) {
+
+
+
+                    }
+                });
+            });
+        });
+    });
+
 </script>
