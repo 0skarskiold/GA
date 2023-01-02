@@ -3,10 +3,6 @@
 // require_once($_SERVER['DOCUMENT_ROOT']."/includes/dbh.inc.php"); // behövs inte eftersom den inkluderas ovanför i browse.php
 require_once("list_functions.inc.php");
 
-$genres = retrieveGenres($conn);
-$tags = retrieveTags($conn);
-$users = retrieveUsers($conn, $search, $factor, $order, 160);
-
 switch ($_GET["sortby"]) {
     case "rating-hi":
         $factor = "`items`.`rating`";
