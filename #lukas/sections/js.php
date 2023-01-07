@@ -136,21 +136,37 @@
                 $('#box').css("background-color", "blue");
                 
                 let str = $(this).val()
-                str.length()
+                
+                if(str.length > 0) {
 
-                $.ajax({
+                    $.ajax({
 
-                    context: this,
-                    url:'/includes/listgen/csearch.inc.php',
-                    method:"POST",
-                    data:{scsearch:"on", input:str},
+                        context: this,
+                        url:'/includes/listgen/csearch.inc.php',
+                        method:"POST",
+                        data:{scsearch:"on", input:str},
 
-                    success: function(items) {
+                        success: function(data) {
 
+                            items = JSON.parse(data);
+                            if(items.length > 0) {
+                                let link = '<?php echo $_SERVER['REQUEST_URI']; ?>';
+                                let elements = '';
 
+                                items.forEach(function(item) {
+                                    elements += ''.concat('<a href="', link, '&itemid=', item['id'], '">', item['name'], ' (', item['year'], ')', '</a>');
+                                });
 
-                    }
-                });
+                                $(".results").empty();
+                                $(".results").append(elements);
+                            } else {
+                                $(".results").empty();
+                            }
+                        }
+                    });
+                } else {
+                    $(".results").empty();
+                }
             });
         });
     });

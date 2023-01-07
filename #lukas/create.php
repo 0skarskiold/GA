@@ -56,11 +56,9 @@
 
             <div id="box" style="width:100px;height:100px;background-color:red;"></div>
 
-            <form action="includes/listgen/csearch.inc.php" method="post">
-                <input type="text" id="csearch">
-                <a href="#">Hey</a>
-                <button type="submit" name="submit-csearch">Search</button>
-            </form>
+            <input type="text" id="csearch">
+
+            <div class="results"></div>
 
         <?php endif; ?>
 
