@@ -131,9 +131,6 @@
     $(document).ready(function() {
         $("#csearch").focus(function() {
             $(this).keyup(function() {
-
-                console.log('hey');
-                $('#box').css("background-color", "blue");
                 
                 let str = $(this).val()
                 
@@ -162,12 +159,45 @@
                             } else {
                                 $(".results").empty();
                             }
+
                         }
                     });
+
                 } else {
                     $(".results").empty();
                 }
+
             });
+        });
+    });
+
+    $(document).ready(function() {
+        $('button[name="toggle_review"]').click(function() {
+            if($(this).hasClass('add')) {
+                $('.create-review').removeAttr('hidden');
+                $(this).removeClass('add');
+                $(this).addClass('remove');
+                $(this).text('Remove Review');
+            } else if($(this).hasClass('remove')) {
+                $('.create-review').attr('hidden',true);
+                $(this).removeClass('remove');
+                $(this).addClass('add');
+                $(this).text('Attach Review');
+            }
+        });
+
+        $('button[name="toggle_log"]').click(function() {
+            if($(this).hasClass('add')) {
+                $('.create-log').removeAttr('hidden');
+                $(this).removeClass('add');
+                $(this).addClass('remove');
+                $(this).text('Remove Diary Entry');
+            } else if($(this).hasClass('remove')) {
+                $('.create-log').attr('hidden',true);
+                $(this).removeClass('remove');
+                $(this).addClass('add');
+                $(this).text('Attach Diary Entry');
+            }
         });
     });
 
