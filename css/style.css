@@ -1,6 +1,11 @@
 *{
     background-color: black;
     color: yellow;
+    font-family: 'Oxygen', sans-serif;
+}
+
+*::-webkit-scrollbar{
+    display:none;
 }
 
 /*Fixa:
@@ -483,4 +488,55 @@ h3{
 .single_review h4{
     font-size: 1.2rem;
     font-family: 'Oxygen', sans-serif;
+}
+
+#profile_body{
+    display: grid;
+    grid-template-areas:
+    "hdr"
+    "inf"
+    "rwa"
+    "rre"
+    "rli"
+    ;
+    height: auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: 200px 30vh 25vh 25vh 25vh;
+}
+
+#profile_info{
+    grid-area: inf;
+    width: auto;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: auto;
+
+}
+
+#profile_info img{
+    height: 30vh;
+    border-radius: 2px;
+}
+
+#profile_stuff{
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background:none;
+}
+
+#profile_stuff h2{
+    text-decoration: underline;
+    margin-top: 0;
+}
+
+#profile_stuff_container{
+    width: inherit;
+    display: flex;
+    flex-direction: row;  
+    justify-content: space-between;
+    margin-left: 4vw;
 }
