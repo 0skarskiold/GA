@@ -84,7 +84,7 @@ INSERT INTO `tags` (`id`, `name`) VALUES ('19', 'Black Comedy');
 INSERT INTO `tags` (`id`, `name`) VALUES ('20', 'Werewolves');
 INSERT INTO `tags` (`id`, `name`) VALUES ('21', 'Coming of Age');
 INSERT INTO `tags` (`id`, `name`) VALUES ('22', 'Teenagers');
-INSERT INTO `tags` (`id`, `name`) VALUES ('23', 'Adolesence');
+INSERT INTO `tags` (`id`, `name`) VALUES ('23', 'Adolescence');
 INSERT INTO `tags` (`id`, `name`) VALUES ('24', 'Cars');
 INSERT INTO `tags` (`id`, `name`) VALUES ('25', 'Pirates');
 INSERT INTO `tags` (`id`, `name`) VALUES ('26', 'Vikings');

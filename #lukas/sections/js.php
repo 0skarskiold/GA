@@ -128,4 +128,77 @@
         });
     });
 
+    $(document).ready(function() {
+        $("#csearch").focus(function() {
+            $(this).keyup(function() {
+                
+                let str = $(this).val()
+                
+                if(str.length > 0) {
+
+                    $.ajax({
+
+                        context: this,
+                        url:'/includes/listgen/csearch.inc.php',
+                        method:"POST",
+                        data:{scsearch:"on", input:str},
+
+                        success: function(data) {
+
+                            items = JSON.parse(data);
+                            if(items.length > 0) {
+                                let link = '<?php echo $_SERVER['REQUEST_URI']; ?>';
+                                let elements = '';
+
+                                items.forEach(function(item) {
+                                    elements += ''.concat('<a href="', link, '&itemid=', item['id'], '">', item['name'], ' (', item['year'], ')', '</a>');
+                                });
+
+                                $(".results").empty();
+                                $(".results").append(elements);
+                            } else {
+                                $(".results").empty();
+                            }
+
+                        }
+                    });
+
+                } else {
+                    $(".results").empty();
+                }
+
+            });
+        });
+    });
+
+    $(document).ready(function() {
+        $('button[name="toggle_review"]').click(function() {
+            if($(this).hasClass('add')) {
+                $('.create-review').removeAttr('hidden');
+                $(this).removeClass('add');
+                $(this).addClass('remove');
+                $(this).text('Remove Review');
+            } else if($(this).hasClass('remove')) {
+                $('.create-review').attr('hidden',true);
+                $(this).removeClass('remove');
+                $(this).addClass('add');
+                $(this).text('Attach Review');
+            }
+        });
+
+        $('button[name="toggle_log"]').click(function() {
+            if($(this).hasClass('add')) {
+                $('.create-log').removeAttr('hidden');
+                $(this).removeClass('add');
+                $(this).addClass('remove');
+                $(this).text('Remove Diary Entry');
+            } else if($(this).hasClass('remove')) {
+                $('.create-log').attr('hidden',true);
+                $(this).removeClass('remove');
+                $(this).addClass('add');
+                $(this).text('Attach Diary Entry');
+            }
+        });
+    });
+
 </script>

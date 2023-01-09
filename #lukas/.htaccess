@@ -15,6 +15,7 @@ RewriteRule ^crew/([^/]+)/?$ browse.php?artist=$1 [L]
 RewriteRule ^collections/([^/]+)/?$ browse.php?collection=$1 [L]
 
 RewriteRule ^browse$ browse.php [L]
+RewriteRule ^users$ browse.php?users=on [L]
 
 RewriteRule ^create$ create.php [L]
 

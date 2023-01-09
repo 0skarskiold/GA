@@ -19,8 +19,16 @@
             }
         ?>
         <p>create:</p>
-        <a href="/create?default=log">Diary Entry</a>
-        <a href="/create?default=review">Review</a>
-        <a href="/create?default=list">List</a>
+        <?php
+            if(isset($item["id"])) {
+                echo '<a href="/create?type=log&itemid='.$item["id"].'">Diary Entry</a>
+                <a href="/create?type=review&itemid='.$item["id"].'">Review</a>
+                <a href="/create?type=list&itemid='.$item["id"].'">List</a>';
+            } else {
+                echo '<a href="/create?type=log">Diary Entry</a>
+                <a href="/create?type=review">Review</a>
+                <a href="/create?type=list">List</a>';
+            }
+        ?>
     </nav>
 </header>
