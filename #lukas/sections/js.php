@@ -5,11 +5,17 @@
     $(document).ready(function() {
 
         $("#btn_r").click(function() {
-            $('.item_list').animate({left: "+=550px"});
+            if(parseInt($('.item_list').css('left')) > -1650 && !$('.item_list').is(':animated')) {
+                $('.item_list').animate({left: "-=550px"});
+                console.log(parseInt($('.item_list').css('left')));
+            }
         });
 
         $("#btn_l").click(function() {
-            $('.item_list').animate({left: "-=550px"});
+            if(parseInt($('.item_list').css('left')) < 0 && !$('.item_list').is(':animated')) {
+                $('.item_list').animate({left: "+=550px"});
+                console.log(parseInt($('.item_list').css('left')));
+            }
         });
 
     });
