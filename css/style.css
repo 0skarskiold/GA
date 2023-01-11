@@ -8,11 +8,6 @@
     display:none;
 }
 
-/*Fixa:
-större font size
-Annan font??
-
-*/
 /*Startsidan */
 
 body {
@@ -52,9 +47,15 @@ header{
     font-family: 'Oxygen', sans-serif;
 }
 
+#add_icon{
+    height: 80px;
+}
+
 header img{
     height: 100px;
 }
+
+
 
 header h1 a{
     text-decoration: none;
@@ -514,7 +515,7 @@ h3{
 
 }
 
-#profile_info img{
+#profile_picture{
     height: 30vh;
     border-radius: 2px;
 }
@@ -531,6 +532,11 @@ h3{
 #profile_stuff h2{
     text-decoration: underline;
     margin-top: 0;
+}
+
+#settings_icon{
+    height: 2rem;
+    margin-left: 1vw;
 }
 
 #profile_stuff_container{
