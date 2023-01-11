@@ -1,5 +1,5 @@
-<section class="create-review" <?php if($_GET['type'] !== "review") { echo "hidden"; } ?> >
-    <button name="toggle_log" class="add">Attach Diary Entry</button>
+<section class="create" <?php if($_GET['type'] !== "review") { echo "hidden"; } ?> >
+    <button name="toggle_log" class="add" <?php if($_GET['type'] !== "review") { echo "hidden"; } ?> >Attach Diary Entry</button>
     <img id="like" class="inactive" src="https://img.icons8.com/ios-glyphs/30/null/hearts.png"/>
     <button type="button" name="toggle_rating" class="add">Add Rating</button>
     <div id="star_container" class="inactive">

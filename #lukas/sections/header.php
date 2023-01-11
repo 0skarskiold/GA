@@ -19,6 +19,10 @@
             }
         ?>
         <p>create:</p>
+        <!-- <form action="/create" method="post">
+            <input type="hidden" value="review" name="type">
+            <button type="submit">Review</button>
+        </form> -->
         <?php
             if(isset($item["id"])) {
                 echo '<a href="/create?type=log&itemid='.$item["id"].'">Diary Entry</a>

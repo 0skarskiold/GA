@@ -7,14 +7,14 @@
         $("#btn_r").click(function() {
             if(parseInt($('.item_list').css('left')) > -1650 && !$('.item_list').is(':animated')) {
                 $('.item_list').animate({left: "-=550px"});
-                console.log(parseInt($('.item_list').css('left')));
+                // console.log(parseInt($('.item_list').css('left')));
             }
         });
 
         $("#btn_l").click(function() {
             if(parseInt($('.item_list').css('left')) < 0 && !$('.item_list').is(':animated')) {
                 $('.item_list').animate({left: "+=550px"});
-                console.log(parseInt($('.item_list').css('left')));
+                // console.log(parseInt($('.item_list').css('left')));
             }
         });
 
