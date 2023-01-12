@@ -1,6 +1,7 @@
 <?php 
     session_start(); 
     require_once("includes/dbh.inc.php");
+    if(isset($_GET['itemid'])) { require_once("includes/create_fetch.inc.php"); }
     require_once("sections/contents.php"); 
 ?>
 <body>
@@ -15,6 +16,9 @@
         } elseif(isset($_GET['itemid'])) { ?>
 
             <section class="create-main">
+
+                <?php echo '<h2>'.$item['name'].'</h2>'; ?>
+
                 <button type="button" name="toggle_log" class="add" <?php if($_GET['type'] !== "review") { echo "hidden"; } ?> >Attach Diary Entry</button>
                 <button type="button" name="toggle_review" class="add" <?php if($_GET['type'] !== "log") { echo "hidden"; } ?> >Attach Review</button>
                 
