@@ -146,12 +146,14 @@ CREATE TABLE items_studios (
 
 -- CREATE TABLE extras (); -- behind the scenes och featurette
 
-CREATE TABLE completions (
+CREATE TABLE ratings (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `user_id` int NOT NULL,
     `item_id` int NOT NULL,
     `like` bit NOT NULL,
-    `rating` ENUM('0.0','0.5','1.0','1.5','2.0','2.5','3.0','3.5','4.0','4.5','5.0') DEFAULT NULL -- NULL innebär ingen rating
+    `rating` float DEFAULT NULL, -- NULL innebär ingen rating
+    `created_date` datetime NOT NULL,
+    `last_edited_date` datetime NOT NULL
 );
 
 CREATE TABLE logs (
@@ -160,8 +162,8 @@ CREATE TABLE logs (
     `item_id` int NOT NULL,
     `date` date NOT NULL,
     `like` bit NOT NULL,
-    `rating` ENUM('0.0','0.5','1.0','1.5','2.0','2.5','3.0','3.5','4.0','4.5','5.0') DEFAULT NULL,
-    `rewatch` bit NOT NULL,
+    `rating` float DEFAULT NULL,
+    `rewatch` bit NOT NULL
 );
 
 CREATE TABLE reviews (
@@ -170,7 +172,7 @@ CREATE TABLE reviews (
     `item_id` int NOT NULL,
     `date` date NOT NULL,
     `like` bit NOT NULL,
-    `rating` ENUM('0.0','0.5','1.0','1.5','2.0','2.5','3.0','3.5','4.0','4.5','5.0') DEFAULT NULL,
+    `rating` float DEFAULT NULL,
     `text` text NOT NULL,
     `spoilers` bit NOT NULL
 );

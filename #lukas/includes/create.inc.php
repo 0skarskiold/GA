@@ -1,5 +1,84 @@
 <?php
 
+function rate($conn, $user_id, $item_id, $like, $rating) {
+
+    $sql = "SELECT COUNT(*) FROM `ratings` WHERE `user_id` = ? AND `item_id` = ?;";
+    $stmt = mysqli_stmt_init($conn);
+
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: /?error=stmtfailed");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "ii", $user_id, $item_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    mysqli_stmt_close($stmt);
+    $count = mysqli_fetch_row($result)[0];
+    mysqli_free_result($result);
+    echo $count;
+
+    if($count === 0) {
+        $stmt = mysqli_stmt_init($conn);
+        $sql = "INSERT INTO `ratings` (`user_id`, `item_id`, `like`, `rating`, `created_date`, `last_edited_date`) VALUES (?, ?, ?, ?, ?, ?);";
+        
+        if(!mysqli_stmt_prepare($stmt, $sql)) {
+            header("location: /?error=stmtfailed");
+            exit();
+        }
+
+        $date = date('Y-m-d H:i:s');
+        
+        mysqli_stmt_bind_param($stmt, "iiidss", $user_id, $item_id, $like, $rating, $date, $date);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+
+    } elseif($count === 1) {
+        $stmt = mysqli_stmt_init($conn);
+        $sql = "UPDATE `ratings` SET `like` = ?, `rating` = ?, `last_edited_date` = ? WHERE `user_id` = ? AND `item_id` = ?;";
+        
+        if(!mysqli_stmt_prepare($stmt, $sql)) {
+            header("location: /?error=stmtfailed");
+            exit();
+        }
+
+        $date = date('Y-m-d H:i:s');
+        
+        mysqli_stmt_bind_param($stmt, "idsii", $like, $rating, $date, $user_id, $item_id);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+
+    } elseif($count > 1) {
+        $stmt = mysqli_stmt_init($conn);
+        $sql = "DELETE FROM `ratings` WHERE `user_id` = ? AND `item_id` = ? ORDER BY `created_date` DESC LIMIT ".($count-1).";";
+
+        if(!mysqli_stmt_prepare($stmt, $sql)) {
+            header("location: /?error=stmtfailed");
+            exit();
+        }
+
+        mysqli_stmt_bind_param($stmt, "ii", $user_id, $item_id);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+
+
+        $stmt = mysqli_stmt_init($conn);
+        $sql = "UPDATE `ratings` SET `like` = ?, `rating` = ?, `last_edited_date` = ? WHERE `user_id` = ? AND `item_id` = ?;";
+        
+        if(!mysqli_stmt_prepare($stmt, $sql)) {
+            header("location: /?error=stmtfailed");
+            exit();
+        }
+
+        $date = date('Y-m-d H:i:s');
+        
+        mysqli_stmt_bind_param($stmt, "idsii", $like, $rating, $date, $user_id, $item_id);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+    }
+
+}
+
 function createReview($conn, $user_id, $item_id, $date, $like, $rating, $text, $spoilers) {
         
     $sql = "INSERT INTO `reviews` (`user_id`, `item_id`, `date`, `like`, `rating`, `text`, `spoilers`) VALUES (?, ?, ?, ?, ?, ?, ?);";
@@ -63,6 +142,7 @@ if(isset($_POST["submit-log-review"])) {
 
     createReview($conn, $user_id, $item_id, $review_date, $like, $rating, $review_text, $spoilers);
     createLog($conn, $user_id, $item_id, $log_date, $like, $rating, $rewatch);
+    rate($conn, $user_id, $item_id, $like, $rating);
 
     header("location: /");
     exit();
@@ -76,9 +156,9 @@ if(isset($_POST["submit-log-review"])) {
 
     $review_text = $_POST['review_text'];
     $review_date = $_POST['review-date'];
-    if($_POST['spoilers'] === "on") {
+    if(isset($_POST['spoilers'])) {
         $spoilers = 1;
-    } elseif($_POST['spoilers'] === "off") {
+    } else {
         $spoilers = 0;
     }
 
@@ -92,6 +172,7 @@ if(isset($_POST["submit-log-review"])) {
     }
 
     createReview($conn, $user_id, $item_id, $review_date, $like, $rating, $review_text, $spoilers);
+    rate($conn, $user_id, $item_id, $like, $rating);
 
     header("location: /");
     exit();
@@ -104,9 +185,9 @@ if(isset($_POST["submit-log-review"])) {
     $item_id = intval($_POST['item_id']);
 
     $dairy_date = $_POST['diary-date'];
-    if($_POST['rewatch'] === "on") {
+    if(isset($_POST['rewatch'])) {
         $rewatch = 1;
-    } elseif($_POST['rewatch'] === "off") {
+    } else {
         $rewatch = 0;
     }
 
@@ -120,6 +201,7 @@ if(isset($_POST["submit-log-review"])) {
     }
 
     createLog($conn, $user_id, $item_id, $diary_date, $like, $rating, $rewatch);
+    rate($conn, $user_id, $item_id, $like, $rating);
 
     header("location: /");
     exit();

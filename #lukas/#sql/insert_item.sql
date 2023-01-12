@@ -40,6 +40,14 @@ INSERT INTO `items_genres` (`item_id`, `genre_id`) VALUES ('4', '8');
 
 INSERT INTO `items_crew` (`item_id`, `artist_id`, `role`, `character`) VALUES ('4', '2', 'actor', 'Jimmy McGill');
 
+-- northman:
+INSERT INTO `items` (`id`, `type`, `name`, `uid`, `year`, `month`, `day`, `description`, `tagline`, `length`, `completions`, `completions_week`, `completions_month`, `rating`) 
+VALUES ('5', 'feature_film', 'Northman', 'northman-2022', '2022', '4', '22', "A young Viking prince is on a quest to avenge his father's murder.", 'Conquer your fate.', '137', '0', '0', '0', '0');
+
+INSERT INTO `items_genres` (`item_id`, `genre_id`) VALUES ('5', '1');
+INSERT INTO `items_genres` (`item_id`, `genre_id`) VALUES ('5', '8');
+INSERT INTO `items_genres` (`item_id`, `genre_id`) VALUES ('5', '17');
+
 -- genres:
 INSERT INTO `genres` (`id`, `name`) VALUES ('1', 'Action');
 INSERT INTO `genres` (`id`, `name`) VALUES ('2', 'Adventure');

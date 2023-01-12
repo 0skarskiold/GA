@@ -23,13 +23,13 @@
     $(document).on('click', '.follow', function() {
 
         if($(this).hasClass('insert')) {
-            let action = "follow";
+            var action = "follow";
         } else if($(this).hasClass('delete')) {
-            let action = "unfollow";
+            var action = "unfollow";
         }
 
-        let to_id = $(this).data("userid");
-        let from_id = <?php if(isset($_SESSION['userid'])) { echo $_SESSION['userid']; } else { echo "null"; } ?>;	
+        var to_id = $(this).data("userid"); // varför funkar inte let?
+        var from_id = <?php if(isset($_SESSION['userid'])) { echo $_SESSION['userid']; } else { echo "null"; } ?>;	
 
         $.ajax({
 
@@ -40,7 +40,7 @@
             
             success: function() {
 
-                console.log(action);
+                // console.log(action);
                 if(action === "follow") {
                     $(this).removeClass('insert');
                     $(this).addClass('delete');
