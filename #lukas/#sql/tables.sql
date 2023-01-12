@@ -160,7 +160,8 @@ CREATE TABLE logs (
     `item_id` int NOT NULL,
     `date` date NOT NULL,
     `like` bit NOT NULL,
-    `rating` ENUM('0.0','0.5','1.0','1.5','2.0','2.5','3.0','3.5','4.0','4.5','5.0') DEFAULT NULL
+    `rating` ENUM('0.0','0.5','1.0','1.5','2.0','2.5','3.0','3.5','4.0','4.5','5.0') DEFAULT NULL,
+    `rewatch` bit NOT NULL,
 );
 
 CREATE TABLE reviews (
@@ -170,7 +171,8 @@ CREATE TABLE reviews (
     `date` date NOT NULL,
     `like` bit NOT NULL,
     `rating` ENUM('0.0','0.5','1.0','1.5','2.0','2.5','3.0','3.5','4.0','4.5','5.0') DEFAULT NULL,
-    `text` text NOT NULL
+    `text` text NOT NULL,
+    `spoilers` bit NOT NULL
 );
 
 CREATE TABLE lists (

@@ -23,13 +23,13 @@
     $(document).on('click', '.follow', function() {
 
         if($(this).hasClass('insert')) {
-            var action = "follow";
+            let action = "follow";
         } else if($(this).hasClass('delete')) {
-            var action = "unfollow";
+            let action = "unfollow";
         }
 
-        var to_id = $(this).data("userid");
-        var from_id = <?php if(isset($_SESSION['userid'])) { echo $_SESSION['userid']; } else { echo "null"; } ?>;	
+        let to_id = $(this).data("userid");
+        let from_id = <?php if(isset($_SESSION['userid'])) { echo $_SESSION['userid']; } else { echo "null"; } ?>;	
 
         $.ajax({
 
@@ -107,7 +107,7 @@
         $('#stars_false').hover(function() {
             $('.half-star').mouseover(function() {
                 if(!$('#star_container').hasClass('inactive')) {
-                    var lim = $(this).data("nbr");
+                    let lim = $(this).data("nbr");
                     for(let i = 0; i <= lim; i++) {
                         $('.half-star[data-nbr="'+i+'"').addClass('hover');
                     }
@@ -122,7 +122,7 @@
 
         $('.half-star').click(function() {
             if(!$('#star_container').hasClass('inactive')) {
-                var score = $(this).data("nbr");
+                let score = $(this).data("nbr");
                 $('input[name="rating"]').attr('value', score/2);
                 for(let i = 0; i <= score; i++) {
                     $('.half-star[data-nbr="'+i+'"').addClass('activated');
@@ -180,12 +180,14 @@
     $(document).ready(function() {
         $('button[name="toggle_review"]').click(function() {
             if($(this).hasClass('add')) {
-                $('.create-review').removeAttr('hidden');
+                $('.log-excl').after('<div class="review-excl"><textarea name="review_text" maxlength="10000" cols="30" rows="10" style="resize: none;"></textarea><label for="review-date">Date of review</label><input type="date" value="<?php echo date('Y-m-d'); ?>" name="review-date" /><input type="checkbox" name="spoilers">Includes Spoilers</input></div>');
+                $('button[type="submit"]').attr('name', 'submit-log-review');
                 $(this).removeClass('add');
                 $(this).addClass('remove');
                 $(this).text('Remove Review');
             } else if($(this).hasClass('remove')) {
-                $('.create-review').attr('hidden',true);
+                $('.review-excl').remove();
+                $('button[type="submit"]').attr('name', 'submit-log');
                 $(this).removeClass('remove');
                 $(this).addClass('add');
                 $(this).text('Attach Review');
@@ -194,12 +196,14 @@
 
         $('button[name="toggle_log"]').click(function() {
             if($(this).hasClass('add')) {
-                $('.create-log').removeAttr('hidden');
+                $('.review-excl').before('<div class="log-excl"><label for="log-date">When watched</label><input type="date" value="<?php echo date('Y-m-d'); ?>" name="log-date" /><input type="checkbox" name="rewatch">I\'ve seen this before</input></div>');
+                $('button[type="submit"]').attr('name', 'submit-log-review');
                 $(this).removeClass('add');
                 $(this).addClass('remove');
                 $(this).text('Remove Diary Entry');
             } else if($(this).hasClass('remove')) {
-                $('.create-log').attr('hidden',true);
+                $('.log-excl').remove();
+                $('button[type="submit"]').attr('name', 'submit-review');
                 $(this).removeClass('remove');
                 $(this).addClass('add');
                 $(this).text('Attach Diary Entry');
