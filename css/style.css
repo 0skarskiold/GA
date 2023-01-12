@@ -12,6 +12,7 @@
 
 body {
     --color1: black;
+
 }
 
 #index_body{
@@ -643,4 +644,8 @@ h3{
 .list_posters{
     height: 35vh;
     border-radius: 2px;
+}
+
+#add_body{
+    
 }
