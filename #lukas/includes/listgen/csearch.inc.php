@@ -19,7 +19,7 @@ if(isset($_POST['scsearch'])) {
 
     $input = "%".$input."%";
 
-    if(!$year) {
+    if(!isset($year)) {
         $sql = "SELECT `id`, `name`, `year` FROM `items` WHERE `name` LIKE ? LIMIT 5;";
 
         if(!mysqli_stmt_prepare($stmt, $sql)) {
