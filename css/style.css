@@ -647,5 +647,23 @@ h3{
 }
 
 #add_body{
-    
+    display: grid;
+    grid-template-areas: 
+    "hdr"
+    "ttl"
+    "txt"
+    "btn"
+    ;
+    height: auto;
+    width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: 200px 5rem 50vh 2rem;
+}
+
+#add_movie_title{
+    grid-area: ttl;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
