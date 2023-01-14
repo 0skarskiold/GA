@@ -12,6 +12,7 @@
 
 body {
     --color1: black;
+
 }
 
 #index_body{
@@ -643,4 +644,36 @@ h3{
 .list_posters{
     height: 35vh;
     border-radius: 2px;
+}
+
+#add_body{
+    display: grid;
+    grid-template-areas: 
+    "hdr"
+    "ttl"
+    "txt"
+    "btn"
+    ;
+    height: auto;
+    width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: 200px 5rem 50vh 2rem;
+}
+
+#add_movie_title{
+    grid-area: ttl;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+/*Större font-size??*/
+#reviewbox {
+    height: 30vh;
+    width: 30vw;
+    border: 2px solid yellow;
+    border-radius: 7px;
+    resize:none;
+    font-size: normal;
 }

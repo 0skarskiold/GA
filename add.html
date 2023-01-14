@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join our community</title>
+    <title>Add entry</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400&display=swap" rel="stylesheet">
 </head>
-
-<body id="login_body">
+<body id="add_body">
     <header >
         <h1>
             <a href="index.html">Lukasboxd</a>
@@ -23,30 +22,32 @@
         <a href="login.html">
             <img src="img/profile.png" alt="profile picture">
         </a>
-        <a href="add.html">
+        <a href="#">
             <img src="img/add_icon.png" alt="add an entry" id="add_icon">
         </a>
     </header>
 
-    <section id="login">
-        <h2>
-            Login
-        </h2>
-        <form action="INSERT HÄR LUKAS" method="LUKAS SNÄLLA FIXA">
-            <input type="username" placeholder="Enter username or email" class="enter_field">
-            <input type="password" placeholder="Enter password" class="enter_field">
-            <input type="submit" value="Log in" class="submit_button">
-        </form>
-    </section>
+    <h2 id="add_movie_title">
+        Movie title 
+    </h2>
 
+    <div id="review_text_and_buttons">
+        <section id="watched&spoliers">
+            <p>
+                Watched: 12-12-2022
+            </p>
 
-        <p id="signup">
-            Or if you are new here,&nbsp;   
-            <a href="signup.html">
-                 Sign up!
-            </a>
-        </p>
+            <input type="checkbox" name="attach_rev" id="attach_rev_checkbox">
+            <label for="attach_rev">Attach review</label>
 
+            <input type="checkbox" name="spoilers" id="spoilers_checkbox">
+            <label for="spoilers">Spoilers</label>
+        </section>
+
+        <section id="reviewbox_container">
+            <textarea name="reviewbox" id="reviewbox" cols="30" rows="10"></textarea>
+        </section>
+    </div>
     
 </body>
 </html>
