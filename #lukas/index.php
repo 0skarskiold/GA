@@ -16,11 +16,19 @@
             <button id="btn_r">right</button>
             <div class="item_list_container">
                 <ul class="item_list">
-                    <?php for($i=1;$i<=20;$i++) {
+                    <!-- <?php // for($i=1;$i<=20;$i++) {
+                        // echo 
+                        // '<li class="item_container">
+                        //     <div class="block1"></div>
+                        //     <div class="block2"></div>
+                        //     <div class="block3"></div>
+                        // </li>';
+                    // } ?> -->
+                    <?php foreach($recent as $r) {
                         echo 
                         '<li class="item_container">
-                            <div class="block1"></div>
-                            <div class="block2"></div>
+                            <div class="block1">'.$r['username'].'</div>
+                            <img class="block2" src="/metadata/'.$r['item_type'].'/'.$r['item_uid'].'/'.$r['item_uid'].'.jpg"></img>
                             <div class="block3"></div>
                         </li>';
                     } ?>
