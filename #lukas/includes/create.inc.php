@@ -16,7 +16,6 @@ function rate($conn, $user_id, $item_id, $like, $rating) {
     mysqli_stmt_close($stmt);
     $count = mysqli_fetch_row($result)[0];
     mysqli_free_result($result);
-    echo $count;
 
     if($count === 0) {
         $stmt = mysqli_stmt_init($conn);
@@ -184,7 +183,7 @@ if(isset($_POST["submit-log-review"])) {
     $user_id = intval($_POST['user_id']); // duplicerad kod :(
     $item_id = intval($_POST['item_id']);
 
-    $dairy_date = $_POST['diary-date'];
+    $log_date = $_POST['log-date'];
     if(isset($_POST['rewatch'])) {
         $rewatch = 1;
     } else {
@@ -200,7 +199,7 @@ if(isset($_POST["submit-log-review"])) {
         $like = 0;
     }
 
-    createLog($conn, $user_id, $item_id, $diary_date, $like, $rating, $rewatch);
+    createLog($conn, $user_id, $item_id, $log_date, $like, $rating, $rewatch);
     rate($conn, $user_id, $item_id, $like, $rating);
 
     header("location: /");
