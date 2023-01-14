@@ -667,3 +667,13 @@ h3{
     align-items: center;
 
 }
+
+/*Större font-size??*/
+#reviewbox {
+    height: 30vh;
+    width: 30vw;
+    border: 2px solid yellow;
+    border-radius: 7px;
+    resize:none;
+    font-size: normal;
+}
