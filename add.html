@@ -32,22 +32,32 @@
     </h2>
 
     <div id="review_text_and_buttons">
-        <section id="watched&spoliers">
+        <section id="watched_and_spoilers">
             <p>
                 Watched: 12-12-2022
             </p>
-
-            <input type="checkbox" name="attach_rev" id="attach_rev_checkbox">
-            <label for="attach_rev">Attach review</label>
-
-            <input type="checkbox" name="spoilers" id="spoilers_checkbox">
-            <label for="spoilers">Spoilers</label>
+            <div class="checkbox_container">
+                <input type="checkbox" name="attach_rev" id="attach_rev_checkbox">
+                <label for="attach_rev">Attach review</label>
+            </div>
+            
+            <div class="checkbox_container">
+                <input type="checkbox" name="spoilers" id="spoilers_checkbox">
+                <label for="spoilers">Spoilers</label>
+            </div>
+            
         </section>
 
         <section id="reviewbox_container">
             <textarea name="reviewbox" id="reviewbox" cols="30" rows="10"></textarea>
         </section>
+
+        
     </div>
+
+    <a href="#" id="add_button">
+        <h3>Add entry</h3>
+    </a>
 
     
     
