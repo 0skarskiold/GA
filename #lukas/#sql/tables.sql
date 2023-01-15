@@ -156,25 +156,17 @@ CREATE TABLE ratings (
     `last_edited_date` datetime NOT NULL
 );
 
-CREATE TABLE logs (
+CREATE TABLE entries (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `user_id` int NOT NULL,
     `item_id` int NOT NULL,
-    `date` date NOT NULL,
-    `like` bit NOT NULL,
+    `log_date` datetime, -- gör att användarens första recension på detta datumet har YYYY-MM-DD 01:00:00, och det andra har YYYY-MM-DD 02:00:00 osv...
+    `review_date` datetime,
+    `like` bit DEFAULT 0 NOT NULL,
     `rating` float DEFAULT NULL,
-    `rewatch` bit NOT NULL
-);
-
-CREATE TABLE reviews (
-    `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `user_id` int NOT NULL,
-    `item_id` int NOT NULL,
-    `date` date NOT NULL,
-    `like` bit NOT NULL,
-    `rating` float DEFAULT NULL,
-    `text` text NOT NULL,
-    `spoilers` bit NOT NULL
+    `rewatch` bit,
+    `text` text,
+    `spoilers` bit
 );
 
 CREATE TABLE lists (

@@ -32,7 +32,7 @@
                             echo 
                             '<li class="activity_container">
                                 <div class="block1"><a href="/users/'.$r['user_uid'].'">'.$r['username'].'</a></div>
-                                <a class="activity_link" href="/users/'.$r['user_uid'].'/item?id='.$r['item_id'].'&entry_type='..'&entry_id='..'">
+                                <a class="activity_link" href="/users/'.$r['user_uid'].'/item?id='.$r['item_id'].'&entry_type=tmp&entry_id=tmp">
                                     <img class="poster" src="/metadata/'.$r['item_type'].'/'.$r['item_uid'].'/'.$r['item_uid'].'.jpg"></img>
                                     <div class="block2">'.$stars.'</div>
                                 </a>
