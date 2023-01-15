@@ -5,55 +5,94 @@ li { list-style-type: none; }
 ul { list-style-type: none; }
 /* button { border: none; } */
 
-#btn_l, #btn_r {
+.item_list_section {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+}
+
+button.scroll {
     width: 40px; height: 25px;
     background-color: aquamarine;
 }
 
 .item_list_container {
     border: solid 1px red;
-    margin: 0 auto;
     width: 540px;
-    overflow-x: hidden;
+    overflow: hidden;
+    margin: 0 20px;
 }
 
 .item_list {
+    width: max-content;
     display: flex;
+    align-items: center;
     column-gap: 10px;
     position: relative;
     left: 0px;
 }
 
-.item_container {
+
+.activity_container {
     width: 100px;
-    height: max-content;
+    height: 250px;
+
     display: flex;
     flex: none;
     flex-direction: column;
     align-items: center;
-    background-color: grey;
+
+    background-color: midnightblue;
 }
 
-.block1 {
+.block1, .block2 {
     width: 100%;
     height: 50px;
     display: block;
-    background-color: rgb(70, 70, 70);
 }
+.block1 { background-color: darkmagenta; }
+.block2 { background-color: darkslateblue; }
+.block1 a { color: white; }
 
-.block2 {
+.activity_link {
+    width: 100%;
+    height: 200px;
+
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    align-items: center;
+}
+.activity_link img.poster {
     width: 100%;
     height: 150px;
     display: block;
-    background-color: green;
 }
 
-.block3 {
-    width: 100%;
-    height: 50px;
-    display: block;
-    background-color: rgb(176, 24, 24);
+.activity_halfstar {
+    width: 4px;
+    height: 8px;
+    background-color: cornflowerblue;
 }
+.activity_halfstar.r { margin-right: 2px; }
+
+.activity_stars {
+    display: flex;
+}
+
+.show_more {
+    width: 100px;
+    height: 150px;
+    background-color: indigo;
+}
+
+.show_more > a {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+
 
 #star_container {
     width: 325px;
@@ -113,3 +152,4 @@ ul { list-style-type: none; }
 .half-star.activated.hover {
     background-color: cyan;
 }
+
