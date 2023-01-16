@@ -80,7 +80,7 @@ function rate($conn, $user_id, $item_id, $like, $rating) {
 
 function createReview($conn, $user_id, $item_id, $date, $like, $rating, $text, $spoilers) {
         
-    $sql = "INSERT INTO `reviews` (`user_id`, `item_id`, `date`, `like`, `rating`, `text`, `spoilers`) VALUES (?, ?, ?, ?, ?, ?, ?);";
+    $sql = "INSERT INTO `entries` (`user_id`, `item_id`, `review_date`, `like`, `rating`, `text`, `spoilers`) VALUES (?, ?, ?, ?, ?, ?, ?);";
     $stmt = mysqli_stmt_init($conn);
 
     if (!mysqli_stmt_prepare($stmt, $sql)) {
@@ -95,7 +95,7 @@ function createReview($conn, $user_id, $item_id, $date, $like, $rating, $text, $
 
 function createLog($conn, $user_id, $item_id, $date, $like, $rating, $rewatch) {
         
-    $sql = "INSERT INTO `logs` (`user_id`, `item_id`, `date`, `like`, `rating`, `rewatch`) VALUES (?, ?, ?, ?, ?, ?);";
+    $sql = "INSERT INTO `entries` (`user_id`, `item_id`, `log_date`, `like`, `rating`, `rewatch`) VALUES (?, ?, ?, ?, ?, ?);";
     $stmt = mysqli_stmt_init($conn);
 
     if (!mysqli_stmt_prepare($stmt, $sql)) {
@@ -104,6 +104,23 @@ function createLog($conn, $user_id, $item_id, $date, $like, $rating, $rewatch) {
     }
 
     mysqli_stmt_bind_param($stmt, "iisidi", $user_id, $item_id, $date, $like, $rating, $rewatch);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+}
+
+function createFullEntry($conn, $user_id, $item_id, $log_date, $review_date, $like, $rating, $rewatch, $text, $spoilers) {
+
+    // sätt in validering som ser till att alla argument är definierade
+        
+    $sql = "INSERT INTO `entries` (`user_id`, `item_id`, `log_date`, `review_date`, `like`, `rating`, `rewatch`, `text`, `spoilers`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    $stmt = mysqli_stmt_init($conn);
+
+    if (!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: /?error=stmtfailed");
+        exit();
+    }
+
+    mysqli_stmt_bind_param($stmt, "iissidisi", $user_id, $item_id, $log_date, $review_date, $like, $rating, $rewatch, $text, $spoilers);
     mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 }
@@ -139,8 +156,7 @@ if(isset($_POST["submit-log-review"])) {
         $like = 0;
     }
 
-    createReview($conn, $user_id, $item_id, $review_date, $like, $rating, $review_text, $spoilers);
-    createLog($conn, $user_id, $item_id, $log_date, $like, $rating, $rewatch);
+    createFullEntry($conn, $user_id, $item_id, $log_date, $review_date, $like, $rating, $rewatch, $review_text, $spoilers);
     rate($conn, $user_id, $item_id, $like, $rating);
 
     header("location: /");

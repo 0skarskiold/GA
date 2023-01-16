@@ -29,10 +29,28 @@
                                 $i++;
                             }
                             $stars .= '</div>';
+                            if(isset($r['log_date'])) {
+                                if(isset($r['review_date'])) {
+                                    $entry_type = 'full';
+                                    if($r['review_date'] > $r['log_rate']) {
+                                        $date_str = 'Reviewed '.$r['review_date'];
+                                    } elseif($r['log_rate'] > $r['review_date']) {
+                                        $date_str = 'Logged '.$r['log_date'];
+                                    } else {
+                                        $date_str = 'Logged and reviewed '.$r['review_date'];
+                                    }
+                                } else {
+                                    $entry_type = 'log';
+                                    $date_str = 'Logged '.$r['log_date'];
+                                }
+                            } else {
+                                $entry_type = 'review';
+                                $date_str = 'Reviewed '.$r['review_date'];
+                            }
                             echo 
                             '<li class="activity_container">
                                 <div class="block1"><a href="/users/'.$r['user_uid'].'">'.$r['username'].'</a></div>
-                                <a class="activity_link" href="/users/'.$r['user_uid'].'/item?id='.$r['item_id'].'&entry_type=tmp&entry_id=tmp">
+                                <a class="activity_link" href="/users/'.$r['user_uid'].'/entry?entry_id='.$r['entry_id'].'&entry_type='.$entry_type.'&item_uid='.$r['item_uid'].'">
                                     <img class="poster" src="/metadata/'.$r['item_type'].'/'.$r['item_uid'].'/'.$r['item_uid'].'.jpg"></img>
                                     <div class="block2">'.$stars.'</div>
                                 </a>
