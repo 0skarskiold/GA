@@ -17,6 +17,7 @@
                 <button class="scroll l" for="recent" <?php if(count($recent) > 0) { echo "hidden"; } ?> >left</button>
                 <div class="item_list_container" id="recent">
                     <ul class="item_list">
+
                         <?php foreach($recent as $r) {
                             $i = 0;
                             $stars = '';
@@ -28,6 +29,13 @@
                                 }
                                 $i++;
                             }
+                            if($r['rewatch'] == 1) { 
+                                $rewatch = '<div class="icon rewatch"></div>';
+                            } else { $rewatch = ''; }
+                            if($r['spoilers'] == 1) { 
+                                $spoilers = '<div class="icon spoilers"></div>';
+                            } else { $spoilers = ''; }
+
                             echo // lägg till en flik som fälls upp då du hover:ar över användarnamnet som säger "visa all ny aktivitet från [namn]" som ger en länk till just det.
                             '<li class="activity_container">
                                 <div class="block1"><a href="/users/'.$r['user_uid'].'">'.$r['username'].'</a></div>
@@ -36,10 +44,13 @@
                                     <div class="block2">
                                         <div class="activity_stars">'.$stars.'</div>
                                         <p>'.$r['date_string'].'</p>
+                                        '.$rewatch.$spoilers.'
                                     </div>
                                 </a>
                             </li>';
+
                         } ?>
+
                         <li class="show_more">
                             <a href="/recent-activity"></a>
                         </li>

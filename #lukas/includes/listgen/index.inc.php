@@ -71,15 +71,14 @@ function fetchRecent($conn, $user_id) {
 
         $i=0;
         $arr = [];
-        while($i<=19 && $i<count($recent)) {
-            
-            if(!isset($recent[$i])) { // validering
-                print_r('Någon har dampat rejält');
-                exit();
-            }
+
+        while($i < 19) {
 
             if(in_array($recent[$i]['user_id'], $arr)) {
                 array_splice($recent, $i, 1);
+                if(count($recent) <= $i) {
+                    break;
+                }
             } else {
                 $arr += [$recent[$i]['user_id']];
                 $i++;
