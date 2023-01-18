@@ -17,7 +17,8 @@ function fetchRecent($conn, $user_id) {
     $following = mysqli_fetch_row($result);
     mysqli_free_result($result);
 
-    if(isset($following) && $num = count($following) > 0) {
+    $num = count($following);
+    if(isset($following) && $num > 0) {
 
         $marks = "(".str_repeat("?, ", $num-1)."?)";
 

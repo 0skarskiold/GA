@@ -3,7 +3,7 @@ RewriteEngine on
 RewriteRule ^dummy.html$ http://www.google.com/ [R=301]
 
 RewriteRule ^users/([^/]+)/?$ profile.php?uid=$1 [L]
-RewriteRule ^users/([^/]+)/entry/?$ entry.php [L]
+RewriteRule ^users/([^/]+)/entries/?$ entry.php [L]
 
 RewriteRule ^forms$ forms.php [L]
 
