@@ -69,75 +69,60 @@ function fetchRecent($conn, $user_id) {
         $recent = mysqli_fetch_all($result, MYSQLI_ASSOC);
         mysqli_free_result($result);
 
-        foreach($recent as $k1 => $r) { // pilen gör k1 till index för r1
-            for($k2=$k1+1; $k2<count($recent);$k2++) {
-                if($r['user_id'] == $recent[$k2]['user_id']) {
-                    unset($recent[$k2]);
-                }
-                if($k1 > 19 && count($recent[0...$k1]) >= 19) {
-                    $tmp = $recent[0\...$k1];
-                    if() {
-
-                    }
-                    $tmp = $recent[0...$k1];
-                    exit();
-                }
-            }
-        }
         $i=0;
         $arr = [];
-        while($i<19) {
-            if(in_array($recent[$i]['user_id'], $arr)) {
-                $arr += $recent[$i]['user_id'];
-                unset
+        while($i<=19) {
+            if(!isset($recent[$i])) {
+                print_r('Någon har dampat rejält');
+                exit();
             }
-            
+
+            if(in_array($recent[$i]['user_id'], $arr)) {
+                array_splice($recent, $i, 1);
+            } else {
+                $arr += [$recent[$i]['user_id']];
+                $i++;
+            }
         }
 
-        $recent = $tmp;
-
         foreach($recent as $k1 => $r) {
+            if(isset($r['log_date'])) {
 
-            if(isset($recent[$k1])) {
+                $t = strtotime($r['log_date']);
+                $log_date = date('Y-m-d', $t);
 
-                if(isset($r['log_date'])) {
-
-                    $t = strtotime($r['log_date']);
-                    $log_date = date('Y-m-d', $t);
-
-                    if(isset($r['review_date'])) {
-
-                        $t = strtotime($r['review_date']);
-                        $review_date = date('Y-m-d', $t);
-
-                        $entry_type = 'full';
-
-                        if($r['review_date'] > $r['log_rate']) {
-                            $date_str = 'Reviewed '.$review_date;
-                        } elseif($r['log_rate'] > $r['review_date']) {
-                            $date_str = 'Logged '.$log_date;
-                        } else {
-                            $date_str = 'Logged and reviewed '.$review_date;
-                        }
-
-                    } else {
-
-                        $entry_type = 'log';
-                        $date_str = 'Logged '.$log_date;
-                    }
-                } else {
+                if(isset($r['review_date'])) {
 
                     $t = strtotime($r['review_date']);
                     $review_date = date('Y-m-d', $t);
 
-                    $entry_type = 'review';
-                    $date_str = 'Reviewed '.$review_date;
+                    $entry_type = 'full';
 
+                    if($r['review_date'] > $r['log_rate']) {
+                        $date_str = 'Reviewed '.$review_date;
+                    } elseif($r['log_rate'] > $r['review_date']) {
+                        $date_str = 'Logged '.$log_date;
+                    } else {
+                        $date_str = 'Logged and reviewed '.$review_date;
+                    }
+
+                } else {
+
+                    $entry_type = 'log';
+                    $date_str = 'Logged '.$log_date;
                 }
+            } else {
 
-                $recent[$k1]['entry_type'] = $entry_type;
-                $recent[$k1]['date_string'] = $date_str;
+                $t = strtotime($r['review_date']);
+                $review_date = date('Y-m-d', $t);
+
+                $entry_type = 'review';
+                $date_str = 'Reviewed '.$review_date;
+
             }
+
+            $recent[$k1]['entry_type'] = $entry_type;
+            $recent[$k1]['date_string'] = $date_str;
         }
     }
 
