@@ -19,7 +19,7 @@
                     <ul class="item_list">
                         <?php foreach($recent as $r) {
                             $i = 0;
-                            $stars = '<div class="activity_stars">';
+                            $stars = '';
                             for($j = $r['rating']; $j > 0; $j -= 0.5) {
                                 if($i % 2 == 0) {
                                     $stars .= '<div class="activity_halfstar l"></div>';
@@ -28,13 +28,15 @@
                                 }
                                 $i++;
                             }
-                            $stars .= '</div>';
                             echo // lägg till en flik som fälls upp då du hover:ar över användarnamnet som säger "visa all ny aktivitet från [namn]" som ger en länk till just det.
                             '<li class="activity_container">
                                 <div class="block1"><a href="/users/'.$r['user_uid'].'">'.$r['username'].'</a></div>
-                                <a class="activity_link" href="/users/'.$r['user_uid'].'/entry?entry_id='.$r['entry_id'].'&entry_type='.$entry_type.'&item_uid='.$r['item_uid'].'">
+                                <a class="activity_link" href="/users/'.$r['user_uid'].'/entry?entry_id='.$r['entry_id'].'&entry_type='.$r['entry_type'].'&item_uid='.$r['item_uid'].'">
                                     <img class="poster" src="/metadata/'.$r['item_type'].'/'.$r['item_uid'].'/'.$r['item_uid'].'.jpg"></img>
-                                    <div class="block2">'.$stars.'</div>
+                                    <div class="block2">
+                                        <div class="activity_stars">'.$stars.'</div>
+                                        <p>'.$r['date_string'].'</p>
+                                    </div>
                                 </a>
                             </li>';
                         } ?>

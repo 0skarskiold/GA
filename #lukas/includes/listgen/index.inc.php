@@ -71,8 +71,9 @@ function fetchRecent($conn, $user_id) {
 
         $i=0;
         $arr = [];
-        while($i<=19) {
-            if(!isset($recent[$i])) {
+        while($i<=19 && $i<count($recent)) {
+            
+            if(!isset($recent[$i])) { // validering
                 print_r('Någon har dampat rejält');
                 exit();
             }
@@ -83,9 +84,10 @@ function fetchRecent($conn, $user_id) {
                 $arr += [$recent[$i]['user_id']];
                 $i++;
             }
+
         }
 
-        foreach($recent as $k1 => $r) {
+        foreach($recent as $k => $r) {
             if(isset($r['log_date'])) {
 
                 $t = strtotime($r['log_date']);
@@ -121,8 +123,8 @@ function fetchRecent($conn, $user_id) {
 
             }
 
-            $recent[$k1]['entry_type'] = $entry_type;
-            $recent[$k1]['date_string'] = $date_str;
+            $recent[$k]['entry_type'] = $entry_type;
+            $recent[$k]['date_string'] = $date_str;
         }
     }
 
