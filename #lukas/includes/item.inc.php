@@ -9,7 +9,7 @@ if($type === "series") {
     $join = "INNER JOIN `attributes_series` ON `items`.`id` = `attributes_series`.`series_id` ";
 }
 
-$sql = "SELECT * FROM `items` ".$join."WHERE `uid` = ? AND `type` = ? LIMIT 1;"; // not secure, user can put anything in here, make prepared statements
+$sql = "SELECT * FROM `items` ".$join."WHERE `uid` = ? AND `type` = ? LIMIT 1;";
 $stmt = mysqli_stmt_init($conn);
 
 if(!mysqli_stmt_prepare($stmt, $sql)) {

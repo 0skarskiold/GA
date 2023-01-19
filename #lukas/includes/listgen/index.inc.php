@@ -100,18 +100,18 @@ function fetchRecent($conn, $user_id) {
 
                     $entry_type = 'full';
 
-                    if($r['review_date'] > $r['log_rate']) {
+                    if($r['review_date'] > $r['log_date']) {
                         $date_str = 'Reviewed '.$review_date;
-                    } elseif($r['log_rate'] > $r['review_date']) {
-                        $date_str = 'Logged '.$log_date;
+                    } elseif($r['log_date'] > $r['review_date']) {
+                        $date_str = 'Watched '.$log_date;
                     } else {
-                        $date_str = 'Logged and reviewed '.$review_date;
+                        $date_str = 'Watched and reviewed '.$review_date;
                     }
 
                 } else {
 
                     $entry_type = 'log';
-                    $date_str = 'Logged '.$log_date;
+                    $date_str = 'Watched '.$log_date;
                 }
             } else {
 
