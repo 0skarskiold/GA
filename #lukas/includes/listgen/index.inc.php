@@ -17,66 +17,114 @@ function fetchRecent($conn, $user_id) {
     $following = mysqli_fetch_row($result);
     mysqli_free_result($result);
 
-    if(isset($following)) {
-        $num = count($following);
-        if($num > 0) {
+    $num = count($following);
+    if(isset($following) && $num > 0) {
 
-            $stmt = mysqli_stmt_init($conn);
-            if($num >= 2) { $marks = "(?".str_repeat(",?", $num-1).")"; } else { $marks = "(?)"; }
-            $date_lim = date('Y-m-d H:i:s', strtotime('-1 week')); // gör h:i:s till 00:00:00
-            $sql = "SELECT 
-            `entries`.`user_id` AS `user_id`, 
-            `users`.`uid` AS `user_uid`, 
-            `users`.`name` AS `username`, 
-            `entries`.`id` AS `entry_id`, 
-            `entries`.`like` AS `like`, 
-            `entries`.`rating` AS `rating`, 
-            `entries`.`item_id` AS `item_id`, 
-            `entries`.`log_date` AS `log_date`, 
-            `entries`.`review_date` AS `review_date`, 
-            `entries`.`rewatch` AS `rewatch`, 
-            `entries`.`spoilers` AS `spoilers`, 
-            `items`.`type` AS `item_type`, 
-            `items`.`uid` AS `item_uid`, 
-            `items`.`name` AS `item_name`, 
-            `items`.`year` AS `item_year`
-            FROM `entries` 
-            INNER JOIN `items` ON `items`.`id` = `entries`.`item_id` 
-            INNER JOIN `follow` ON `follow`.`to_id` = `entries`.`user_id` 
-            INNER JOIN `users` ON `users`.`id` = `follow`.`to_id` 
-            WHERE `follow`.`to_id` IN $marks AND 
-            (CASE 
-            WHEN `log_date` IS NULL THEN `review_date` >= '$date_lim' 
-            WHEN `review_date` IS NULL THEN `log_date` >= '$date_lim' 
-            WHEN `review_date` > `log_date` THEN `review_date` >= '$date_lim' 
-            WHEN `log_date` > `review_date` THEN `log_date` >= '$date_lim' 
-            ELSE `log_date` >= '$date_lim' 
-            END) 
-            ORDER BY 
-            (CASE 
-            WHEN `log_date` IS NULL THEN `review_date` 
-            WHEN `review_date` IS NULL THEN `log_date`
-            WHEN `review_date` > `log_date` THEN `review_date` 
-            WHEN `log_date` > `review_date` THEN `log_date` 
-            ELSE `log_date` 
-            END) 
-            LIMIT 19;";
+        $marks = "(".str_repeat("?, ", $num-1)."?)";
 
+        $sql = "SELECT 
+        `entries`.`user_id` AS `user_id`, 
+        `users`.`uid` AS `user_uid`, 
+        `users`.`name` AS `username`, 
+        `entries`.`id` AS `entry_id`, 
+        `entries`.`like` AS `like`, 
+        `entries`.`rating` AS `rating`, 
+        `entries`.`item_id` AS `item_id`, 
+        `entries`.`log_date` AS `log_date`, 
+        `entries`.`review_date` AS `review_date`, 
+        IF(
+            `review_date` IS NULL, `log_date`, IF(
+                `log_date` IS NULL, `review_date`, IF(
+                    `log_date` >= `review_date`, `log_date`, `review_date`
+                )
+            )
+        ) AS `main_date`, 
+        -- ROW_NUMBER() OVER (PARTITION BY `user_id` ORDER BY `main_date` DESC) AS `count_user_id`, -- funkar inte whyyyy
+        -- COUNT(*) AS `n`, -- funkar inte whyyyy
+        `entries`.`rewatch` AS `rewatch`, 
+        `entries`.`spoilers` AS `spoilers`,  
+        `items`.`type` AS `item_type`, 
+        `items`.`uid` AS `item_uid`, 
+        `items`.`name` AS `item_name`, 
+        `items`.`year` AS `item_year`
+        FROM `entries` 
+        INNER JOIN `items` ON `items`.`id` = `entries`.`item_id` 
+        INNER JOIN `follow` ON `follow`.`to_id` = `entries`.`user_id` 
+        INNER JOIN `users` ON `users`.`id` = `follow`.`to_id` 
+        WHERE `follow`.`to_id` IN $marks 
+        ORDER BY `main_date` DESC 
+        LIMIT 200 -- hade hellre haft 19 här men kan inte då vi inte vill ha dubletter, och har inte lyckats ta bort de direkt i query:n, så eftersom de ska tas bort efter att query:n körts så behöver vi hämte fler än vad som troligen behövs
+        ;";
+    
+        $param_str = str_repeat("i", $num);
 
-            if (!mysqli_stmt_prepare($stmt, $sql)) {
-                header("location: /?error=stmtfailed");
-                exit();
+        $stmt = mysqli_stmt_init($conn);
+        if (!mysqli_stmt_prepare($stmt, $sql)) {
+            header("location: /?error=stmtfailed");
+            exit();
+        }    
+        mysqli_stmt_bind_param($stmt, $param_str, ...$following);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        mysqli_stmt_close($stmt);
+        $recent = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        mysqli_free_result($result);
+
+        $i=0;
+        $arr = [];
+
+        while($i < 19) {
+
+            if(in_array($recent[$i]['user_id'], $arr)) {
+                array_splice($recent, $i, 1);
+                if(count($recent) <= $i) {
+                    break;
+                }
+            } else {
+                $arr += [$recent[$i]['user_id']];
+                $i++;
             }
-        
-            $param_str = str_repeat("i", $num);
 
-            mysqli_stmt_bind_param($stmt, $param_str, ...$following);
-            mysqli_stmt_execute($stmt);
-            $result = mysqli_stmt_get_result($stmt);
-            mysqli_stmt_close($stmt);
-            $recent = mysqli_fetch_all($result, MYSQLI_ASSOC);
-            mysqli_free_result($result);
+        }
 
+        foreach($recent as $k => $r) {
+            if(isset($r['log_date'])) {
+
+                $t = strtotime($r['log_date']);
+                $log_date = date('Y-m-d', $t);
+
+                if(isset($r['review_date'])) {
+
+                    $t = strtotime($r['review_date']);
+                    $review_date = date('Y-m-d', $t);
+
+                    $entry_type = 'full';
+
+                    if($r['review_date'] > $r['log_date']) {
+                        $date_str = 'Reviewed '.$review_date;
+                    } elseif($r['log_date'] > $r['review_date']) {
+                        $date_str = 'Watched '.$log_date;
+                    } else {
+                        $date_str = 'Watched and reviewed '.$review_date;
+                    }
+
+                } else {
+
+                    $entry_type = 'log';
+                    $date_str = 'Watched '.$log_date;
+                }
+            } else {
+
+                $t = strtotime($r['review_date']);
+                $review_date = date('Y-m-d', $t);
+
+                $entry_type = 'review';
+                $date_str = 'Reviewed '.$review_date;
+
+            }
+
+            $recent[$k]['entry_type'] = $entry_type;
+            $recent[$k]['date_string'] = $date_str;
         }
     }
 

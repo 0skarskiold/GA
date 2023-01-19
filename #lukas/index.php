@@ -17,9 +17,10 @@
                 <button class="scroll l" for="recent" <?php if(count($recent) > 0) { echo "hidden"; } ?> >left</button>
                 <div class="item_list_container" id="recent">
                     <ul class="item_list">
+
                         <?php foreach($recent as $r) {
                             $i = 0;
-                            $stars = '<div class="activity_stars">';
+                            $stars = '';
                             for($j = $r['rating']; $j > 0; $j -= 0.5) {
                                 if($i % 2 == 0) {
                                     $stars .= '<div class="activity_halfstar l"></div>';
@@ -28,34 +29,28 @@
                                 }
                                 $i++;
                             }
-                            $stars .= '</div>';
-                            if(isset($r['log_date'])) {
-                                if(isset($r['review_date'])) {
-                                    $entry_type = 'full';
-                                    if($r['review_date'] > $r['log_rate']) {
-                                        $date_str = 'Reviewed '.$r['review_date'];
-                                    } elseif($r['log_rate'] > $r['review_date']) {
-                                        $date_str = 'Logged '.$r['log_date'];
-                                    } else {
-                                        $date_str = 'Logged and reviewed '.$r['review_date'];
-                                    }
-                                } else {
-                                    $entry_type = 'log';
-                                    $date_str = 'Logged '.$r['log_date'];
-                                }
-                            } else {
-                                $entry_type = 'review';
-                                $date_str = 'Reviewed '.$r['review_date'];
-                            }
-                            echo 
+                            if($r['rewatch'] == 1) { 
+                                $rewatch = '<div class="icon rewatch"></div>';
+                            } else { $rewatch = ''; }
+                            if($r['spoilers'] == 1) { 
+                                $spoilers = '<div class="icon spoilers"></div>';
+                            } else { $spoilers = ''; }
+
+                            echo // lägg till en flik som fälls upp då du hover:ar över användarnamnet som säger "visa all ny aktivitet från [namn]" som ger en länk till just det.
                             '<li class="activity_container">
                                 <div class="block1"><a href="/users/'.$r['user_uid'].'">'.$r['username'].'</a></div>
-                                <a class="activity_link" href="/users/'.$r['user_uid'].'/entry?entry_id='.$r['entry_id'].'&entry_type='.$entry_type.'&item_uid='.$r['item_uid'].'">
+                                <a class="activity_link" href="/users/'.$r['user_uid'].'/entries?id='.$r['entry_id'].'">
                                     <img class="poster" src="/metadata/'.$r['item_type'].'/'.$r['item_uid'].'/'.$r['item_uid'].'.jpg"></img>
-                                    <div class="block2">'.$stars.'</div>
+                                    <div class="block2">
+                                        <div class="activity_stars">'.$stars.'</div>
+                                        <p>'.$r['date_string'].'</p>
+                                        '.$rewatch.$spoilers.'
+                                    </div>
                                 </a>
                             </li>';
+
                         } ?>
+
                         <li class="show_more">
                             <a href="/recent-activity"></a>
                         </li>
