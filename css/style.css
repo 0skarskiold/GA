@@ -344,6 +344,27 @@ header h1 a{
     width: 50vw;
     margin: auto;
     height: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#filters_container select{
+    color: black;
+}
+
+#filters_container option{
+    color: black;
+}
+
+#filter_button{
+    color: black;
+    background-color: yellow;
+    width: 5vw;
+    height: 2rem;
+    border-radius: 5px;
+    font-size: 1rem;
 }
 
 #search_name{
