@@ -47,3 +47,19 @@ $sql = "SELECT `collections`.* FROM `collections` INNER JOIN `items_collections`
 $result = mysqli_query($conn, $sql);
 $collections = mysqli_fetch_all($result, MYSQLI_ASSOC);
 mysqli_free_result($result);
+
+// hämtar de tio populäraste recensionerna
+$sql = "SELECT `entries`.* 
+FROM `entries`
+WHERE `review_date` IS NOT NULL AND `item_id` = ".$item['id']." 
+;"; // ORDER BY `likes`
+
+$result = mysqli_query($conn, $sql);
+$reviews_most_liked = mysqli_fetch_all($result, MYSQLI_ASSOC);
+mysqli_free_result($result);
+
+// hämtar de tio senaste recensionerna
+
+// hämtar fem (slumpmässigt utvalda) recensioner från personer du följer
+
+// hämtar fem slumpmässigt utvalda recensioner
