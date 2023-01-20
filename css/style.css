@@ -1,7 +1,7 @@
 *{
-    background-color: black;
     color: yellow;
     font-family: 'Oxygen', sans-serif;
+    letter-spacing: 1.5px;
 }
 
 *::-webkit-scrollbar{
@@ -12,7 +12,8 @@
 
 body {
     --color1: black;
-
+    background-color: black;
+    overflow-x: hidden;
 }
 
 #index_body{
@@ -49,7 +50,7 @@ header{
 }
 
 #add_icon{
-    height: 80px;
+    height: 90px;
 }
 
 header img{
@@ -325,6 +326,7 @@ header h1 a{
     display: grid;
     grid-template-areas:
     "hdr"
+    "flt"
     "nam"
     "moi"
     "mov"
@@ -332,9 +334,37 @@ header h1 a{
     "pro"
     ;
     grid-template-columns: 1fr;
-    grid-template-rows: 200px 4rem 3rem 1fr 3rem 1fr;
+    grid-template-rows: 200px 10vh 4rem 4rem 40vh 3rem 1fr;
     height: 150vh;
     width: auto;
+}
+
+#filters_container{
+    grid-area: flt;
+    width: 50vw;
+    margin: auto;
+    height: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#filters_container select{
+    color: black;
+}
+
+#filters_container option{
+    color: black;
+}
+
+#filter_button{
+    color: black;
+    background-color: yellow;
+    width: 5vw;
+    height: 2rem;
+    border-radius: 5px;
+    font-size: 1rem;
 }
 
 #search_name{
@@ -367,7 +397,7 @@ header h1 a{
 }
 
 #result_movie_posters img{
-    height: 28vh;
+    height: 40vh;
     border-radius: 5px;
 }
 
@@ -383,12 +413,15 @@ header h1 a{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    align-items: center;
+    align-items: flex-start;
     border-style: solid;
     border-radius: 5px;
     border-color: yellow;
     height: 20vh;
     width: 20vw;
+    padding-bottom: 10px;
+    overflow: hidden;
+    text-overflow: clip;
 }
 
 .profile_items img{
@@ -397,7 +430,7 @@ header h1 a{
 
 .profile_items div{
     width: 10vw;
-    max-height: 20vh;
+    max-height: 10vh;
 }
 
 h3{
@@ -511,7 +544,6 @@ h3{
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    background:none;
 }
 
 #profile_stuff h2{
@@ -666,14 +698,17 @@ h3{
 }
 
 #watched_and_spoilers{
-    width: 30vw;
+    width: 50vw;
     display: flex;
     justify-content: space-evenly;
 }
 
 .checkbox_container{
     display: flex;
-    align-items: center;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    height: 2rem;
 }
 
 /*Större font-size??*/
