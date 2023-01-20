@@ -14,6 +14,17 @@
 
         </main>
 
+    <?php elseif($_GET['list'] === 'ratings'): 
+    require_once("includes/ratings.inc.php"); ?>
+
+        <main>
+            
+            <?php foreach($ratings as $rating) {
+                var_dump($rating);
+            } ?>
+
+        </main>
+
     <?php elseif($_GET['list'] === 'reviews'): 
     require_once("includes/reviews.inc.php"); ?>
 

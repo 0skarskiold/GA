@@ -18,20 +18,18 @@
                 echo '<a href="/forms" class="button">Log in</a>';
             }
         ?>
-        <p>create:</p>
+        <p>Create:</p>
         <!-- <form action="/create" method="post">
             <input type="hidden" value="review" name="type">
             <button type="submit">Review</button>
-        </form> -->
+        </form> --> <!--ifall man vill göra det via post istället för get, främst för att det ser bättre ut i url:en-->
         <?php
             if(isset($item["id"])) {
                 echo '<a href="/create?type=log&itemid='.$item["id"].'">Diary Entry</a>
-                <a href="/create?type=review&itemid='.$item["id"].'">Review</a>
-                <a href="/create?type=list&itemid='.$item["id"].'">List</a>';
+                <a href="/create?type=review&itemid='.$item["id"].'">Review</a>';
             } else {
                 echo '<a href="/create?type=log">Diary Entry</a>
-                <a href="/create?type=review">Review</a>
-                <a href="/create?type=list">List</a>';
+                <a href="/create?type=review">Review</a>';
             }
         ?>
     </nav>

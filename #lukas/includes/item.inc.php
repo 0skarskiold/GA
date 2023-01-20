@@ -52,14 +52,33 @@ mysqli_free_result($result);
 $sql = "SELECT `entries`.* 
 FROM `entries`
 WHERE `review_date` IS NOT NULL AND `item_id` = ".$item['id']." 
-;"; // ORDER BY `likes`
+LIMIT 10;"; // ORDER BY `likes` DESC
 
 $result = mysqli_query($conn, $sql);
-$reviews_most_liked = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$reviews_liked = mysqli_fetch_all($result, MYSQLI_ASSOC);
 mysqli_free_result($result);
 
 // hämtar de tio senaste recensionerna
+$sql = "SELECT `entries`.* 
+FROM `entries`
+WHERE `review_date` IS NOT NULL AND `item_id` = ".$item['id']." 
+ORDER BY `review_date` DESC 
+LIMIT 10;";
+
+$result = mysqli_query($conn, $sql);
+$reviews_recent = mysqli_fetch_all($result, MYSQLI_ASSOC);
+mysqli_free_result($result);
 
 // hämtar fem (slumpmässigt utvalda) recensioner från personer du följer
 
+
 // hämtar fem slumpmässigt utvalda recensioner
+$sql = "SELECT `entries`.* 
+FROM `entries`
+WHERE `review_date` IS NOT NULL AND `item_id` = ".$item['id']." 
+ORDER BY RAND() 
+LIMIT 5;";
+
+$result = mysqli_query($conn, $sql);
+$reviews_random = mysqli_fetch_all($result, MYSQLI_ASSOC);
+mysqli_free_result($result);

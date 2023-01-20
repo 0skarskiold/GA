@@ -4,6 +4,7 @@ RewriteRule ^dummy.html$ http://www.google.com/ [R=301]
 
 RewriteRule ^users/([^/]+)/?$ profile.php?uid=$1 [L]
 RewriteRule ^users/([^/]+)/entry/?$ entry.php [L]
+RewriteRule ^users/([^/]+)/ratings/?$ entry.php?user_uid=$1&list=ratings [L]
 RewriteRule ^users/([^/]+)/reviews/?$ entry.php?user_uid=$1&list=reviews [L]
 RewriteRule ^users/([^/]+)/diary/?$ entry.php?user_uid=$1&list=logs [L]
 

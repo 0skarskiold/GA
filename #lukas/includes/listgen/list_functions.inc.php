@@ -156,7 +156,7 @@ function retrieveTags($conn) {
 
 }
 
-function retrieveUsers($conn, $search, $factor, $order, $lim) {
+function retrieveUsers($conn) {
 
     $sql = "SELECT `id`, `name`, `uid` FROM `users` ORDER BY `name`;";
 

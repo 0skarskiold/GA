@@ -2,6 +2,7 @@
 
 function rate($conn, $user_id, $item_id, $like, $rating) {
 
+    // kollar om du redan rate:at item:et
     $sql = "SELECT COUNT(*) FROM `ratings` WHERE `user_id` = ? AND `item_id` = ?;";
     $stmt = mysqli_stmt_init($conn);
 
@@ -17,7 +18,11 @@ function rate($conn, $user_id, $item_id, $like, $rating) {
     $count = mysqli_fetch_row($result)[0];
     mysqli_free_result($result);
 
+    $date = date('Y-m-d H:i:s');
+
     if($count === 0) {
+
+        // skapar din rating
         $stmt = mysqli_stmt_init($conn);
         $sql = "INSERT INTO `ratings` (`user_id`, `item_id`, `like`, `rating`, `created_date`, `last_edited_date`) VALUES (?, ?, ?, ?, ?, ?);";
         
@@ -25,14 +30,14 @@ function rate($conn, $user_id, $item_id, $like, $rating) {
             header("location: /?error=stmtfailed");
             exit();
         }
-
-        $date = date('Y-m-d H:i:s');
         
         mysqli_stmt_bind_param($stmt, "iiidss", $user_id, $item_id, $like, $rating, $date, $date);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
     } elseif($count === 1) {
+
+        // updaterar din rating
         $stmt = mysqli_stmt_init($conn);
         $sql = "UPDATE `ratings` SET `like` = ?, `rating` = ?, `last_edited_date` = ? WHERE `user_id` = ? AND `item_id` = ?;";
         
@@ -40,16 +45,16 @@ function rate($conn, $user_id, $item_id, $like, $rating) {
             header("location: /?error=stmtfailed");
             exit();
         }
-
-        $date = date('Y-m-d H:i:s');
         
         mysqli_stmt_bind_param($stmt, "idsii", $like, $rating, $date, $user_id, $item_id);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
     } elseif($count > 1) {
+
+        // om något gått fel och flera skapats så raderas alla förutom den första
         $stmt = mysqli_stmt_init($conn);
-        $sql = "DELETE FROM `ratings` WHERE `user_id` = ? AND `item_id` = ? ORDER BY `created_date` DESC LIMIT ".($count-1).";";
+        $sql = "DELETE FROM `ratings` WHERE `user_id` = ? AND `item_id` = ? ORDER BY `created_date` ASC LIMIT ".($count-1).";";
 
         if(!mysqli_stmt_prepare($stmt, $sql)) {
             header("location: /?error=stmtfailed");
@@ -60,7 +65,7 @@ function rate($conn, $user_id, $item_id, $like, $rating) {
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
-
+        // uppdaterar den oraderade
         $stmt = mysqli_stmt_init($conn);
         $sql = "UPDATE `ratings` SET `like` = ?, `rating` = ?, `last_edited_date` = ? WHERE `user_id` = ? AND `item_id` = ?;";
         
@@ -76,10 +81,24 @@ function rate($conn, $user_id, $item_id, $like, $rating) {
         mysqli_stmt_close($stmt);
     }
 
+    // uppdaterar avg rating på föremålet
+    $stmt = mysqli_stmt_init($conn);
+    $sql = "UPDATE `items` SET `rating` = (SELECT AVG(`rating`) FROM `ratings` WHERE `item_id` = ?) WHERE `id` = ?;";
+    
+    if(!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: /?error=stmtfailed");
+        exit();
+    }
+    
+    mysqli_stmt_bind_param($stmt, "ii", $item_id, $item_id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
 }
 
 function createReview($conn, $user_id, $item_id, $date, $like, $rating, $text, $spoilers) {
         
+    // stoppar angivna review-värden i entries
     $sql = "INSERT INTO `entries` (`user_id`, `item_id`, `review_date`, `like`, `rating`, `text`, `spoilers`) VALUES (?, ?, ?, ?, ?, ?, ?);";
     $stmt = mysqli_stmt_init($conn);
 
@@ -94,7 +113,8 @@ function createReview($conn, $user_id, $item_id, $date, $like, $rating, $text, $
 }
 
 function createLog($conn, $user_id, $item_id, $date, $like, $rating, $rewatch) {
-        
+    
+    // stoppar angivna log-värden i entries
     $sql = "INSERT INTO `entries` (`user_id`, `item_id`, `log_date`, `like`, `rating`, `rewatch`) VALUES (?, ?, ?, ?, ?, ?);";
     $stmt = mysqli_stmt_init($conn);
 
@@ -111,7 +131,8 @@ function createLog($conn, $user_id, $item_id, $date, $like, $rating, $rewatch) {
 function createFullEntry($conn, $user_id, $item_id, $log_date, $review_date, $like, $rating, $rewatch, $text, $spoilers) {
 
     // sätt in validering som ser till att alla argument är definierade
-        
+    
+    // stoppar angivna log- och review-värden i entries
     $sql = "INSERT INTO `entries` (`user_id`, `item_id`, `log_date`, `review_date`, `like`, `rating`, `rewatch`, `text`, `spoilers`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
     $stmt = mysqli_stmt_init($conn);
 

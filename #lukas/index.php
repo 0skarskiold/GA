@@ -1,18 +1,19 @@
 <?php 
-    session_start(); 
-    require_once("includes/dbh.inc.php");
-    if(isset($_SESSION['userid'])) {
-        require_once("includes/listgen/index.inc.php");
+    session_start(); // tillåter sessions
+    require_once("includes/dbh.inc.php"); // connect:ar till servern
+    if(isset($_SESSION['userid'])) { // om du är inloggad
+        require_once("includes/listgen/index.inc.php"); // hämtar ny aktivitet av användare du följer
     }
-    require_once("sections/contents.php"); 
+    require_once("sections/contents.php"); // html-head, kopplar css och js
 ?>
 <body>
-    <?php include_once("sections/header.php"); ?>
+    <?php include_once("sections/header.php"); // html header ?> 
 
     <main>
-        <h2><?php echo var_dump($recent); ?></h2>
-        <?php if(count($recent) > 0): ?>
-            <section class="item_list_section">
+
+        <!-- <h2><?php // echo var_dump($recent); ?></h2> -->
+        <?php if(isset($_SESSION['userid']) && count($recent) > 0): // om du är inloggad och databasen hittar aktivitet från de du följer ?> 
+            <section class="item_list_section recent_activity">
 
                 <button class="scroll l" for="recent" <?php if(count($recent) > 0) { echo "hidden"; } ?> >left</button>
                 <div class="item_list_container" id="recent">
@@ -60,6 +61,38 @@
 
             </section>
         <?php endif; ?>
+
+        <section class="item_list_section popular">
+
+            <select name="popular-type">
+                <option value="all">All time</option>
+                <option value="week">This week</option>
+            </select>
+
+            <button class="scroll l" for="popular" <?php $popular=[]; if(count($popular) > 0) { echo "hidden"; } ?> >left</button>
+            <div class="item_list_container" id="popular">
+                <ul class="item_list">
+
+                    <?php foreach($popular as $p) {
+
+                        echo // att göra: lägg till en flik som fälls upp då du hover:ar över användarnamnet som säger "visa all ny aktivitet från [namn]" som ger en länk till just det.
+                        '<li class="item_container">
+                            <a class="item_link" href="/'.str_replace("_","-",$p['item_type']).'/'.$p['item_uid'].'">
+                                <img class="poster" src="/metadata/'.$p['item_type'].'/'.$p['item_uid'].'/'.$p['item_uid'].'.jpg"></img>
+                            </a>
+                        </li>';
+
+                    } ?>
+
+                    <li class="show_more">
+                        <a href="/popular-all-time"></a> <!--ska påverkas av select:popular-type-->
+                    </li>
+                </ul>
+            </div>
+            <button class="scroll r" for="recent" <?php if(count($popular) > 0) { echo "hidden"; } ?> >right</button>
+
+            </section>
+
     </main>
 
     <?php include_once("sections/footer.php"); ?>

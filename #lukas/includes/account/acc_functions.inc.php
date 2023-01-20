@@ -159,17 +159,33 @@ function isFollowing($conn, $from_id, $to_id) {
 function fetchUser($conn, $uid) {
 
     $stmt = mysqli_stmt_init($conn);
-    $sql = "SELECT `id`, `name`, `uid` FROM `users` WHERE `uid` = ? ORDER BY `name` LIMIT 1;";
+    $sql = "SELECT `id`, `name`, `uid`, 
+    `favorites` = 
+        (SELECT `user_favorites`.`item_id` AS `item_id`, 
+        `user_favorites`.`number` AS `number`, 
+        `items`.`name` AS `item_name`, 
+        `items`.`year` AS `item_year`, 
+        `items`.`uid` AS `item_uid` 
+        FROM `user_favorites` 
+        INNER JOIN `items` ON `user_favorites`.`item_id` = `items`.`id` 
+        INNER JOIN `users` ON `user_favorites`.`user_id` = `users`.`id` 
+        WHERE `users`.`uid` = ? 
+        ORDER BY `number` ASC) 
+    FROM `users` 
+    WHERE `uid` = ? 
+    ORDER BY `name` 
+    LIMIT 1;";
 
     if(!mysqli_stmt_prepare($stmt, $sql)) {
         header("location: /?error=stmtfailed");
         exit();
     }
 
-    mysqli_stmt_bind_param($stmt, "s", $uid);
+    mysqli_stmt_bind_param($stmt, "ss", $uid, $uid);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     mysqli_stmt_close($stmt);
+    // $user = mysqli_fetch_all($result, MYSQLI_ASSOC);
     $user = mysqli_fetch_assoc($result);
     mysqli_free_result($result);
 

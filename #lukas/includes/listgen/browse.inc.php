@@ -3,31 +3,36 @@
 // require_once($_SERVER['DOCUMENT_ROOT']."/includes/dbh.inc.php"); // behövs inte eftersom den inkluderas ovanför i browse.php
 require_once("list_functions.inc.php");
 
-switch ($_GET["sortby"]) {
-    case "rating-hi":
-        $factor = "`items`.`rating`";
-        $order = "DESC";
-        break;
-    case "rating-lo":
-        $factor = "`items`.`rating`";
-        $order = "ASC";
-        break;
-    case "popularity":
-        $factor = "`items`.`completions`";
-        $order = "DESC";
-        break;
-    case "popularity-week":
-        $factor = "`items`.`completions_week`";
-        $order = "DESC";
-        break;
-    case "title":
-        $factor = "`items`.`name`";
-        $order = "ASC";
-        break;
-    default:
-        $factor = "`items`.`completions`";
-        $order = "DESC";
-        break;
+if(isset($_GET["sortby"])) {
+    switch ($_GET["sortby"]) {
+        case "rating-hi":
+            $factor = "`items`.`rating`";
+            $order = "DESC";
+            break;
+        case "rating-lo":
+            $factor = "`items`.`rating`";
+            $order = "ASC";
+            break;
+        case "popularity":
+            $factor = "`items`.`completions`";
+            $order = "DESC";
+            break;
+        case "popularity-week":
+            $factor = "`items`.`completions_week`";
+            $order = "DESC";
+            break;
+        case "title":
+            $factor = "`items`.`name`";
+            $order = "ASC";
+            break;
+        default:
+            $factor = "`items`.`completions`";
+            $order = "DESC";
+            break;
+    }
+} else {
+    $factor = "`items`.`completions`";
+    $order = "DESC";
 }
 
 if(isset($_GET["tag"]) && $_GET["tag"] !== "any") {
