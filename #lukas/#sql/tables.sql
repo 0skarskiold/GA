@@ -169,23 +169,29 @@ CREATE TABLE entries (
     `spoilers` bit
 );
 
-CREATE TABLE lists (
+CREATE TABLE review_likes (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `user_id` int NOT NULL,
-    `name` text NOT NULL,
-    `description` text NOT NULL,
-    `date` date NOT NULL,
-    `private` bit NOT NULL, -- 1 om den är privat, 0 om public
-    `ranking` bit NOT NULL -- 1 om den är rankad, 0 om vanlig
+    `entry_id` int NOT NULL
 );
 
-CREATE TABLE lists_items (
-    `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `list_id` int NOT NULL,
-    `item_id` int NOT NULL,
-    `number` int NOT NULL,
-    `note` text NOT NULL -- listskaparen kan koppla en anteckning som exempelvis beskriver varför saken är inkluderad
-);
+-- CREATE TABLE lists (
+--     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+--     `user_id` int NOT NULL,
+--     `name` text NOT NULL,
+--     `description` text NOT NULL,
+--     `date` date NOT NULL,
+--     `private` bit NOT NULL, -- 1 om den är privat, 0 om public
+--     `ranking` bit NOT NULL -- 1 om den är rankad, 0 om vanlig
+-- );
+
+-- CREATE TABLE lists_items (
+--     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+--     `list_id` int NOT NULL,
+--     `item_id` int NOT NULL,
+--     `number` int NOT NULL,
+--     `note` text NOT NULL -- listskaparen kan koppla en anteckning som exempelvis beskriver varför saken är inkluderad
+-- );
 
 CREATE TABLE platforms (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,

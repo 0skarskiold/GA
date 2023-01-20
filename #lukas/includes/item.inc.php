@@ -49,8 +49,9 @@ $collections = mysqli_fetch_all($result, MYSQLI_ASSOC);
 mysqli_free_result($result);
 
 // hämtar de tio populäraste recensionerna
-$sql = "SELECT `entries`.* 
-FROM `entries`
+$sql = "SELECT `entries`.*, `users`.`uid` AS `user_uid`, `users`.`name` AS `username` 
+FROM `entries` 
+INNER JOIN `users` ON `entries`.`user_id` = `users`.`id` 
 WHERE `review_date` IS NOT NULL AND `item_id` = ".$item['id']." 
 LIMIT 10;"; // ORDER BY `likes` DESC
 

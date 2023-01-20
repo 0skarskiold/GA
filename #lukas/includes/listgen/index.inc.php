@@ -19,6 +19,7 @@ function fetchRecent($conn, $user_id) {
 
     if(isset($following) && count($following) > 0) {
 
+        $num = count($following);
         $marks = "(".str_repeat("?, ", $num-1)."?)";
 
         $sql = "SELECT 
@@ -69,63 +70,66 @@ function fetchRecent($conn, $user_id) {
         $recent = mysqli_fetch_all($result, MYSQLI_ASSOC);
         mysqli_free_result($result);
 
-        $i=0;
-        $arr = [];
+        if(count($recent) > 0) {
 
-        while($i < 19) {
+            $i=0;
+            $arr = [];
 
-            if(in_array($recent[$i]['user_id'], $arr)) {
-                array_splice($recent, $i, 1);
+            while($i < 19) {
+
+                if(in_array($recent[$i]['user_id'], $arr)) {
+                    array_splice($recent, $i, 1);
+                } else {
+                    $arr += [$recent[$i]['user_id']];
+                    $i++;
+                }
                 if(count($recent) <= $i) {
                     break;
                 }
-            } else {
-                $arr += [$recent[$i]['user_id']];
-                $i++;
+
             }
 
-        }
+            foreach($recent as $k => $r) {
+                if(isset($r['log_date'])) {
 
-        foreach($recent as $k => $r) {
-            if(isset($r['log_date'])) {
+                    $t = strtotime($r['log_date']);
+                    $log_date = date('Y-m-d', $t);
 
-                $t = strtotime($r['log_date']);
-                $log_date = date('Y-m-d', $t);
+                    if(isset($r['review_date'])) {
 
-                if(isset($r['review_date'])) {
+                        $t = strtotime($r['review_date']);
+                        $review_date = date('Y-m-d', $t);
+
+                        $entry_type = 'full';
+
+                        if($r['review_date'] > $r['log_date']) {
+                            $date_str = 'Reviewed '.$review_date;
+                        } elseif($r['log_date'] > $r['review_date']) {
+                            $date_str = 'Watched '.$log_date;
+                        } else {
+                            $date_str = 'Watched and reviewed '.$review_date;
+                        }
+
+                    } else {
+
+                        $entry_type = 'log';
+                        $date_str = 'Watched '.$log_date;
+                    }
+                } else {
 
                     $t = strtotime($r['review_date']);
                     $review_date = date('Y-m-d', $t);
 
-                    $entry_type = 'full';
+                    $entry_type = 'review';
+                    $date_str = 'Reviewed '.$review_date;
 
-                    if($r['review_date'] > $r['log_date']) {
-                        $date_str = 'Reviewed '.$review_date;
-                    } elseif($r['log_date'] > $r['review_date']) {
-                        $date_str = 'Watched '.$log_date;
-                    } else {
-                        $date_str = 'Watched and reviewed '.$review_date;
-                    }
-
-                } else {
-
-                    $entry_type = 'log';
-                    $date_str = 'Watched '.$log_date;
                 }
-            } else {
 
-                $t = strtotime($r['review_date']);
-                $review_date = date('Y-m-d', $t);
-
-                $entry_type = 'review';
-                $date_str = 'Reviewed '.$review_date;
-
+                $recent[$k]['entry_type'] = $entry_type;
+                $recent[$k]['date_string'] = $date_str;
             }
-
-            $recent[$k]['entry_type'] = $entry_type;
-            $recent[$k]['date_string'] = $date_str;
-        }
-    } else { $recent = []; }
+        } else { $recent = []; }
+    }
 
     return $recent;
 }

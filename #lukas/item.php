@@ -14,19 +14,32 @@
         <ul>
             <?php
                 foreach($genres as $genre) {
-                    echo '<a href="/genres/'.$genre['id'].'"><li>'.$genre['name'].'</li></a>';
+                    echo '<li><a href="/genres/'.$genre['id'].'">'.$genre['name'].'</a></li>';
                 }
                 foreach($tags as $tag) {
-                    echo '<a href="/tags/'.$tag['id'].'"><li>'.$tag['name'].'</li></a>';
+                    echo '<li><a href="/tags/'.$tag['id'].'">'.$tag['name'].'</a></li>';
                 }
                 foreach($crew as $artist) {
-                    echo '<a href="/crew/'.$artist['id'].'"><li>'.ucfirst($artist['role']).": ".$artist['name'].'</li></a>';
+                    echo '<li><a href="/crew/'.$artist['id'].'">'.ucfirst($artist['role']).": ".$artist['name'].'</a></li>';
                 }
                 foreach($collections as $collection) {
-                    echo '<a href="/collections/'.$collection['id'].'"><li>'.$collection['name'].'</li></a>';
+                    echo '<li><a href="/collections/'.$collection['id'].'">'.$collection['name'].'</a></li>';
                 }
             ?>
         </ul>
+
+        <ul>
+            <?php 
+                foreach($reviews_liked as $review) {
+                    echo 
+                    '<li>
+                        <a href="/users/'.$review['user_uid'].'">'.$review['username'].'</a>
+                        <a href="/users/'.$review['user_uid'].'/entry?id='.$review['id'].'">'.$review['text'].'</a>
+                    </li>';
+                }
+            ?>
+        </ul>
+
     </main>
 
     <?php include_once("sections/footer.php"); ?>
