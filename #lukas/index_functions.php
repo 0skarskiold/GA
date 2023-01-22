@@ -220,15 +220,15 @@ function fetchPopular($conn, $factor) { // model
         ";
     } elseif($factor === 'month') {
         $date = date('Y-m-d', strtotime('-1 month'));
-        $popularity = "
-            (SELECT COUNT(*) FROM `ratings` WHERE `ratings`.`item_id` = `items`.`id` AND `ratings`.`created_date` > '$date')
+        $popularity = // todo: ändra så att om entry och rating är från samma tillfälle så räknas endast en av dem med
+            "(SELECT COUNT(*) FROM `ratings` WHERE `ratings`.`item_id` = `items`.`id` AND `ratings`.`created_date` > '$date')
             + 
             (SELECT COUNT(*) FROM `entries` WHERE `entries`.`item_id` = `items`.`id` AND `entries`.`log_date` > '$date')
         ";
     } elseif($factor === 'week') {
         $date = date('Y-m-d', strtotime('-1 week'));
-        $popularity = "
-            (SELECT COUNT(*) FROM `ratings` WHERE `ratings`.`item_id` = `items`.`id` AND `ratings`.`created_date` > '$date') 
+        $popularity = 
+            "(SELECT COUNT(*) FROM `ratings` WHERE `ratings`.`item_id` = `items`.`id` AND `ratings`.`created_date` > '$date') 
             + 
             (SELECT COUNT(*) FROM `entries` WHERE `entries`.`item_id` = `items`.`id` AND `entries`.`log_date` > '$date')
         ";
