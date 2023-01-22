@@ -21,7 +21,7 @@
                     echo '<a href="/browse">Browse media</a><ul>';
                     foreach($users as $user) {
                         echo 
-                        "<li class='user_container'><a href='/users/".$user['uid']."'>
+                        "<li class='user_container'><a href='/users/".$user->uid."'>
                             <h2>".$user['name']." (".$user['uid'].")</h2>
                         </a>";
                     }

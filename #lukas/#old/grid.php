@@ -30,7 +30,7 @@ if(isset($_GET['type'])){
 
 } else if(isset($_POST['submit-search'])){
 
-    $search = mysqli_real_escape_string($conn, $_POST['search']);
+    $search = mysqli_real_escape_string($conn, $_POST['search']); // todo: whaaat isa dis
 
     $sql = "SELECT * FROM `items` WHERE `name` LIKE '%$search%' OR `date` LIKE '%$search%';";
 
