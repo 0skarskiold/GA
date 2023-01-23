@@ -92,6 +92,22 @@ img.poster {
 }
 
 
+#like {
+    width: 30px;
+    height: 30px;
+    transition: filter ease 0.2s;
+    transition: transform ease 0.2s;
+}
+#like:hover {
+    filter: brightness(1.4) hue-rotate(10deg) saturate(1.2);
+    transform: scale(0.9);
+}
+#like.active {
+    background-color: navy;
+}
+#like.inactive {
+    background-color: rebeccapurple;
+}
 
 #star_container {
     width: 325px;
@@ -100,31 +116,10 @@ img.poster {
     position: relative;
 }
 
-#stars_true {
+.stars {
     width: max-content;
     height: max-content;
     display: flex;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: cadetblue;
-    z-index: 0;
-    column-gap: 10px;
-}
-
-.star {
-    width: 50px;
-    height: 50px;
-    background-color: fuchsia;
-}
-
-#stars_false {
-    width: max-content;
-    height: max-content;
-    display: flex;
-    position: absolute;
-    top: 0;
-    left: 0;
     background-color: darkseagreen;
     z-index: 1;
 }

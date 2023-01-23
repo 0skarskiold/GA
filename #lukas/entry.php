@@ -1,12 +1,14 @@
 <?php 
     session_start(); 
-    require_once("includes/dbh.inc.php");
-    require_once("sections/contents.php"); 
+    require_once("conn/dbh.inc.php");
+
+    require_once("entry_functions.php")
+
+    require_once("section_contents.php"); 
 ?>
 <body>
-    <?php include_once("sections/header.php"); 
-    if(isset($_GET['id'])): 
-    require_once("includes/entry.inc.php"); ?>
+    <?php include_once("section_header.php"); 
+    if(isset($_GET['id'])): ?>
 
         <main>
 
@@ -17,8 +19,7 @@
 
         </main>
 
-    <?php elseif($_GET['list'] === 'ratings'): 
-    require_once("includes/ratings.inc.php"); ?>
+    <?php elseif($_GET['list'] === 'ratings'): ?>
 
         <main>
             
@@ -28,8 +29,7 @@
 
         </main>
 
-    <?php elseif($_GET['list'] === 'reviews'): 
-    require_once("includes/reviews.inc.php"); ?>
+    <?php elseif($_GET['list'] === 'reviews'): ?>
 
         <main>
             
@@ -39,8 +39,7 @@
 
         </main>
 
-    <?php elseif($_GET['list'] === 'logs'): 
-    require_once("includes/diary.inc.php"); ?>
+    <?php elseif($_GET['list'] === 'logs'): ?>
 
         <main>
 
@@ -50,7 +49,7 @@
 
         </main>
 
-    <?php else: header("location: /"); endif; ?>
-    <?php include_once("sections/footer.php"); ?>
+    <?php else: header("location: /"); endif; 
+    include_once("section_footer.php"); ?>
 </body>
 </html>

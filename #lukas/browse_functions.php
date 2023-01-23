@@ -48,7 +48,7 @@ function renderBrowseFilter($conn, $type) {
 
     } elseif($type === 'artist') {
 
-    } elseif($type === 'f-films') {
+    } elseif($type === 'films') {
 
     } elseif($type === 's-films') {
 
@@ -101,17 +101,17 @@ function renderBrowseFilter($conn, $type) {
     '.$ylist.'
     </select>
 
-    <label for="type-f-film">Films</label>
-    <input type="checkbox" name="type-f-film">
+    <label for="type-film">Films</label>
+    <input type="checkbox" name="type-film">
 
-    <label for="type-s-film">Short-films</label>
-    <input type="checkbox" name="type-s-film">
+    <label for="type-short-film">Short-films</label>
+    <input type="checkbox" name="type-short-film">
 
     <label for="type-series">Series</label>
     <input type="checkbox" name="type-series">
 
-    <label for="type-m-series">Mini-series</label>
-    <input type="checkbox" name="type-m-series">
+    <label for="type-mini-series">Mini-series</label>
+    <input type="checkbox" name="type-mini-series">
 
     <label for="type-series-s">Seasons</label>
     <input type="checkbox" name="type-series-s">
@@ -132,7 +132,7 @@ function renderBrowseFilter($conn, $type) {
     return;
 }
 
-function fetchBrowseList($conn, $filter_arr, $type) {
+function fetchListBrowse($conn, $filter_arr, $type) {
 
     if($type === 'browse') {
 
@@ -243,17 +243,17 @@ function fetchBrowseList($conn, $filter_arr, $type) {
         }
         
     
-        if(isset($filter_arr["year"]) && $filter_arr["year"] !== "any") {
+        if(isset($filter_arr['year']) && $filter_arr['year'] !== "any") {
     
-            if(is_numeric($filter_arr["year"])) {
+            if(is_numeric($filter_arr['year'])) {
 
-                $year = intval($filter_arr["year"]);
+                $year = intval($filter_arr['year']);
                 $tmp = "= ?";
                 array_push($values,$year);
     
-            } elseif($filter_arr["year"][-1] === "s") {
+            } elseif($filter_arr['year'][-1] === "s") {
     
-                $tmp = intval(rtrim($filter_arr["year"], "s"));
+                $tmp = intval(rtrim($filter_arr['year'], "s"));
                 $year = [];
     
                 for($y = $tmp; $y <= $tmp+9; $y++) { 
@@ -273,23 +273,23 @@ function fetchBrowseList($conn, $filter_arr, $type) {
 
         
         $types = [];
-        if(isset($filter_arr['type-f-film'])) {
-            array_push($types,"feature_film");
+        if(isset($filter_arr['type-film'])) {
+            array_push($types,"film");
         }
-        if(isset($filter_arr['type-s-film'])) {
-            array_push($types,"short_film");
+        if(isset($filter_arr['type-short-film'])) {
+            array_push($types,"short-film");
         }
         if(isset($filter_arr['type-series'])) {
             array_push($types,"series");
         }
-        if(isset($filter_arr['type-m-series'])) {
-            array_push($types,"mini_series");
+        if(isset($filter_arr['type-mini-series'])) {
+            array_push($types,"mini-series");
         }
-        if(isset($filter_arr['type-season'])) {
-            array_push($types,"season");
+        if(isset($filter_arr['type-series-s'])) {
+            array_push($types,"series-s");
         }
-        if(isset($filter_arr['type-episode'])) {
-            array_push($types,"episode");
+        if(isset($filter_arr['type-series-e'])) {
+            array_push($types,"series-e");
         }
         if(isset($filter_arr['type-game'])) {
             array_push($types,"game");
@@ -307,21 +307,21 @@ function fetchBrowseList($conn, $filter_arr, $type) {
                 $where = "WHERE `items`.`type` ".$tmp;
             }
 
-            array_push($values,$types);
+            array_push($values,...$types);
         }
 
-        $val_types = "";
+        $param_str = "";
 
         foreach($values as $val) {
 
             if(gettype($val) === "integer") {
-                $val_types .= "i";
+                $param_str .= "i";
 
             } elseif(gettype($val) === "string") {
-                $val_types .= "s";
+                $param_str .= "s";
                 
-            } elseif(gettype($val) === "float") {
-                $val_types .= "d";
+            } elseif(gettype($val) === "double") {
+                $param_str .= "d";
 
             } else {
                 return [];
@@ -347,8 +347,8 @@ function fetchBrowseList($conn, $filter_arr, $type) {
             return [];
         }
 
-        if(strlen($val_types) > 0) { 
-            mysqli_stmt_bind_param($stmt, $val_types, ...$values); 
+        if(strlen($param_str) > 0) { 
+            mysqli_stmt_bind_param($stmt, $param_str, ...$values); 
         }
 
         mysqli_stmt_execute($stmt);
@@ -401,10 +401,18 @@ function fetchBrowseList($conn, $filter_arr, $type) {
         //     array_push($values,$artist); 
         // }
 
+    } elseif($type === "users") {
+
+        // $sql = "SELECT `id`, `name`, `uid` FROM `users` ORDER BY `name`;";
+        // $result = mysqli_query($conn, $sql);
+        // $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        // mysqli_free_result($result);
+        // return $users;
+
     }
 }
 
-function renderBrowseList($items, $type) {
+function renderListBrowse($items, $type) {
 
     if($type === 'browse') {
 

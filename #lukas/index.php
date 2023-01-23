@@ -1,15 +1,15 @@
 <?php 
     session_start(); // tillåter sessions
-    require_once("includes/dbh.inc.php"); // connect:ar till servern
+    require_once("conn/dbh.inc.php"); // connect:ar till servern
 
     // hämtar funktioner för sidan
     require_once("index_functions.php");
     
-    require_once("sections/contents.php"); // html-head, kopplar css och js
+    require_once("section_contents.php"); // html-head, kopplar css och js
 ?>
 
 <body>
-    <?php include_once("sections/header.php"); // html header ?> 
+    <?php include_once("section_header.php"); // html header ?> 
 
     <main>
 
@@ -27,6 +27,6 @@
 
     </main>
 
-    <?php include_once("sections/footer.php"); ?>
+    <?php include_once("section_footer.php"); ?>
 </body>
 </html>

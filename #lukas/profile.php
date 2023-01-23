@@ -1,35 +1,26 @@
 <?php 
     session_start(); 
-    require_once("includes/dbh.inc.php");
+    require_once("conn/dbh.inc.php");
     require_once("includes/account/profile.inc.php");
-    require_once("sections/contents.php"); 
+    require_once("section_contents.php"); 
 ?>
 <body>
-    <?php include_once("sections/header.php"); ?>
+    <?php include_once("section_header.php"); ?>
 
     <main>
+        <?php
 
-        <?php 
+            // $user = fetchUser($conn, $_GET['uid']);
+            // if(isset($_SESSION['userid'])) {
+            //     $following = isFollowing($conn, $_SESSION['userid'], $user['id']);
+            // }
 
-        echo '<h2>'.$user['name'].'</h2>';
-        if(isset($_SESSION['userid'])) { // om du är inloggad
-            if(!$following) { // om du följer personen vars sida du är inne på, variabel ordnas (boolean) i profile.inc.php
-                echo '<button type="button" class="follow insert" data-userid="'.$user['id'].'">Follow</button>';
-            } else {
-                echo '<button type="button" class="follow delete" data-userid="'.$user['id'].'">Unfollow</button>';
-            }
-        }
+            $user = fetchUser($conn, $_GET['uid'], $_SESSION['userid']);
+            renderProfile($user);
 
         ?>
-
-        <ul class="favorites_list">
-            <li><a href="/users/<?php echo $user['uid'] ?>/ratings">Ratings</a></li>
-            <li><a href="/users/<?php echo $user['uid'] ?>/reviews">Reviews</a></li>
-            <li><a href="/users/<?php echo $user['uid'] ?>/diary">Diary</a></li>
-        </ul>
-
     </main>
 
-    <?php include_once("sections/footer.php"); ?>
+    <?php include_once("section_footer.php"); ?>
 </body>
 </html>
