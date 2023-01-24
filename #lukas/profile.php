@@ -1,7 +1,9 @@
 <?php 
     session_start(); 
     require_once("conn/dbh.inc.php");
-    require_once("includes/account/profile.inc.php");
+
+    require_once("profile_functions.php");
+    
     require_once("section_contents.php"); 
 ?>
 <body>
@@ -10,13 +12,8 @@
     <main>
         <?php
 
-            // $user = fetchUser($conn, $_GET['uid']);
-            // if(isset($_SESSION['userid'])) {
-            //     $following = isFollowing($conn, $_SESSION['userid'], $user['id']);
-            // }
-
-            $user = fetchUser($conn, $_GET['uid'], $_SESSION['userid']);
-            renderProfile($user);
+            $user = fetchUser($conn, $_GET['uid'], $_SESSION['useruid'], $_SESSION['userid']);
+            renderProfile($user, $_SESSION['userid']);
 
         ?>
     </main>

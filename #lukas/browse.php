@@ -12,7 +12,7 @@
     <main>
 
         <?php 
-            renderBrowseFilter($conn, 'browse'); // todo: $_GET['type'] som andra argument så småningom
+            renderBrowseFilter($conn, 'browse'); // todo: $_GET['type'] eller liknande som andra argument så småningom
             $items = fetchListBrowse($conn, $_POST, 'browse');
             renderListBrowse($items, 'browse');
         ?>

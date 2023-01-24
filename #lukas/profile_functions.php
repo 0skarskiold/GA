@@ -1,35 +1,99 @@
 <?php
 
-function isFollowing($conn, $from_id, $to_id) {
+function fetchUser($conn, $uid, $visitor_uid, $visitor_id) {
 
-    $sql = 
-    "SELECT COUNT(`to_id`) 
-    FROM `follow` 
-    WHERE `from_id` = ? AND `to_id` = ? 
-    LIMIT 1;";
+    if(isset($visitor_id)) {
 
-    $stmt = mysqli_stmt_init($conn);
-    if(!mysqli_stmt_prepare($stmt, $sql)) {
-        header("location: /?error");
-        exit;
+        if($uid === $visitor_uid) {
+
+            $sql = "SELECT 
+            `id`, 
+            `name`, 
+            `uid`,
+            1 AS `you`,
+            0 AS `following` 
+            FROM `users` 
+            WHERE `uid` = ? 
+            ORDER BY `name` 
+            LIMIT 1;";
+
+            $stmt = mysqli_stmt_init($conn);
+            if(!mysqli_stmt_prepare($stmt, $sql)) {
+                header("location: /?error");
+                exit;
+            }
+
+            mysqli_stmt_bind_param($stmt, "s", $uid);
+    
+        } else {
+    
+            $sql = "SELECT 
+            `id`, 
+            `name`, 
+            `uid`,
+            0 AS `you`,
+            (
+                SELECT COUNT(*) 
+                FROM `follow` 
+                WHERE `from_id` = ? AND `to_id` = `users`.`id`
+            ) AS `following`, 
+            (
+                SELECT COUNT(*) 
+                FROM `ratings` 
+                WHERE `user_id` = `users`.`id`
+            ) AS `total` 
+            FROM `users` 
+            WHERE `uid` = ? 
+            ORDER BY `name` 
+            LIMIT 1;";
+
+            $stmt = mysqli_stmt_init($conn);
+            if(!mysqli_stmt_prepare($stmt, $sql)) {
+                header("location: /?error");
+                exit;
+            }
+
+            mysqli_stmt_bind_param($stmt, "is", $visitor_id, $uid);
+
+        }
+    } else {
+
+        $sql = "SELECT 
+        `id`, 
+        `name`, 
+        `uid`, 
+        NULL AS `you`, 
+        NULL AS `following`,
+        (
+            SELECT COUNT(*) 
+            FROM `ratings` 
+            WHERE `user_id` = `users`.`id`
+        ) AS `total` 
+        FROM `users` 
+        WHERE `uid` = ? 
+        ORDER BY `name` 
+        LIMIT 1;";
+
+        $stmt = mysqli_stmt_init($conn);
+        if(!mysqli_stmt_prepare($stmt, $sql)) {
+            header("location: /?error");
+            exit;
+        }
+
+        mysqli_stmt_bind_param($stmt, "s", $uid);
+
     }
 
-    mysqli_stmt_bind_param($stmt, "ii", $from_id, $to_id);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     mysqli_stmt_close($stmt);
-    $tmp = mysqli_fetch_row($result)[0];
+    $user = mysqli_fetch_assoc($result);
     mysqli_free_result($result);
 
-    if($tmp === 1) {
-        return true;
+    // om något gått fel och det skapats duplikanter av följningar:
+    if($user['following'] > 1) {
 
-    } elseif($tmp < 1) {
-        return false;
-
-    } elseif($tmp > 1) {
-
-        $lim = $tmp - 1;
+        $lim = $user['following'] - 1;
 
         $sql = 
         "DELETE FROM `follow` 
@@ -42,52 +106,39 @@ function isFollowing($conn, $from_id, $to_id) {
             exit;
         }
 
-        mysqli_stmt_bind_param($stmt, "ii", $from_id, $to_id);
+        mysqli_stmt_bind_param($stmt, "ii", $$visitor_id, $user['id']);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
-        return true;
+        $user['following'] = 1;
     }
+
+    return $user;
 }
 
-function fetchUser($conn, $uid) {
+function renderProfile($user, $visitor_id) {
 
-    // $stmt = mysqli_stmt_init($conn);
-    // $sql = "SELECT `id`, `name`, `uid`
-    // FROM `users` 
-    // WHERE `uid` = ? 
-    // ORDER BY `name` 
-    // LIMIT 1;";
+    if(isset($visitor_id)) { // om du är inloggad
+        if($user['following'] === 1) {
+            $follow_button = '<button type="button" class="follow insert" data-userid="'.$user['id'].'">Follow</button>';
+        } elseif($user['following'] === 1) {
+            $follow_button = '<button type="button" class="follow delete" data-userid="'.$user['id'].'">Unfollow</button>';
+        } else {
+            header("location: /?error");
+            exit;
+        }
+    }
 
-    // if(!mysqli_stmt_prepare($stmt, $sql)) {
-    //     header("location: /?error=stmtfailed");
-    //     exit();
-    // }
+    $html =
+    '<h2>'.$user['name'].'</h2>
+    '.$follow_button.'
+    <ul class="link_list">
+    <li><a href="/users/'.$user['uid'].'/ratings">Ratings</a></li>
+    <li><a href="/users/'.$user['uid'].'/reviews">Reviews</a></li>
+    <li><a href="/users/'.$user['uid'].'/diary">Diary</a></li>
+    </ul>
+    ';
 
-    // mysqli_stmt_bind_param($stmt, "s", $uid);
-    // mysqli_stmt_execute($stmt);
-    // $result = mysqli_stmt_get_result($stmt);
-    // mysqli_stmt_close($stmt);
-    // $user = mysqli_fetch_assoc($result);
-    // mysqli_free_result($result);
-
-    // return $user;
-}
-
-function renderProfile() {
-
-    // echo '<h2>'.$user['name'].'</h2>';
-    // if(isset($_SESSION['userid'])) { // om du är inloggad
-    //     if(!$following) { // om du följer personen vars sida du är inne på, variabel ordnas (boolean) i profile.inc.php
-    //         echo '<button type="button" class="follow insert" data-userid="'.$user['id'].'">Follow</button>';
-    //     } else {
-    //         echo '<button type="button" class="follow delete" data-userid="'.$user['id'].'">Unfollow</button>';
-    //     }
-    // }
-
-    // <ul class="favorites_list">
-    //     <li><a href="/users/ echo $user['uid'] /ratings">Ratings</a></li>
-    //     <li><a href="/users/ echo $user['uid'] /reviews">Reviews</a></li>
-    //     <li><a href="/users/ echo $user['uid'] /diary">Diary</a></li>
-    // </ul>
+    echo $html;
+    return;
 }
