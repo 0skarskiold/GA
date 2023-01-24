@@ -1,6 +1,6 @@
 <?php 
     session_start(); 
-    require_once("conn/dbh.inc.php");
+    require_once("conn/dbh.php");
 
     require_once("profile_functions.php");
     

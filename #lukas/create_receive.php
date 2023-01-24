@@ -66,7 +66,7 @@ function fetchQuickSearch($conn, $input) {
 
 if(isset($_POST['createSearch'])) {
     
-    require_once("conn/dbh.inc.php");
+    require_once("conn/dbh.php");
     $items = fetchQuickSearch($conn, rtrim($_POST['input'])); // rtrim tar bort mellanrum i början eller slutet på strängen
     echo json_encode($items);
 }

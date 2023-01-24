@@ -1,6 +1,6 @@
 <?php 
     session_start(); // tillåter sessions
-    require_once("conn/dbh.inc.php"); // connect:ar till servern
+    require_once("conn/dbh.php"); // connect:ar till servern
 
     // hämtar funktioner för sidan
     require_once("index_functions.php");

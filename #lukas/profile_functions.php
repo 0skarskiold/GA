@@ -19,7 +19,7 @@ function fetchUser($conn, $uid, $visitor_uid, $visitor_id) {
 
             $stmt = mysqli_stmt_init($conn);
             if(!mysqli_stmt_prepare($stmt, $sql)) {
-                header("location: /?error");
+                header("location: /?error0");
                 exit;
             }
 
@@ -49,7 +49,7 @@ function fetchUser($conn, $uid, $visitor_uid, $visitor_id) {
 
             $stmt = mysqli_stmt_init($conn);
             if(!mysqli_stmt_prepare($stmt, $sql)) {
-                header("location: /?error");
+                header("location: /?error1");
                 exit;
             }
 
@@ -76,7 +76,7 @@ function fetchUser($conn, $uid, $visitor_uid, $visitor_id) {
 
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt, $sql)) {
-            header("location: /?error");
+            header("location: /?error2");
             exit;
         }
 
@@ -102,7 +102,7 @@ function fetchUser($conn, $uid, $visitor_uid, $visitor_id) {
 
         $stmt = mysqli_stmt_init($conn);
         if(!mysqli_stmt_prepare($stmt, $sql)) {
-            header("location: /?error");
+            header("location: /?error3");
             exit;
         }
 
@@ -118,8 +118,8 @@ function fetchUser($conn, $uid, $visitor_uid, $visitor_id) {
 
 function renderProfile($user, $visitor_id) {
 
-    if(isset($visitor_id)) { // om du är inloggad
-        if($user['following'] === 1) {
+    if(isset($visitor_id) && $user['you'] !== 1) { // om du är inloggad
+        if($user['following'] === 0) {
             $follow_button = '<button type="button" class="follow insert" data-userid="'.$user['id'].'">Follow</button>';
         } elseif($user['following'] === 1) {
             $follow_button = '<button type="button" class="follow delete" data-userid="'.$user['id'].'">Unfollow</button>';

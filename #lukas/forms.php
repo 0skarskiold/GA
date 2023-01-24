@@ -1,6 +1,6 @@
 <?php 
     session_start(); 
-    require_once("conn/dbh.inc.php");
+    require_once("conn/dbh.php");
 
     require_once("forms_functions.php");
 
@@ -12,12 +12,13 @@
     <main>
         <?php
 
-            
+            renderForms();
 
         ?>
     </main>
 
     <?php include_once("section_footer.php"); ?>
+    <?php include_once("forms_js.php"); ?>
 </body>
 </html>
 
