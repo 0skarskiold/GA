@@ -17,11 +17,11 @@
 
         <?php
 
-        if(!isset($_GET['type'])) {
+        if(!isset($_POST['type'])) {
 
-            header("location: /create?type=log"); // kan enkelt lägga in knappar som bestämmer type
+            header("location: /?error");
 
-        } elseif(isset($_GET['itemid'])) { 
+        } elseif(isset($_POST['itemid'])) { 
             
             $item = fetchItem($conn, $_GET['itemid']);
             renderCreatePrompt($_GET['type'], $item, $_SESSION['userid']);

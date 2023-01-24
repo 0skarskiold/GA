@@ -77,15 +77,21 @@ $(document).ready(function() {
 
                         items = JSON.parse(data);
                         if(items.length > 0) {
-                            let link = '<?php echo $_SERVER['REQUEST_URI']; ?>';
-                            let elements = '';
+                            let type = '<?php echo $_POST['type']; ?>';
+                            let result = '';
 
                             items.forEach(function(item) {
-                                elements += ''.concat('<a href="', link, '&itemid=', item['id'], '">', item['name'], ' (', item['year'], ')', '</a>');
+                                result += '<form action="/create" method="post">';
+                                result += '<input type="hidden" name="itemid" value="'.concat(toString(item['id']), '">');
+                                result += '<input type="hidden" name="type" value="'.concat(type, '">');
+                                result += '<button type="submit">';
+                                result += item['name'].concat(' (', toString(item['year']), ')');
+                                result += '</button></form>';
+                                // result += 'hey';
                             });
 
                             $(".results").empty();
-                            $(".results").append(elements);
+                            $(".results").append(result);
                         } else {
                             $(".results").empty();
                         }
