@@ -82,12 +82,11 @@ $(document).ready(function() {
 
                             items.forEach(function(item) {
                                 result += '<form action="/create" method="post">';
-                                result += '<input type="hidden" name="itemid" value="'.concat(toString(item['id']), '">');
+                                result += '<input type="hidden" name="itemid" value="'.concat(item['id'].toString(), '">');
                                 result += '<input type="hidden" name="type" value="'.concat(type, '">');
                                 result += '<button type="submit">';
-                                result += item['name'].concat(' (', toString(item['year']), ')');
+                                result += item['name'].concat(' (', item['year'].toString(), ')');
                                 result += '</button></form>';
-                                // result += 'hey';
                             });
 
                             $(".results").empty();

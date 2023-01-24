@@ -23,8 +23,8 @@
 
         } elseif(isset($_POST['itemid'])) { 
             
-            $item = fetchItem($conn, $_GET['itemid']);
-            renderCreatePrompt($_GET['type'], $item, $_SESSION['userid']);
+            $item = fetchItem($conn, $_POST['itemid']);
+            renderCreatePrompt($_POST['type'], $item, $_SESSION['userid']);
         
         } else {
 

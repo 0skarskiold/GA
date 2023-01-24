@@ -1,6 +1,6 @@
 <?php
 
-function renderHeader($user_uid, $item_uid) {
+function renderHeader($user_uid, $item_id) {
 
     if(isset($user_uid)) {
         $profile = '<a href="/users/'.$user_uid.'" class="button">Profile</a>';
@@ -9,10 +9,10 @@ function renderHeader($user_uid, $item_uid) {
         $profile = '';
         $acc = '<a href="/forms" class="button">Log in</a>';
     }
-    if(isset($item_uid)) {
+    if(isset($item_id)) {
         $create =
         '<form action="/create" method="post">
-        <input type="hidden" name="item-uid" value="'.$item_uid.'">
+        <input type="hidden" name="itemid" value="'.$item_id.'">
         <button type="submit" name="type" value="review">Review</button>
         <button type="submit" name="type" value="log">Diary entry</button>
         </form>';
