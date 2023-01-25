@@ -5,7 +5,7 @@ function fetchRecent($conn, $user_id) { // model
     $sql = "SELECT `to_id` FROM `follow` WHERE `from_id` = ?;";
 
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("location: /?error=stmtfailed");
+        header("location: /?error");
         exit();
     }
 
@@ -61,7 +61,7 @@ function fetchRecent($conn, $user_id) { // model
 
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
-        header("location: /?error=stmtfailed");
+        header("location: /?error");
         exit();
     }    
     mysqli_stmt_bind_param($stmt, $param_str, ...$following);

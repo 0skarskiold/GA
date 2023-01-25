@@ -144,19 +144,63 @@ function fetchItem($conn, $type, $uid) {
         "SELECT 
         `items`.*, 
         (
-            SELECT AVG(`rating`) FROM `ratings` WHERE `ratings`.`item_id` = `items`.`id`
+            SELECT AVG(`rating`) 
+            FROM `ratings` 
+            WHERE `ratings`.`item_id` = `items`.`id`
         ) AS `rating` 
         FROM `items` 
         WHERE `items`.`type` = ? AND `items`.`uid` = ? 
         LIMIT 1
         ;";
 
-    }
+    } elseif($type === 'series') {
+
+        $sql = 
+        "SELECT 
+        `items`.*, 
+        (
+            SELECT AVG(`rating`) 
+            FROM `ratings` 
+            WHERE `ratings`.`item_id` = `items`.`id`
+        ) AS `rating`,
+        `attributes_series`.*
+        FROM `items` 
+        INNER JOIN `attributes_series` ON `items`.`id` = `attributes_series`.`series_id`
+        WHERE `items`.`type` = ? AND `items`.`uid` = ? 
+        LIMIT 1
+        ;";
+
+    } // elseif($type === 'games') {
+
+    //     $sql = 
+    //     "SELECT 
+    //     `items`.*, 
+    //     (
+    //         SELECT AVG(`rating`) FROM `ratings` WHERE `ratings`.`item_id` = `items`.`id`
+    //     ) AS `rating` 
+    //     FROM `items` 
+    //     WHERE `items`.`type` = ? AND `items`.`uid` = ? 
+    //     LIMIT 1
+    //     ;";
+
+    // } elseif($type === 'books') {
+
+    //     $sql = 
+    //     "SELECT 
+    //     `items`.*, 
+    //     (
+    //         SELECT AVG(`rating`) FROM `ratings` WHERE `ratings`.`item_id` = `items`.`id`
+    //     ) AS `rating` 
+    //     FROM `items` 
+    //     WHERE `items`.`type` = ? AND `items`.`uid` = ? 
+    //     LIMIT 1
+    //     ;";
+
+    // } 
 
     $stmt = mysqli_stmt_init($conn);
-    
     if(!mysqli_stmt_prepare($stmt, $sql)) {
-        header("location: /?error=stmtfailed");
+        header("location: /?error");
         exit;
     }
     

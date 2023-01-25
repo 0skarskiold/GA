@@ -29,7 +29,7 @@ function fetchQuickSearch($conn, $input) {
         ;";
 
         if(!mysqli_stmt_prepare($stmt, $sql)) {
-            header("location: /?error=stmtfailed");
+            header("location: /?error");
             exit;
         }
 
@@ -48,7 +48,7 @@ function fetchQuickSearch($conn, $input) {
         ;";
 
         if(!mysqli_stmt_prepare($stmt, $sql)) {
-            header("location: /?error=stmtfailed");
+            header("location: /?error");
             exit;
         }
 

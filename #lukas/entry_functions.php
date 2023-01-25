@@ -37,6 +37,57 @@ function fetchEntry($conn, $entry_id, $user_id) {
     return $entry;
 }
 
+function renderEntry($entry) {
+
+    if(isset($entry['log_date']) && isset($entry['review_date'])) {
+
+    } elseif(isset($entry['review_date'])) {
+
+        if($entry['spoilers'] == 1) { 
+            $text = 
+            '<p>This review may include spoilers!</p>
+            <button type="button name="reveal-spoilers">Reveal</button>
+            <p class="review-text" hidden>'.$entry['review_text'].'</p>';
+        } else {
+            $text = 
+            '<p class="review-text">'.$entry['review_text'].'</p>';
+        }
+
+    } elseif(isset($entry['log_date'])) {
+
+    } else {
+        header("location: /error");
+        exit;
+    }
+
+    if(isset($entry['rating'])) {
+        $i = 0;
+        $stars = '';
+        for($j = $entry['rating']; $j > 0; $j -= 0.5) {
+            if($i % 2 == 0) {
+                $stars .= '<div class="review half-star l"></div>';
+            } else {
+                $stars .= '<div class="review half-star r"></div>';
+            }
+            $i++;
+        }
+    }
+    if($entry['like'] == 1) { 
+        $like = '<div class="entry_like"></div>';
+    } else { $like = ''; }
+
+    $html =
+    '<div class="entry_container">
+    <h2>'.$entry['username'].'</h2>
+    <h2>'.$entry['item_name'].'</h2>
+    <div class="entry_stars">'.$stars.'</div>
+    '.$like.'
+    <div class="review_text">'.$text.'</div>
+    </div>
+    ';
+
+}
+ 
 function fetchReviews($conn, $user_uid) {
 
     $sql = "SELECT `entries`.*, 
