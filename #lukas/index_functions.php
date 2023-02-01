@@ -152,9 +152,9 @@ function renderListRecent($recent) { // view
 
         for($j = $r['rating']; $j > 0; $j -= 0.5) {
             if($i % 2 == 0) {
-                $stars .= '<div class="activity_halfstar l"></div>';
+                $stars .= '<div class="half_star l"></div>';
             } else {
-                $stars .= '<div class="activity_halfstar r"></div>';
+                $stars .= '<div class="half_star r"></div>';
             }
             $i++;
         }
@@ -168,12 +168,12 @@ function renderListRecent($recent) { // view
 
         // todo: lägg till en flik som fälls upp då du hover:ar över användarnamnet som säger "visa all ny aktivitet från [namn]" som ger en länk till just det.
         $list .=   
-        '<li class="activity_container">
+        '<li class="item_container activity">
         <div class="block1"><a href="/users/'.$r['user_uid'].'">'.$r['username'].'</a></div>
-        <a class="activity_link" href="/users/'.$r['user_uid'].'/entries?id='.$r['entry_id'].'">
+        <a class="item_link activity" href="/users/'.$r['user_uid'].'/entries?id='.$r['entry_id'].'">
         <img class="poster" src="/metadata/'.$r['item_type'].'/'.$r['item_uid'].'/'.$r['item_uid'].'.jpg"></img>
         <div class="block2">
-        <div class="activity_stars">'.$stars.'</div>
+        <div class="stars">'.$stars.'</div>
         <p>'.$r['date_string'].'</p>
         '.$rewatch.$spoilers.'
         </div>
@@ -188,10 +188,10 @@ function renderListRecent($recent) { // view
     }
 
     $html =
-    '<section class="item_list_section">
+    '<section class="item_list_section recent">
     <button class="scroll l" for="recent" '.$hideScroll.'>left</button>
     <div class="item_list_container" id="recent">
-    <ul class="item_list">
+    <ul class="item_list activity">
     '.$list.'
     <li class="show_more">
     <a href="/recent-activity"></a>
@@ -279,6 +279,7 @@ function renderListPopular($popular) { // view
 
     $html =
     '<section class="item_list_section">
+    <h2>Popular</h2>
     <select name="popular-type">
     <option value="week">This week</option>
     <option value="all">All time</option>

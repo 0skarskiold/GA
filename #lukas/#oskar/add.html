@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add entry</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400&display=swap" rel="stylesheet">
+</head>
+<body id="add_body">
+    <header >
+        <h1>
+            <a href="index.html">ViewPlace</a>
+        </h1>
+        <form action="search.html" id="search_bar_parent">
+            <input type="text" placeholder="Search..." id="search_bar">
+            <img src="img/looking_glass.png" alt="search_icon" id="search_icon">
+        </form>
+        
+
+        <a href="login.html">
+            <img src="img/profile.png" alt="profile picture">
+        </a>
+        <a href="#">
+            <img src="img/add_icon.svg" alt="add an entry" id="add_icon">
+        </a>
+    </header>
+
+    <h2 id="add_movie_title">
+        <form action="#" id="search_bar_parent">
+            <input type="text" placeholder="What movie did you watch?" id="search_bar">
+        </form> 
+    </h2>
+
+    <div id="review_text_and_buttons">
+        <section id="watched_and_spoilers">
+            <p>
+                Watched: 12-12-2022
+            </p>
+            <div class="checkbox_container">
+                <input type="checkbox" name="attach_rev" id="attach_rev_checkbox">
+                <label for="attach_rev">Attach review</label>
+            </div>
+            
+            <div class="checkbox_container">
+                <input type="checkbox" name="spoilers" id="spoilers_checkbox">
+                <label for="spoilers">Spoilers</label>
+            </div>
+            
+        </section>
+
+        <section id="reviewbox_container">
+            <textarea name="reviewbox" id="reviewbox" cols="30" rows="10"></textarea>
+        </section>
+
+        
+    </div>
+
+    <a href="index.html" id="add_button">
+        <h3>Add entry</h3>
+    </a>
+
+    
+    
+</body>
+</html>

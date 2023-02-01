@@ -10,33 +10,30 @@ function renderHeader($user_uid, $item_id) {
         $acc = '<a href="/forms" class="button">Log in</a>';
     }
     if(isset($item_id)) {
-        $create =
-        '<form action="/create" method="post">
-        <input type="hidden" name="itemid" value="'.$item_id.'">
-        <button type="submit" name="type" value="review">Review</button>
-        <button type="submit" name="type" value="log">Diary entry</button>
-        </form>';
+        $insert_id = '<input type="hidden" name="itemid" value="'.$item_id.'">';
     } else {
-        $create =
-        '<form action="/create" method="post">
-        <button type="submit" name="type" value="review">Review</button>
-        <button type="submit" name="type" value="log">Diary entry</button>
-        </form>';
+        $insert_id = '';
     }
 
     $html = 
     '<header>
-    <a href="/" class="logo"><img src="" alt="Website logo"></a>
+    <a href="/" class="logo_container"><img class="logo" src="" alt="Website logo"></a>
     <nav>
     <a href="/browse" class="button">Browse</a>
     '.$profile.'
-    <form action="/section_header_receive.php" method="get" id="search_form">
-    <input type="text" name="search" placeholder="Search">
-    <button type="submit" name="submit-search" class="button">Search</button>
+    <form action="/section_header_receive.php" method="get" class="search_form">
+    <input class="search_bar" type="text" name="search" placeholder="Search">
+    <button class="button" type="submit" name="submit-search">Search</button>
     </form>
     '.$acc.'
-    <p>Create:</p>
-    '.$create.'
+    <div class="dropdown_container create">
+    <div class="open_dropdown">Create</div>
+    <form class="dropdown_content" action="/create" method="post">
+    '.$insert_id.'
+    <button class="dropdown_option" type="submit" name="type" value="review">Review</button>
+    <button class="dropdown_option" type="submit" name="type" value="log">Diary entry</button>
+    </form>
+    </div>
     </nav>
     </header>';
 

@@ -117,6 +117,57 @@ function fetchReviews($conn, $user_uid) {
     return $reviews;
 }
 
+function renderReviews($reviews) {
+
+    $username = $reviews[0]['username'];
+
+    $list = '';
+    foreach($reviews as $review) {
+
+        $i = 0;
+        $stars = '';
+
+        for($j = $review['rating']; $j > 0; $j -= 0.5) {
+            if($i % 2 == 0) {
+                $stars .= '<div class="review half-star l"></div>';
+            } else {
+                $stars .= '<div class="review half-star r"></div>';
+            }
+            $i++;
+        }
+
+        if($review['like'] == 1) { 
+            $like = '<div class="review_like"></div>';
+        } else { $like = ''; }
+        if($review['spoilers'] == 1) { 
+            $text = 
+            '<p>This review may include spoilers!</p>
+            <button type="button name="reveal-spoilers">Reveal</button>
+            <p class="review-text" hidden>'.$review['text'].'</p>';
+        } else {
+            $text = 
+            '<p class="review-text">'.$review['text'].'</p>';
+        }
+
+        $list .= 
+        '<li class="review_container">
+        <h3 class="reviewer">'.$review['username'].'</h3>
+        <div class="review_stars">'.$stars.'</div>
+        '.$like.'
+        <div class="review_text">'.$text.'</div>
+        </li>';
+    }
+
+    $html = 
+    '<h2>'.$username.'</h2>
+    <ul class="list_reviews">
+    '.$list.'
+    </ul>';
+
+    echo $html;
+    return;
+}
+
 function fetchDiary($conn, $user_uid) {
 
     $sql = "SELECT `entries`.*, 

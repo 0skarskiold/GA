@@ -1,217 +1,22 @@
-
-/* ~GENERAL~ */
-
-* {
-    margin: 0;
-    padding: 0;
-    
-    box-sizing: border-box;
+*{
+    color: yellow;
     font-family: 'Oxygen', sans-serif;
-    /* letter-spacing: 1.5px; */
+    letter-spacing: 1.5px;
 }
 
-/* ::-webkit-scrollbar {
+*::-webkit-scrollbar{
+    display:none;
+}
 
-} */
+/*Startsidan */
 
 body {
     --color1: black;
-    --color2: yellow;
-    --color3: green;
-
-    /* background-color: var(--color1); */
-    background-color: grey;
+    background-color: black;
+    overflow-x: hidden;
 }
 
-a { text-decoration: none; }
-
-h2 {
-    font-size: 2rem;
-    font-family: 'Oxygen', sans-serif;
-}
-
-.button {
-    min-width: 5.5rem;
-    height: 2rem !important;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    padding-top: 0.2rem;
-    padding-bottom: 0.2rem;
-
-    font-size: 1rem;
-    color: var(--color1);
-    background-color: var(--color2);
-
-    border: 0.2rem solid var(--color3);
-    border-radius: 0.3rem;
-}
-
-a.button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-button.button {
-
-}
-
-/* ~END OF GENERAL~ */
-
-/* ~HEADER~ */
-
-header:first-of-type {
-    grid-area: hdr;
-
-    width: max-content;
-    height: 100px;
-    margin: auto;
-
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-
-    border-bottom: 5px solid yellow;
-    /* font-size: 1.3rem; */
-}
-
-header .logo_container {
-    height: 100px;
-}
-
-header nav {
-    display: flex;
-    align-items: center;
-    column-gap: 1rem;
-}
-
-header .search_form {
-    padding: 0.3rem;
-
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-
-    background-color: var(--color2);
-    border-radius: 0.3rem;
-}
-
-/* #search_icon {
-    height:25px;
-    position: relative;
-    left: -30px;
-} */
-
-header .search_bar {
-    width: 150px;
-    height: 2rem;
-    margin-right: 0.3rem;
-    padding-left: 0.3rem;
-
-    font-size: 17px;
-
-    border: 0.2rem solid var(--color1);
-    border-radius: 5px;
-}
-
-header .search_form .button {
-    color: var(--color2);
-    background-color: var(--color1);
-}
-
-.dropdown_container {
-    width: 5.5rem;
-    height: max-content;
-
-    font-size: 1rem;
-    color: var(--color1);
-    background-color: var(--color2);
-    border: 0.2rem solid var(--color3);
-    border-radius: 0.3rem;
-} 
-
-.open_dropdown {
-    width: 100%;
-    height: 2rem !important;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    padding-top: 0.2rem;
-    padding-bottom: 0.2rem;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.dropdown_option {
-    width: 100%;
-    height: 2rem;
-
-    font-size: 1rem;
-
-    background-color: unset;
-    border: 0;
-}
-
-/* .open_dropdown {
-    width: 100%;
-    height: 2rem !important;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    padding-top: 0.2rem;
-    padding-bottom: 0.2rem;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    border: 0.2rem solid var(--color3);
-    border-radius: 0.3rem 0.3rem 0.3rem 0.3rem;
-}
-
-.dropdown_content {
-    width: 5.5rem;
-    display: none;
-    position: absolute;
-
-    /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.dropdown_option {
-    width: 100%;
-    height: 2rem;
-
-    background-color: unset;
-    border: 0;
-}
-
-.dropdown_container:hover {
-    border: 0.2rem solid var(--color3);
-    border-radius: 0.3rem 0.3rem 0.3rem 0.3rem;
-}
-
-.dropdown_option:hover {
-    background-color: beige;
-}
-
-.dropdown_container:hover .open_dropdown {
-    border: 0;
-    border-radius: 0.3rem 0.3rem 0 0;
-}
-
-.dropdown_container:hover .dropdown_content {
-    display: block;
-} */
-
-/* ~END OF HEADER~ */
-
-/* ~INDEX (START)~ */
-
-body.index:first-of-type {
-    width: auto;
-    height: auto;
-
+#index_body{
     display: grid;
     grid-template-areas: 
     "hdr hdr"
@@ -222,20 +27,75 @@ body.index:first-of-type {
     ;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 200px 4rem 1fr 4rem auto;
+    height: auto;
+    width: auto;
 }
 
-#welcome {
-    grid-area: wel;
+h2{
+    font-size: 2rem;
+    font-family: 'Oxygen', sans-serif;
+}
 
+header{
+    grid-area: hdr;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    border-bottom: 5px solid yellow;
+    font-size: 1.3rem;
+    width: 60vw;
+    margin: auto;
+    font-family: 'Oxygen', sans-serif;
+}
+
+#add_icon{
+    height: 90px;
+}
+
+header img{
+    height: 100px;
+}
+
+
+
+header h1 a{
+    text-decoration: none;
+}
+
+#search_bar_parent{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#search_icon{
+    height:25px;
+    position: relative;
+    left: -30px;
+}
+
+#search_bar{
+    float: right;
+    padding: 6px;
+    font-size: 17px;
+    height: 25px;
+    width: 150px;
+    border-style: solid;
+    border-radius: 5px;
+    border-color: yellow;
+}
+
+#welcome{
+    grid-area: wel;
     display: flex;
     justify-content: center;
     align-items: center;
-    
     text-decoration: underline;
     text-underline-offset: 1vh;
 }
 
-#list_container {
+#list_container{
     grid-area: mov;
     display: flex;
     flex-direction: row;
@@ -246,7 +106,7 @@ body.index:first-of-type {
     overflow-x: hidden;
 }
 
-#list {
+#list{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -261,7 +121,12 @@ body.index:first-of-type {
     overflow-x: scroll;
 }
 
-.movie_poster { /*Man kan scrolla typ 20pixlar efter sista trion*/
+/*Tar bort scrollbaren men ser till att den fortfarande funkar*/
+#list::-webkit-scrollbar {
+    display: none;
+}/*Fixa: ska man kunna scrolla manuellt????*/
+
+.movie_poster{ /*Man kan scrolla typ 20pixlar efter sista trion*/
     border-radius: 20px;
     height: 50vh;
     width: auto;
@@ -270,17 +135,17 @@ body.index:first-of-type {
     flex: none;
 }
 
-#arrow_left {
+#arrow_left{
     position: absolute;
     left: 10vw;
 }
 
-#arrow_right {
+#arrow_right{
     position: absolute;
     right: 10vw;
 }
 
-#pop_reviews {
+#pop_reviews{
     grid-area: hey;
     display: flex;
     justify-content: center;
@@ -289,7 +154,7 @@ body.index:first-of-type {
     text-underline-offset: 1vh;
 }
 
-#featured_review {
+#featured_review{
     margin-top: 5vh;
     padding-top: 5vh;
     grid-area: re1;
@@ -301,7 +166,7 @@ body.index:first-of-type {
     border-width: 0.3vw;
 }
 
-.feat_reviews {
+.feat_reviews{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -311,20 +176,20 @@ body.index:first-of-type {
 
 }
 
-.feat_reviews img {
+.feat_reviews img{
     height: 35vh;
     border-radius: 2px;
     display: flex;
 
 }
 
-.feat_review_text {
+.feat_review_text{
     margin-left: 1vw;
     width: 15vw;
 }
 
 
-#featured_review2 {
+#featured_review2{
     margin-top: 5vh;
     padding-top: 5vh;
     grid-area: re2;
@@ -336,11 +201,14 @@ body.index:first-of-type {
     border-width: 0.3vw;
 }
 
-/* ~END OF INDEX~ */
 
-/* ~FORMS~ */
 
-#login_body {
+
+
+/*Login/signup-sidan*/
+
+
+#login_body{
     display: grid;
     grid-template-areas:
     "hdr"
@@ -354,7 +222,8 @@ body.index:first-of-type {
     overflow-y: hidden;
 }
 
-#login {
+
+#login{
     grid-area: log;
     display: flex;
     flex-direction: column;
@@ -366,7 +235,7 @@ body.index:first-of-type {
     border-radius: 10px;
 }   
 
-#login form {
+#login form{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -375,13 +244,13 @@ body.index:first-of-type {
     gap: 2vh;
 }
 
-.enter_field {
+.enter_field{
     width: inherit;
     border-radius: 8px;
     height: 3rem;  
 }
 
-.submit_button {
+.submit_button{
     background-color: yellow;
     color: black;
     border-radius: 8px;
@@ -390,7 +259,7 @@ body.index:first-of-type {
     font-size: 1rem;
 }
 
-#signup {
+#signup{
     grid-area: sig;
     display: flex;
     justify-content: center;
@@ -404,7 +273,7 @@ body.index:first-of-type {
     border-radius: 10px;
 }
 
-#signup a {
+#signup a{
     background-color: yellow;
     color: black;
     text-decoration: none;
@@ -417,7 +286,7 @@ body.index:first-of-type {
     margin-top: 10px;
 }
 
-#signup_body {
+#signup_body{
     display: grid;
     grid-template-areas:
     "hdr"
@@ -429,7 +298,7 @@ body.index:first-of-type {
     background-image: url(/img/poster_background2.jpg);
 }
 
-#signup_form {
+#signup_form{
     grid-area: sig;
     display: flex;
     flex-direction: column;
@@ -442,7 +311,7 @@ body.index:first-of-type {
     padding-bottom: 2vh;
 }
 
-#signup_form form {
+#signup_form form{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -451,11 +320,9 @@ body.index:first-of-type {
     gap: 2vh;
 }
 
-/* ~END OF FORMS~ */
+/*Sök-sidan*/
 
-/* ~BROWSE~ */
-
-#search_body {
+#search_body{
     display: grid;
     grid-template-areas:
     "hdr"
@@ -472,7 +339,7 @@ body.index:first-of-type {
     width: auto;
 }
 
-#filters_container {
+#filters_container{
     grid-area: flt;
     width: 50vw;
     margin: auto;
@@ -483,15 +350,15 @@ body.index:first-of-type {
     align-items: center;
 }
 
-#filters_container select {
+#filters_container select{
     color: black;
 }
 
-#filters_container option {
+#filters_container option{
     color: black;
 }
 
-#filter_button {
+#filter_button{
     color: black;
     background-color: yellow;
     width: 5vw;
@@ -500,28 +367,28 @@ body.index:first-of-type {
     font-size: 1rem;
 }
 
-#search_name {
+#search_name{
     grid-area: nam;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#result_movies {
+#result_movies{
     grid-area: moi;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#result_profiles {
+#result_profiles{
     grid-area: pri;
     display: flex;
     justify-content: center;
     align-items: flex-start;
 }
 
-#result_movie_posters {
+#result_movie_posters{
     grid-area: mov;
     display: flex;
     flex-direction: row;
@@ -529,12 +396,12 @@ body.index:first-of-type {
     align-items: center;
 }
 
-#result_movie_posters img {
+#result_movie_posters img{
     height: 40vh;
     border-radius: 5px;
 }
 
-#result_profiles_section {
+#result_profiles_section{
     grid-area: pro;
     display: flex;
     flex-direction: row;
@@ -542,11 +409,7 @@ body.index:first-of-type {
     align-items: center;
 }
 
-/* ~END OF BROWSE~ */
-
-/* ~PROFILE~ */
-
-.profile_items {
+.profile_items{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -561,21 +424,21 @@ body.index:first-of-type {
     text-overflow: clip;
 }
 
-.profile_items img {
+.profile_items img{
     height: 10vh;
 }
 
-.profile_items div {
+.profile_items div{
     width: 10vw;
     max-height: 15vh;
 }
 
-h3 {
+h3{
     font-size: 1.6rem;
     font-family: 'Oxygen', sans-serif;
 }
 
-#movie_body {
+#movie_body{
     display: grid;
     grid-template-areas:
     "hdr"
@@ -591,21 +454,21 @@ h3 {
     overflow-x: hidden;
 }
 
-#big_movie_poster {
+#big_movie_poster{
     grid-area: img;
     width: 60vw;
     margin: auto;
     border-radius: 10px;
 }
 
-#movie_title {
+#movie_title{
     grid-area: ttl;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#description_and_info {
+#description_and_info{
     grid-area: txt;
     display: flex;
     flex-direction: row;
@@ -613,24 +476,24 @@ h3 {
     align-items: center;
 }
 
-#description {
+#description{
     width: 30vw;
 }
 
-#movie_info_p {
+#movie_info_p{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
 }
 
-#featured_movie_reviews {
+#featured_movie_reviews{
     grid-area: rev;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
 }
 
-.single_review {
+.single_review{
     position: relative;
     top: 10vh;
     height: auto;
@@ -641,12 +504,12 @@ h3 {
     text-decoration: none;
 }
 
-.single_review h4 {
+.single_review h4{
     font-size: 1.2rem;
     font-family: 'Oxygen', sans-serif;
 }
 
-#profile_body {
+#profile_body{
     display: grid;
     grid-template-areas:
     "hdr"
@@ -660,7 +523,7 @@ h3 {
     grid-template-rows: 200px 30vh 60vh 60vh 60vh;
 }
 
-#profile_info {
+#profile_info{
     grid-area: inf;
     width: auto;
     display: flex;
@@ -670,12 +533,12 @@ h3 {
 
 }
 
-#profile_picture {
+#profile_picture{
     height: 30vh;
     border-radius: 2px;
 }
 
-#profile_stuff {
+#profile_stuff{
     width: 30vw;
     display: flex;
     flex-direction: column;
@@ -683,17 +546,17 @@ h3 {
     align-items: center;
 }
 
-#profile_stuff h2 {
+#profile_stuff h2{
     text-decoration: underline;
     margin-top: 0;
 }
 
-#settings_icon {
+#settings_icon{
     height: 2rem;
     margin-left: 1vw;
 }
 
-#profile_stuff_container {
+#profile_stuff_container{
     width: inherit;
     display: flex;
     flex-direction: row;  
@@ -701,7 +564,7 @@ h3 {
     margin-left: 4vw;
 }
 
-#rec_watched {
+#rec_watched{
     grid-area: rwa;
     height: auto;
     display: flex;
@@ -711,7 +574,7 @@ h3 {
     padding-top: 7vh;
 }
 
-#rec_watched_container {
+#rec_watched_container{
     height: auto;
     width: 80vw;
     margin: auto;
@@ -719,12 +582,12 @@ h3 {
     justify-content: space-evenly;
 }
 
-#rec_watched_container img {
+#rec_watched_container img{
     height: 35vh;
     border-radius: 2px;
 }
 
-.all_button {
+.all_button{
     background-color: yellow;
     color: black;
     border-radius: 4px;
@@ -735,7 +598,7 @@ h3 {
 
 }
 
-#rec_reviewed {
+#rec_reviewed{
     grid-area: rre;
     display: flex;
     flex-direction: column;
@@ -744,7 +607,7 @@ h3 {
     height: 60vh;
 }
 
-#recent_rev_container {
+#recent_rev_container{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -752,7 +615,7 @@ h3 {
     margin: auto;
 }
 
-.rec_reviews {
+.rec_reviews{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -761,24 +624,24 @@ h3 {
     border-radius: 3px;
 }
 
-.rec_reviews img {
+.rec_reviews img{
     height: 30vh;
     border-radius: 2px;
 }
 
-.rec_review_text {
+.rec_review_text{
     margin-left: 1vw;
     width: 15vw;
 }
 
-#lists {
+#lists{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
 }
 
-#lists_container {
+#lists_container{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -788,18 +651,18 @@ h3 {
     margin: auto;
 }
 
-.profile_list {
+.profile_list{
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.list_posters {
+.list_posters{
     height: 35vh;
     border-radius: 2px;
 }
 
-#add_body {
+#add_body{
     display: grid;
     grid-template-areas: 
     "hdr"
@@ -813,18 +676,18 @@ h3 {
     grid-template-rows: 200px 5rem 50vh 4rem;
 }
 
-#add_movie_title {
+#add_movie_title{
     grid-area: ttl;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#add_movie_title input {
+#add_movie_title input{
     width: 20vw;
 }
 
-#review_text_and_buttons {
+#review_text_and_buttons{
     grid-area: txt;
     display: flex;
     height: 40vh;
@@ -833,13 +696,13 @@ h3 {
     align-items: center;
 }
 
-#watched_and_spoilers {
+#watched_and_spoilers{
     width: 50vw;
     display: flex;
     justify-content: space-evenly;
 }
 
-.checkbox_container {
+.checkbox_container{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -848,7 +711,7 @@ h3 {
 }
 
 /*Större font-size??*/
-#reviewbox  {
+#reviewbox {
     height: 30vh;
     width: 30vw;
     border: 2px solid yellow;
@@ -857,7 +720,7 @@ h3 {
     font-size: normal;
 }
 
-#add_button {
+#add_button{
     grid-area: btn;
     width: 100%;
     height: 4rem;
@@ -866,7 +729,7 @@ h3 {
     align-items: center;
 }
 
-#add_button h3 {
+#add_button h3{
     background-color: yellow;
     color: black;
     width: 10rem;

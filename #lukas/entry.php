@@ -23,9 +23,7 @@
 
         <main>
             
-            <?php foreach($ratings as $rating) {
-                var_dump($rating);
-            } ?>
+
 
         </main>
 
@@ -33,9 +31,10 @@
 
         <main>
             
-            <?php foreach($reviews as $review) {
-                var_dump($review);
-            } ?>
+            <?php 
+                $reviews = fetchReviews($conn, $_GET['user_uid']);
+                renderReviews($reviews);
+            ?>
 
         </main>
 
@@ -43,13 +42,11 @@
 
         <main>
 
-            <?php foreach($diary_entries as $diary_entry) {
-                var_dump($diary_entry);
-            } ?>
+
 
         </main>
 
-    <?php else: header("location: /"); endif; 
+    <?php else: header("location: /error"); endif; 
     include_once("section_footer.php"); ?>
 </body>
 </html>

@@ -8,7 +8,7 @@
     require_once("section_contents.php"); // html-head, kopplar css och js
 ?>
 
-<body>
+<body id="index">
     <?php include_once("section_header.php"); // html header ?> 
 
     <main>

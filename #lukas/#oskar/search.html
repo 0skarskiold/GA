@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400&display=swap" rel="stylesheet">
+</head>
+<body id="search_body">
+    <header >
+        <h1>
+            <a href="index.html">ViewPlace</a>
+        </h1>
+        <form action="search.html" id="search_bar_parent">
+            <input type="text" placeholder="Search..." id="search_bar">
+            <img src="img/looking_glass.png" alt="search_icon" id="search_icon">
+        </form>
+        
+
+        <a href="login.html">
+            <img src="img/profile.png" alt="profile picture">
+        </a>
+        <a href="add.html">
+            <img src="img/add_icon.svg" alt="add an entry" id="add_icon">
+        </a>
+    </header>
+
+    <section id="filters_container">
+        <div>
+            <label for="sortby">Sort By</label>
+            <select name="sortby">
+            <label for="popularity">Popularity</label>
+            <option value="popularity">All Time</option>
+            <option value="popularity-week">This Week</option>
+            <label for="avarage-rating">Avarage Rating</label>
+            <option value="rating-hi">Highest First</option>
+            <option value="rating-lo">Lowest First</option>
+            <option value="title">Title</option>
+            </select>
+            <label for="genre">Genre</label>
+            <select name="genre">
+            <option value="any">Any</option>
+            <option value='".$genre['id']."'>".$genre['name']."</option>
+            ...
+            </select>
+            <label for="tag">Tag</label>
+            <select name="tag"> <!--gör att denna modifieras utefter vad för genre som valts-->
+            <option value="any">Any</option>
+        <option value='".$tag['id']."'>".$tag['name']."</option>
+            ...
+            </select>
+            <label for="year">Year</label>
+            <select name="year">
+            <option value="any">Any</option>
+            ...
+            </select>
+
+            <label for="type--feature-film">Films</label>
+            <input type="checkbox" name="type--feature-film">
+            <label for="type--short-film">Short-films</label>
+            <input type="checkbox" name="type--short-film">
+            <label for="type--series">Series</label>
+            <input type="checkbox" name="type--series">
+            <label for="type--mini-series">Mini-series</label>
+            <input type="checkbox" name="type--mini-series">
+            <label for="type--season">Seasons</label>
+            <input type="checkbox" name="type--season">
+            <label for="type--episode">Episodes</label>
+            <input type="checkbox" name="type--episode">
+            <label for="type--game">Games</label>
+            <input type="checkbox" name="type--game">
+        </div>
+        <button type="submit" id="filter_button">Apply</button> 
+            
+
+    </section>
+
+    <h2 id="search_name"> Showing results for: Baking Bad</h2>
+    <h3 id="result_movies">Movies and series:</h3>
+    <h3 id="result_profiles">Profiles:</h3>
+
+    <section id="result_movie_posters">
+        <a href="movie.html">
+            <img src="img/search_movie_poster.jpg" alt="movie_poster">
+        </a>
+        <a href="movie.html">
+            <img src="img/search_movie_poster.jpg" alt="movie_poster">
+        </a>
+        <a href="movie.html">
+            <img src="img/search_movie_poster.jpg" alt="movie_poster">
+        </a>
+        
+    </section>
+
+    <div id="result_profiles_section">
+        <section class="profile_items">
+            <img src="img/profile.png" alt="profile_picture">
+            <div>
+                <h4>Luckakas</h4>
+                <p>About me: I like movies
+                </p>
+            </div>
+        </section>
+
+        <section class="profile_items">
+            <img src="img/profile.png" alt="profile_picture">
+            <div>
+                <h4>Oskaaaar</h4>
+                <p>About me: Föreställer mig drakar
+                </p>
+            </div>
+        </section>
+
+        <section class="profile_items">
+            <img src="img/profile.png" alt="profile_picture">
+            <div>
+                <h4>Gangham</h4>
+                <p>About me: bollar dessa nötter
+                </p>
+            </div>
+        </section>
+    </div>
+    
+</body>
+</html>
