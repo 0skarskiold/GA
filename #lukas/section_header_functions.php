@@ -2,17 +2,25 @@
 
 function renderHeader($user_uid, $item_id) {
 
-    if(isset($user_uid)) {
-        $profile = '<a href="/users/'.$user_uid.'" class="button">Profile</a>';
-        $acc = '<a href="/section_header_receive.php?logout" class="button">Log Out</a>';
-    } else {
-        $profile = '';
-        $acc = '<a href="/forms" class="button">Log in</a>';
-    }
     if(isset($item_id)) {
         $insert_id = '<input type="hidden" name="itemid" value="'.$item_id.'">';
     } else {
         $insert_id = '';
+    }
+    if(isset($user_uid)) {
+        $create = 
+        '<button class="button" type="button">Create</button>
+        <form class="dropdown_content" action="/create" method="post" hidden>
+        '.$insert_id.'
+        <button class="button" type="submit" name="type" value="review">Review</button>
+        <button class="button" type="submit" name="type" value="log">Diary entry</button>
+        </form>';
+        $profile = '<a href="/users/'.$user_uid.'" class="button">Profile</a>';
+        $acc = '<a href="/section_header_receive.php?logout" class="button">Log Out</a>';
+    } else {
+        $create = '';
+        $profile = '';
+        $acc = '<a href="/forms" class="button">Log in</a>';
     }
 
     $html = 
@@ -25,14 +33,7 @@ function renderHeader($user_uid, $item_id) {
     <input class="search_bar" type="text" name="search" placeholder="Search">
     <button class="button" type="submit" name="submit-search">Search</button>
     </form>
-    '.$acc.'
-    <div class="dropdown_container create">
-    <div class="open_dropdown">Create</div>
-    <form class="dropdown_content" action="/create" method="post">
-    '.$insert_id.'
-    <button class="dropdown_option" type="submit" name="type" value="review">Review</button>
-    <button class="dropdown_option" type="submit" name="type" value="log">Diary entry</button>
-    </form>
+    '.$acc.$create.'
     </div>
     </nav>
     </header>';

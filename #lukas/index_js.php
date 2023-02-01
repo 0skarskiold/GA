@@ -2,11 +2,14 @@
 
 $(document).ready(function() {
 
-    $('button.scroll').click(function() {
-        var list_selector = '#' + $(this).attr('for') + ' .item_list';
+    if($('.item_list').first().children('li').length <= 5) {
+        $('button.scroll').attr('hidden', true);
 
-        if($(list_selector).length > 0) {
-            
+    } else {
+
+        $('button.scroll').click(function() {
+            var list_selector = '.item_list_container#' + $(this).attr('for') + ' .item_list';
+                
             var num_children = $(list_selector).children('li').length;
             var lim = 0;
 
@@ -15,6 +18,7 @@ $(document).ready(function() {
             }
 
             if($(this).hasClass('r')) {
+                console.log(num_children);
                 if(parseInt($(list_selector).css('left')) > lim && !$(list_selector).is(':animated')) {
                     $(list_selector).animate({left: "-=550px"});
                 }
@@ -23,8 +27,8 @@ $(document).ready(function() {
                     $(list_selector).animate({left: "+=550px"});
                 }
             }
-        }
-    });
+        });
+    }
 });
 
 </script>

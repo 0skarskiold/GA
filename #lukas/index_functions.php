@@ -152,9 +152,9 @@ function renderListRecent($recent) { // view
 
         for($j = $r['rating']; $j > 0; $j -= 0.5) {
             if($i % 2 == 0) {
-                $stars .= '<div class="half_star l"></div>';
+                $stars .= '<li class="half_star l"></li>';
             } else {
-                $stars .= '<div class="half_star r"></div>';
+                $stars .= '<li class="half_star r"></li>';
             }
             $i++;
         }
@@ -173,7 +173,7 @@ function renderListRecent($recent) { // view
         <a class="item_link activity" href="/users/'.$r['user_uid'].'/entries?id='.$r['entry_id'].'">
         <img class="poster" src="/metadata/'.$r['item_type'].'/'.$r['item_uid'].'/'.$r['item_uid'].'.jpg"></img>
         <div class="block2">
-        <div class="stars">'.$stars.'</div>
+        <ul class="stars">'.$stars.'</ul>
         <p>'.$r['date_string'].'</p>
         '.$rewatch.$spoilers.'
         </div>
@@ -271,12 +271,6 @@ function renderListPopular($popular) { // view
         </li>';
     }
 
-    if(count($popular) < 6) {
-        $hideScroll = 'hidden';
-    } else {
-        $hideScroll = '';
-    }
-
     $html =
     '<section class="item_list_section">
     <h2>Popular</h2>
@@ -285,7 +279,8 @@ function renderListPopular($popular) { // view
     <option value="all">All time</option>
     <option value="week">This month</option>
     </select>
-    <button class="scroll l" for="popular" '.$hideScroll.'>left</button>
+    <div class="scrollable_list_container">
+    <button class="button scroll l" for="popular"><</button>
     <div class="item_list_container" id="popular">
     <ul class="item_list">
     '.$list.'
@@ -294,7 +289,8 @@ function renderListPopular($popular) { // view
     </li>
     </ul>
     </div>
-    <button class="scroll r" for="recent" '.$hideScroll.'>right</button>
+    <button class="button scroll r" for="popular">></button>
+    </div>
     </section>';
 
     echo $html;

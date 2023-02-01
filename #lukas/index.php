@@ -28,5 +28,6 @@
     </main>
 
     <?php include_once("section_footer.php"); ?>
+    <?php include_once("index_js.php"); ?>
 </body>
 </html>
