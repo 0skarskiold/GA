@@ -181,24 +181,21 @@ function renderListRecent($recent) { // view
         </li>';
     }
 
-    if(count($recent) < 6) {
-        $hideScroll = 'hidden';
-    } else {
-        $hideScroll = '';
-    }
-
     $html =
-    '<section class="item_list_section recent">
-    <button class="scroll l" for="recent" '.$hideScroll.'>left</button>
-    <div class="item_list_container" id="recent">
-    <ul class="item_list activity">
+    '<section class="item_list_section" list-name="recent">
+    <h2>Recent</h2>
+    <div class="item_list_container" list-name="recent">
+    <button class="button scroll l" list-name="recent"><</button>
+    <div class="item_list_limits" list-name="recent">
+    <ul class="item_list activity" list-name="recent">
     '.$list.'
     <li class="show_more">
     <a href="/recent-activity"></a>
     </li>
     </ul>
     </div>
-    <button class="scroll r" for="recent" '.$hideScroll.'>right</button>
+    <button class="button scroll r" list-name="recent">></button>
+    </div>
     </section>';
 
     echo $html;
@@ -272,24 +269,24 @@ function renderListPopular($popular) { // view
     }
 
     $html =
-    '<section class="item_list_section">
+    '<section class="item_list_section" list-name="popular">
     <h2>Popular</h2>
     <select name="popular-type">
     <option value="week">This week</option>
     <option value="all">All time</option>
     <option value="week">This month</option>
     </select>
-    <div class="scrollable_list_container">
-    <button class="button scroll l" for="popular"><</button>
-    <div class="item_list_container" id="popular">
-    <ul class="item_list">
+    <div class="item_list_container" list-name="popular">
+    <button class="button scroll l" list-name="popular"><</button>
+    <div class="item_list_limits" list-name="popular">
+    <ul class="item_list" list-name="popular">
     '.$list.'
     <li class="show_more">
     <a href="/popular"></a>
     </li>
     </ul>
     </div>
-    <button class="button scroll r" for="popular">></button>
+    <button class="button scroll r" list-name="popular">></button>
     </div>
     </section>';
 

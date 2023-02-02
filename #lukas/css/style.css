@@ -47,6 +47,16 @@ h2 {
     border-radius: 0.3rem;
 }
 
+input {
+    width: 10rem;
+    height: 2rem;
+    padding-left: 0.3rem;
+
+    font-size: 1rem;
+    border: 0.2rem solid var(--color1);
+    border-radius: 0.3rem;
+}
+
 a.button {
     display: flex;
     justify-content: center;
@@ -62,8 +72,6 @@ a.button {
 /* ~HEADER~ */
 
 header:first-of-type {
-    grid-area: hdr;
-
     width: max-content;
     height: 100px;
     margin: auto;
@@ -103,21 +111,23 @@ header .search_form {
     left: -30px;
 } */
 
-header .search_bar {
-    width: 150px;
-    height: 2rem;
-    margin-right: 0.3rem;
-    padding-left: 0.3rem;
-
-    font-size: 17px;
-
-    border: 0.2rem solid var(--color1);
-    border-radius: 5px;
-}
+header .search_bar { margin-right: 0.3rem; }
 
 header .search_form .button {
     color: var(--color2);
     background-color: var(--color1);
+}
+
+footer:first-of-type {
+    width: max-content;
+    height: 100px;
+    margin: auto;
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    border-top: 5px solid yellow;
 }
 
 /* ~END OF HEADER~ */
@@ -140,17 +150,20 @@ header .search_form .button {
 
 } */
 
-.scrollable_list_container {
+.item_list_container {
     display: flex;
     align-items: center;
 }
 
-.item_list_container {
+.item_list_limits {
     width: 540px;
-    margin: 0 20px;
+    height: max-content;
+    margin: 0 0.2rem;
+    padding: 0.2rem;
 
     overflow: hidden;
-    border: solid 1px red;
+    border-radius: 0.3rem;
+    border: 0.1rem solid  lightblue;
 }
 
 .item_list {
@@ -223,7 +236,7 @@ img.poster {
     display: block;
 }
 
-#list_container {
+/* #list_container {
     grid-area: mov;
     display: flex;
     flex-direction: row;
@@ -249,7 +262,7 @@ img.poster {
     overflow-x: scroll;
 }
 
-.movie_poster { /*Man kan scrolla typ 20pixlar efter sista trion*/
+.movie_poster { /*Man kan scrolla typ 20pixlar efter sista trion */ /*
     border-radius: 20px;
     height: 50vh;
     width: auto;
@@ -322,121 +335,35 @@ img.poster {
     align-items: top;
     border-radius: 1px;
     border-width: 0.3vw;
-}
+} */
 
 /* ~END OF INDEX~ */
 
 /* ~FORMS~ */
 
-#login_body {
-    display: grid;
-    grid-template-areas:
-    "hdr"
-    "log"
-    "sig"
-    ;
-    grid-template-columns: 1fr;
-    grid-template-rows: 200px 50vh 100px;
-    height: 100vh;
-    background-image: url(/img/poster_background2.jpg);
-    overflow-y: hidden;
-}
-
-#login {
-    grid-area: log;
+body.forms main {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
-    width: 20vw;
-    margin: auto;
-    opacity: 92%;
-    border-radius: 10px;
+    row-gap: 2rem;
+}
+
+.button[name=form_choice] {
+    margin-top: 1rem;
+}
+
+section#login, section#signup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 1rem;
 }   
 
-#login form {
+section#login form, section#signup form {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
     align-items: center;
-    height: auto;
-    gap: 2vh;
-}
-
-.enter_field {
-    width: inherit;
-    border-radius: 8px;
-    height: 3rem;  
-}
-
-.submit_button {
-    background-color: yellow;
-    color: black;
-    border-radius: 8px;
-    height: 3rem;
-    width: 150px;
-    font-size: 1rem;
-}
-
-#signup {
-    grid-area: sig;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    font-size: 1.2rem;
-    width: 20vw;
-    height: 14vh;
-    margin: auto;
-    opacity: 92%;
-    border-radius: 10px;
-}
-
-#signup a {
-    background-color: yellow;
-    color: black;
-    text-decoration: none;
-    height: 2rem;
-    width: 10vw;
-    border-radius: 5px;
-    display: flex; 
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-}
-
-#signup_body {
-    display: grid;
-    grid-template-areas:
-    "hdr"
-    "sig"
-    ;
-    grid-template-columns: 1fr;
-    grid-template-rows: 200px 50vh;
-    height: 120vh;
-    background-image: url(/img/poster_background2.jpg);
-}
-
-#signup_form {
-    grid-area: sig;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 20vw;
-    margin: auto;
-    opacity: 92%;
-    border-radius: 10px;
-    padding-bottom: 2vh;
-}
-
-#signup_form form {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    height: auto;
-    gap: 2vh;
+    row-gap: 0.5rem;
 }
 
 /* ~END OF FORMS~ */

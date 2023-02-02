@@ -6,7 +6,7 @@
 
     require_once("section_contents.php"); 
 ?>
-<body>
+<body class="forms">
     <?php include_once("section_header.php"); ?>
 
     <main>

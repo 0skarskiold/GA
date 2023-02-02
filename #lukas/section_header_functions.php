@@ -20,7 +20,7 @@ function renderHeader($user_uid, $item_id) {
     } else {
         $create = '';
         $profile = '';
-        $acc = '<a href="/forms" class="button">Log in</a>';
+        $acc = '<a href="/forms" class="button">Join</a>';
     }
 
     $html = 

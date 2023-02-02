@@ -141,18 +141,7 @@ function submitLogin($conn, $uid_or_email, $pwd) {
 function renderForms() {
 
     $html = 
-    '<ul id="form_choice">
-    <li><button type="button" name="toggle_form_type" class="button">Log in</a></li>
-    </ul>
-
-    <section id="login" hidden>
-    <div class="sub_header"><h2>Log in</h2></div>
-    <form action="forms_receive.php" method="post" id="login_form">
-    <input type="text" name="uid" placeholder="Username/Email...">
-    <input type="password" name="pwd" placeholder="Password...">
-    <button type="submit" name="submit-login" class="button">Log In</button>
-    </form>
-    </section>
+    '<button type="button" name="form_choice" value="login" class="button">Log in</button>
 
     <section id="signup">
     <div class="sub_header"><h2>Sign up</h2></div>
