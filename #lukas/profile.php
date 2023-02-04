@@ -9,7 +9,7 @@
 <body>
     <?php include_once("section_header.php"); ?>
 
-    <main>
+    <main id="profile">
         <?php
 
             $user = fetchUser($conn, $_GET['uid'], $_SESSION['useruid'], $_SESSION['userid']);

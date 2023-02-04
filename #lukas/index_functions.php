@@ -166,12 +166,14 @@ function renderListRecent($recent) { // view
             $spoilers = '<div class="icon spoilers"></div>';
         } else { $spoilers = ''; }
 
+        $path = '/metadata/'.$r['item_type'].'/'.$r['item_uid'].'/'.$r['item_uid'].'.jpg';
+
         // todo: lägg till en flik som fälls upp då du hover:ar över användarnamnet som säger "visa all ny aktivitet från [namn]" som ger en länk till just det.
         $list .=   
         '<li class="item_container activity">
         <div class="block1"><a href="/users/'.$r['user_uid'].'">'.$r['username'].'</a></div>
         <a class="item_link activity" href="/users/'.$r['user_uid'].'/entries?id='.$r['entry_id'].'">
-        <img class="poster" src="/metadata/'.$r['item_type'].'/'.$r['item_uid'].'/'.$r['item_uid'].'.jpg"></img>
+        <img class="poster" src="'.$path.'"></img>
         <div class="block2">
         <ul class="stars">'.$stars.'</ul>
         <p>'.$r['date_string'].'</p>
@@ -260,10 +262,14 @@ function renderListPopular($popular) { // view
     $list = '';
 
     foreach($popular as $p) {
+
+        $path = '/metadata/'.$p['type'].'/'.$p['uid'].'/'.$p['uid'].'.jpg';
+
         $list .= 
         '<li class="item_container">
+        <p hidden>'.$p['name'].' ('.$p['year'].')</p>
         <a class="item_link" href="/'.$p['type'].'/'.$p['uid'].'">
-        <img class="poster" src="/metadata/'.$p['type'].'/'.$p['uid'].'/'.$p['uid'].'.jpg"></img>
+        <img class="poster" src="'.$path.'"></img>
         </a>
         </li>';
     }

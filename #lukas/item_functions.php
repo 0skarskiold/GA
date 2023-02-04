@@ -227,7 +227,7 @@ function fetchItem($conn, $type, $uid) {
     return $item;
 }
 
-function renderReviewList($reviews) {
+function prepareReviewList($reviews) {
 
     $list = '';
     foreach($reviews as $review) {
@@ -250,11 +250,11 @@ function renderReviewList($reviews) {
         if($review['spoilers'] == 1) { 
             $text = 
             '<p>This review may include spoilers!</p>
-            <button type="button name="reveal-spoilers">Reveal</button>
-            <p class="review-text" hidden>'.$review['review_text'].'</p>';
+            <button type="button name="reveal_spoilers">Reveal</button>
+            <p hidden>'.$review['text'].'</p>';
         } else {
             $text = 
-            '<p class="review-text">'.$review['review_text'].'</p>';
+            '<p>'.$review['text'].'</p>';
         }
 
         $list .= 
@@ -271,28 +271,103 @@ function renderReviewList($reviews) {
 
 function renderItem($item) {
 
-    $review_list_popular = renderReviewList($item['reviews_popular']);
-    $review_list_recent = renderReviewList($item['reviews_recent']);
-    $review_list_random = renderReviewList($item['reviews_random']);
+    // switch($item['type']) {
+    //     case 'film':
+    //         $html = readyItemFilm($item);
+    //         break;
+    // }
 
-    $html =
-    '<div class="poster_container">
-    <img src="/metadata/'.$item['type'].'/'.$item['uid'].'/'.$item['uid'].'.jpg"></img>
+    $review_list_popular = prepareReviewList($item['reviews_popular']);
+    $review_list_recent = prepareReviewList($item['reviews_recent']);
+    $review_list_random = prepareReviewList($item['reviews_random']);
+
+    $poster_path = '/metadata/'.$item['type'].'/'.$item['uid'].'/'.$item['uid'].'.jpg';
+
+    $item['directors'] = ['a', 'b'];
+    $item['writers'] = ['a', 'c'];
+    if(array_intersect($item['directors'], $item['writers']) === $item['writers']) {
+        if(count($item['directors']) == 2) {
+            $creators_str = 'Written and directed by <a href="">'.$item['directors'][0].'</a> and <a href="">'.$item['directors'][1].'</a>';
+        } elseif(count($item['directors']) == 1) {
+            $creators_str = 'Written and directed by <a href="">'.$item['directors'][0].'</a>';
+        } elseif(count($item['directors']) == 0) {
+            header('location: /?error');
+            exit;
+        }
+    } else {
+        if(count($item['directors']) == 2) {
+            $creators_str = 'Directed by <a href="">'.$item['directors'][0].'</a> and <a href="">'.$item['directors'][1].'</a>';
+        } elseif(count($item['directors']) == 1) {
+            $creators_str = 'Directed by <a href="">'.$item['directors'][0].'</a>';
+        } elseif(count($item['directors']) == 0) {
+            header('location: /?error');
+            exit;
+        }
+    
+        if(count($item['writers']) == 2) {
+            $creators_str .= ', written by <a href="">'.$item['writers'][0].'</a> and <a href="">'.$item['writers'][1].'</a>';
+        } elseif(count($item['writers']) == 1) {
+            $creators_str .= ', written by <a href="">'.$item['writers'][0].'</a>';
+        } elseif(count($item['writers']) == 0) {
+            header('location: /?error');
+            exit;
+        }
+    }
+
+    $section1 = 
+    '<section id="item_grid_container">
+    <div id="main_poster_container">
+    <img src="'.$poster_path.'">
     </div>
-    <h2>'.$item['name'].' ('.$item['year'].')</h2>
-    <p class="subheading type">'.ucfirst($item['type']).'</p>
-    <p class="description">'.$item['description'].'</p>
-    <ul class="list_reviews popular">
+    <div id="title_container">
+    <p><span>'.$item['name'].'</span> <a href="#">'.$item['year'].'</a></p>
+    <p>'.$creators_str.'</p>
+    <p>'.ucfirst($item['type']).' • Age-rating: 16'.$item['age-rating'].'</p>
+    </div>
+    <div id="actions_container">
+    </div>
+    <div id="description_container">
+    <p>'.$item['description'].'</p>
+    </div>
+    </section>';
+
+    $section2 = 
+    '<section id="selected_reviews">
+    <button type="button" class="button">Open all reviews</button>
+    <div id="review_lists">
+    <div class="review_list_container">
+    <ul class="review_list popular">
     '.$review_list_popular.'
     </ul>
-    <ul class="list_reviews recent">
+    </div>
+    <div class="review_list_container">
+    <ul class="review_list recent">
     '.$review_list_recent.'
     </ul>
-    <button type="button" name="shuffle">Shuffle</button>
-    <ul class="list_reviews random">
+    </div>
+    <div class="review_list_container">
+    <button type="button" name="shuffle" class="button">Shuffle</button>
+    <ul class="review_list random">
     '.$review_list_random.'
     </ul>
-    ';
+    </div>
+    </div>
+    </section>';
+
+    $html = 
+    '<div id="main_background_container">
+    <img src="">
+    </div>
+    '.$section1.$section2;
+    
+    
+
+    // om en director och en writer: "directed by [director], written by [writer]"
+    // om director och writer är samma person: "written and directed by [person]"
+    // om fler än två directors och fler än två writers: "show directors, show writers"
+    // Directed by <a href="#">'.$item['directors'].'</a>, written by <a href="#">'.$item['writers'].'</a>, adapted from <a href="#">'.$item['source'].'</a></h3>
+
+
 
     echo $html;
     return;

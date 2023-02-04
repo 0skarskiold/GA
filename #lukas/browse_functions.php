@@ -69,64 +69,100 @@ function renderBrowseFilter($conn, $type) {
     }
 
     $html = 
-    '<form method="post">
+    '<section id="browse_filter">
+    <form method="post">
 
-    <label for="sortby">Sort by</label>
-    <select name="sortby">
-        <!--<label for="popularity">Popularity</label>-->
-        <option value="popularity-week">This week</option>
-        <option value="popularity-month">This month</option>
-        <option value="popularity-all">All time</option>
-        <!--<label for="avarage-rating">Avarage Rating</label>-->
-        <option value="rating-high">Highest first</option>
-        <option value="rating-low">Lowest first</option>
-        <option value="title">Title</option>
+    <div class="filter_segment">
+    <div class="filter_option">
+    <label for="sort-by">Sort by</label>
+    <select name="sort-by">
+        <option value="popularity">Popularity</option>
+        <option value="rating">Rating</option>
+        <option value="name">Name</option>
     </select>
+    </div>
 
+    <div class="filter_option">
+    <select name="sort-by-popularity">
+    <option value="week">This week</option>
+    <option value="month">This month</option>
+    <option value="all-time">All time</option>
+    </select>
+    </div>
+
+    <div class="filter_option">
     <label for="genre">Genre</label>
     <select name="genre">
     <option value="any">Any</option>
     '.$glist.'
     </select>
+    </div>
 
+    <div class="filter_option">
     <label for="tag">Tag</label>
     <select name="tag">
     <option value="any">Any</option>
     '.$tlist.'
     </select>
+    </div>
 
+    <div class="filter_option">
     <label for="year">Year</label>
     <select name="year">
     <option value="any">Any</option>
     '.$ylist.'
     </select>
+    </div>
+    </div>
 
+    <div class="filter_segment">
+    <div class="filter_option">
     <label for="type-film">Films</label>
-    <input type="checkbox" name="type-film">
+    <input type="checkbox" name="type-film" checked>
+    </div>
 
+    <div class="filter_option">
     <label for="type-short-film">Short-films</label>
-    <input type="checkbox" name="type-short-film">
+    <input type="checkbox" name="type-short-film" checked>
+    </div>
 
+    <div class="filter_option">
     <label for="type-series">Series</label>
-    <input type="checkbox" name="type-series">
+    <input type="checkbox" name="type-series" checked>
+    </div>
 
+    <div class="filter_option">
     <label for="type-mini-series">Mini-series</label>
-    <input type="checkbox" name="type-mini-series">
+    <input type="checkbox" name="type-mini-series" checked>
+    </div>
 
+    <div class="filter_option">
     <label for="type-series-s">Seasons</label>
-    <input type="checkbox" name="type-series-s">
+    <input type="checkbox" name="type-series-s" checked>
+    </div>
 
+    <div class="filter_option">
     <label for="type-series-e">Episodes</label>
-    <input type="checkbox" name="type-series-e">
+    <input type="checkbox" name="type-series-e" checked>
+    </div>
 
+    <div class="filter_option">
     <label for="type-game">Games</label>
-    <input type="checkbox" name="type-game">
+    <input type="checkbox" name="type-game" checked>
+    </div>
 
+    <div class="filter_option">
     <label for="type-book">Books</label>
-    <input type="checkbox" name="type-book">
+    <input type="checkbox" name="type-book" checked>
+    </div>
+    </div>
 
-    <button type="submit">Apply</button>
-    </form>';
+    <div class="button_container">
+    <button type="submit" class="button">Apply</button>
+    </div>
+
+    </form>
+    </section>';
 
     echo $html;
     return;
@@ -157,7 +193,7 @@ function fetchListBrowse($conn, $filter_arr, $type) {
 
         } else {
 
-            switch ($filter_arr["sortby"]) {
+            switch($filter_arr["sortby"]) {
                 case "rating-high":
                     $factor = "`rating`";
                     $select = "(SELECT AVG(`rating`) FROM `ratings` WHERE `item_id` = `items`.`id`) AS `rating`";
@@ -412,23 +448,21 @@ function fetchListBrowse($conn, $filter_arr, $type) {
     }
 }
 
-function renderListBrowse($items, $type) {
+function renderListBrowse($fetched, $type) {
 
     if($type === 'browse') {
 
-        // <a href="/users">Browse users</a>
-
-        if(count($items) > 0) {
+        if(count($fetched) > 0) {
             $list = '<ul>';
 
-            foreach($items as $item) {
+            foreach($fetched as $item) {
 
-                $path = "/metadata/".$item['type']."/".$item['uid']."/".$item['uid'].".jpg";
+                $path = '/metadata/'.$item['type'].'/'.$item['uid'].'/'.$item['uid'].'.jpg';
     
                 $list .= 
                 '<li class="item_container">
-                <a href="/'.$item['type'].'/'.$item['uid'].'">
-                <h2>'.$item['name'].' ('.$item['year'].')</h2>
+                <p hidden>'.$item['name'].' ('.$item['year'].')</p>
+                <a class="item_link" href="/'.$item['type'].'/'.$item['uid'].'">
                 <img class="poster" src="'.$path.'" alt="Poster">
                 </a>
                 </li>';
@@ -439,7 +473,7 @@ function renderListBrowse($items, $type) {
         }
 
         $html = 
-        '<section>
+        '<section id="browse_items">
         '.$list.'
         </section>';
 
@@ -448,17 +482,36 @@ function renderListBrowse($items, $type) {
 
     } elseif($type === 'users') {
 
-        // if(isset($_GET['users'])) {
-        //     require_once("includes/listgen/users.inc.php"); 
-        //     echo '<a href="/browse">Browse media</a><ul>';
-        //     foreach($users as $user) {
-        //         echo 
-        //         "<li class='user_container'><a href='/users/".$user->uid."'>
-        //             <h2>".$user['name']." (".$user['uid'].")</h2>
-        //         </a>";
-        //     }
-        //     echo '</ul>';
-        // }
+        if(count($fetched) > 0) {
+            $list = '<ul>';
+
+            foreach($fetched as $user) {
+
+                $path = "/profile-imgs/".$user['uid'].".jpg";
+    
+                $list .= 
+                '<li class="user_container">
+                <a href="/'.$user['uid'].'">
+                <h2>'.$user['username'].'</h2>
+                <h3>@'.$user['uid'].'</h3>
+                <img class="poster" src="'.$path.'" alt="Profile picture for '.$user['username'].'">
+                </a>
+                </li>';
+            }
+            $list .= '</ul>';
+        } else {
+            $list = '';
+        }
+
+        $html = 
+        '<section id="browse_users">
+        '.$list.'
+        </section>';
+
+        echo $html;
+        return;
+
+    } elseif($type === 'crew') {
 
     } else {
         return;
