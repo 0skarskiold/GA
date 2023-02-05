@@ -1,4 +1,5 @@
 <?php
+require_once("universal_functions.php");
 
 function fetchGenres($conn, $item_id) {
 
@@ -231,39 +232,7 @@ function prepareReviewList($reviews) {
 
     $list = '';
     foreach($reviews as $review) {
-
-        $i = 0;
-        $stars = '';
-
-        for($j = $review['rating']; $j > 0; $j -= 0.5) {
-            if($i % 2 == 0) {
-                $stars .= '<div class="review half-star l"></div>';
-            } else {
-                $stars .= '<div class="review half-star r"></div>';
-            }
-            $i++;
-        }
-
-        if($review['like'] == 1) { 
-            $like = '<div class="review_like"></div>';
-        } else { $like = ''; }
-        if($review['spoilers'] == 1) { 
-            $text = 
-            '<p>This review may include spoilers!</p>
-            <button type="button name="reveal_spoilers">Reveal</button>
-            <p hidden>'.$review['text'].'</p>';
-        } else {
-            $text = 
-            '<p>'.$review['text'].'</p>';
-        }
-
-        $list .= 
-        '<li class="review_container">
-        <h3 class="reviewer">'.$review['username'].'</h3>
-        <div class="review_stars">'.$stars.'</div>
-        '.$like.'
-        <div class="review_text">'.$text.'</div>
-        </li>';
+        $list .= prepareReviewContainer($review['username'], $review['user_uid'], $review['entry_id'], $review['rating'], $review['like'], $review['text'], $review['spoilers'], $review['item_name'], $review['item_uid'], $review['item_year'], $review['item_type'], 'list');
     }
 
     return $list;
@@ -273,7 +242,7 @@ function renderItem($item) {
 
     // switch($item['type']) {
     //     case 'film':
-    //         $html = readyItemFilm($item);
+    //         $html = prepareItemFilm($item);
     //         break;
     // }
 
@@ -281,7 +250,7 @@ function renderItem($item) {
     $review_list_recent = prepareReviewList($item['reviews_recent']);
     $review_list_random = prepareReviewList($item['reviews_random']);
 
-    $poster_path = '/metadata/'.$item['type'].'/'.$item['uid'].'/'.$item['uid'].'.jpg';
+    $poster_path = '/img/'.$item['type'].'/'.$item['uid'].'/'.$item['uid'].'.jpg';
 
     $item['directors'] = ['a', 'b'];
     $item['writers'] = ['a', 'c'];
@@ -328,7 +297,7 @@ function renderItem($item) {
     </div>
     <div id="description_container">
     <p>'.$item['description'].'</p>
-    </div>
+    </div>'.var_dump($item['reviews_popular']).'
     </section>';
 
     $section2 = 

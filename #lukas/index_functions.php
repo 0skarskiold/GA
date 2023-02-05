@@ -134,7 +134,7 @@ function renderListRecent($recent) { // view
 
     $list = '';
     foreach($recent as $r) {
-        $list .= readyActivityContainer($r['username'], $r['user_uid'], $r['entry_id'], $r['rating'], $r['date'], $r['rewatch'], $r['review'], $r['spoilers'], $r['item_name'], $r['item_uid'], $r['item_year'], $r['item_type'], 'list');
+        $list .= prepareActivityContainer($r['username'], $r['user_uid'], $r['entry_id'], $r['rating'], $r['date'], $r['rewatch'], $r['review'], $r['spoilers'], $r['item_name'], $r['item_uid'], $r['item_year'], $r['item_type'], 'list');
     }
     if(count($recent) === 19) {
         $list .= 
@@ -226,7 +226,7 @@ function renderListPopular($popular) { // view
 
     $list = '';
     foreach($popular as $p) {
-        $list .= readyItemContainer($p['name'], $p['uid'], $p['year'], $p['type'], 'list');
+        $list .= prepareItemContainer($p['name'], $p['uid'], $p['year'], $p['type'], 'list');
     }
     if(count($popular) === 19) {
         $list .= 

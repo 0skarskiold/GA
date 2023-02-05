@@ -456,7 +456,7 @@ function renderListBrowse($fetched, $type) {
         if(count($fetched) > 0) {
             $list = '<ul>';
             foreach($fetched as $item) {
-                $list .= readyItemContainer($item['name'], $item['uid'], $item['year'], $item['type'], 'list');
+                $list .= prepareItemContainer($item['name'], $item['uid'], $item['year'], $item['type'], 'list');
             }
             $list .= '</ul>';
         } else {

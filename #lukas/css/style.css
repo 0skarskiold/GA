@@ -75,7 +75,6 @@ input[type=text], input[type=password] {
     display: block;
 }
 
-
 .item_activity_container {
     width: max-content;
 
@@ -85,8 +84,8 @@ input[type=text], input[type=password] {
 
     /* background-color: midnightblue; */
 }
+.item_activity_container .block_top a { color: black; }
 .item_activity_container .block_top { 
-    color: black;
     background-color: darkmagenta; 
 
     box-sizing: border-box;
@@ -171,6 +170,92 @@ input[type=text], input[type=password] {
 }
 .item_activity_container .outer p.date { margin-right: auto; }
 
+.review_container {
+    width: max-content;
+    height: max-content;
+    padding: 10px;
+    border: 5px solid black;
+
+    display: grid;
+    grid-template-columns: 80px 300px;
+    grid-template-rows: max-content 160px;
+    gap: 10px;
+}
+.review_container .review_item_container {
+    grid-row-start: 1;
+    grid-row-end: span 2;
+}
+.review_container .review_item_link.poster {
+    width: 80px;
+    height: 120px;
+    margin-bottom: 10px;
+
+    display: block;
+
+    box-sizing: border-box;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+.review_container .review_item_container a.button { 
+    min-width: unset !important; 
+    width: unset !important; 
+    width: 100%; 
+}
+.review_container .top_container {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.review_container .star_container { 
+    display: flex; 
+}
+.review_container .icon_like {
+    width: 16px;
+    height: 16px;
+    margin-left: 10px;
+
+    border-radius: 8px;
+    background-color: hotpink;
+}
+.review_container .half_star {
+    width: 8px;
+    height: 16px;
+
+    background-color: cornflowerblue;
+}
+.review_container .half_star.l { 
+    border-radius: 8px 0 0 8px;
+}
+.review_container .half_star.r { 
+    margin-right: 3px;
+    border-radius: 0 8px 8px 0;
+}
+.review_container .icon_spoilers {
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    background-color: lightseagreen;
+}
+.review_container .review_text {
+    text-align: justify;
+    font-size: 14px;
+    font-family: 'Times New Roman', Times, serif;
+}
+.review_container .spoiler_prompt {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 10px;
+}
+
 /* ~END OF GENERAL~ */
 
 /* ~HEADER~ */
@@ -238,23 +323,37 @@ footer:first-of-type {
     flex-direction: column;
     align-items: center;
 }
+.item_list_section h2 { margin-top: 1rem; }
+.item_list_section select[name=popular-type] { 
+    margin-top: 0.5rem; 
 
+    /* width: 8rem;
+    height: 2rem;
+    padding-left: 0.3rem;
+
+    font-size: 1rem;
+    border: 0.2rem solid var(--color1);
+    border-radius: 0.3rem;
+    background-color: var(--color2); */
+}
 .item_list_section .item_list_container {
+    margin-top: 1rem;
+    
     display: flex;
     align-items: center;
 }
-
 .item_list_section .item_list_limits {
     width: 540px;
     height: max-content;
     margin: 0 0.2rem;
+
     padding: 0.2rem;
+    box-sizing: content-box;
 
     overflow: hidden;
     border-radius: 0.3rem;
     border: 0.1rem solid  lightblue;
 }
-
 .item_list_section .item_list {
     width: max-content;
 
@@ -265,7 +364,6 @@ footer:first-of-type {
     position: relative;
     left: 0px;
 }
-
 .item_list_section .button.scroll {
     min-width: unset !important;
     width: 2rem;
@@ -358,7 +456,7 @@ section#browse_items {
 section#browse_items ul {
     display: grid;
     grid-template-columns: repeat(5, 100px);
-    grid-row: 150px;
+    grid-auto-rows: 150px;
     column-gap: 4rem;
     row-gap: 2rem;
 }
