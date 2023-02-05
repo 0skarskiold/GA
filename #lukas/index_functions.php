@@ -1,4 +1,5 @@
 <?php
+require_once("universal_functions.php");
 
 function fetchRecent($conn, $user_id) { // model
     $stmt = mysqli_stmt_init($conn);
@@ -97,41 +98,29 @@ function fetchRecent($conn, $user_id) { // model
     foreach($recent as $k => $r) {
         if(isset($r['log_date'])) {
 
-            $t = strtotime($r['log_date']);
-            $log_date = date('Y-m-d', $t);
-
             if(isset($r['review_date'])) {
+
+                $t = strtotime($r['log_date']);
+                $log_date = date('Y-m-d', $t);
 
                 $t = strtotime($r['review_date']);
                 $review_date = date('Y-m-d', $t);
 
-                $entry_type = 'full';
-
                 if($r['review_date'] > $r['log_date']) {
-                    $date_str = 'Reviewed '.$review_date;
+                    $date = $review_date;
                 } elseif($r['log_date'] > $r['review_date']) {
-                    $date_str = 'Watched '.$log_date;
+                    $date = $log_date;
                 } else {
-                    $date_str = 'Watched and reviewed '.$review_date;
+                    $date = $review_date;
                 }
 
             } else {
-
-                $entry_type = 'log';
-                $date_str = 'Watched '.$log_date;
+                $date = date('Y-m-d', strtotime($r['log_date']));
             }
         } else {
-
-            $t = strtotime($r['review_date']);
-            $review_date = date('Y-m-d', $t);
-
-            $entry_type = 'review';
-            $date_str = 'Reviewed '.$review_date;
-
+            $date = date('Y-m-d', strtotime($r['review_date']));
         }
-
-        $recent[$k]['entry_type'] = $entry_type;
-        $recent[$k]['date_string'] = $date_str;
+        $recent[$k]['date'] = $date;
     }
 
     return $recent;
@@ -144,41 +133,22 @@ function renderListRecent($recent) { // view
     }
 
     $list = '';
-
     foreach($recent as $r) {
-
-        $i = 0;
-        $stars = '';
-
-        for($j = $r['rating']; $j > 0; $j -= 0.5) {
-            if($i % 2 == 0) {
-                $stars .= '<li class="half_star l"></li>';
-            } else {
-                $stars .= '<li class="half_star r"></li>';
-            }
-            $i++;
-        }
-
-        if($r['rewatch'] == 1) { 
-            $rewatch = '<div class="icon rewatch"></div>';
-        } else { $rewatch = ''; }
-        if($r['spoilers'] == 1) { 
-            $spoilers = '<div class="icon spoilers"></div>';
-        } else { $spoilers = ''; }
-
-        $path = '/metadata/'.$r['item_type'].'/'.$r['item_uid'].'/'.$r['item_uid'].'.jpg';
-
-        // todo: lägg till en flik som fälls upp då du hover:ar över användarnamnet som säger "visa all ny aktivitet från [namn]" som ger en länk till just det.
-        $list .=   
-        '<li class="item_container activity">
-        <div class="block1"><a href="/users/'.$r['user_uid'].'">'.$r['username'].'</a></div>
-        <a class="item_link activity" href="/users/'.$r['user_uid'].'/entries?id='.$r['entry_id'].'">
-        <img class="poster" src="'.$path.'"></img>
-        <div class="block2">
-        <ul class="stars">'.$stars.'</ul>
-        <p>'.$r['date_string'].'</p>
-        '.$rewatch.$spoilers.'
-        </div>
+        $list .= readyActivityContainer($r['username'], $r['user_uid'], $r['entry_id'], $r['rating'], $r['date'], $r['rewatch'], $r['review'], $r['spoilers'], $r['item_name'], $r['item_uid'], $r['item_year'], $r['item_type'], 'list');
+    }
+    if(count($recent) === 19) {
+        $list .= 
+        '<li class="item_container show_more">
+        <a class="item_link show_more" href="/recent-activity">
+        <p class="1">Show more</p>
+        <p class="2">+</p>
+        </a>
+        </li>';
+    } elseif(count($recent) < 19) {
+        '<li class="item_container find_more">
+        <a class="item_link find_more" href="/recent-activity">
+        <p class="1">Find others to follow</p>
+        <p class="2">+</p>
         </a>
         </li>';
     }
@@ -189,12 +159,7 @@ function renderListRecent($recent) { // view
     <div class="item_list_container" list-name="recent">
     <button class="button scroll l" list-name="recent"><</button>
     <div class="item_list_limits" list-name="recent">
-    <ul class="item_list activity" list-name="recent">
-    '.$list.'
-    <li class="show_more">
-    <a href="/recent-activity"></a>
-    </li>
-    </ul>
+    <ul class="item_list activity" list-name="recent">'.$list.'</ul>
     </div>
     <button class="button scroll r" list-name="recent">></button>
     </div>
@@ -260,16 +225,15 @@ function renderListPopular($popular) { // view
     }
 
     $list = '';
-
     foreach($popular as $p) {
-
-        $path = '/metadata/'.$p['type'].'/'.$p['uid'].'/'.$p['uid'].'.jpg';
-
+        $list .= readyItemContainer($p['name'], $p['uid'], $p['year'], $p['type'], 'list');
+    }
+    if(count($popular) === 19) {
         $list .= 
-        '<li class="item_container">
-        <p hidden>'.$p['name'].' ('.$p['year'].')</p>
-        <a class="item_link" href="/'.$p['type'].'/'.$p['uid'].'">
-        <img class="poster" src="'.$path.'"></img>
+        '<li class="item_container show_more">
+        <a class="item_link show_more" href="/recent-activity">
+        <p class="1">Show more</p>
+        <p class="2">+</p>
         </a>
         </li>';
     }
@@ -287,9 +251,6 @@ function renderListPopular($popular) { // view
     <div class="item_list_limits" list-name="popular">
     <ul class="item_list" list-name="popular">
     '.$list.'
-    <li class="show_more">
-    <a href="/popular"></a>
-    </li>
     </ul>
     </div>
     <button class="button scroll r" list-name="popular">></button>

@@ -1,4 +1,5 @@
 <?php
+require_once("universal_functions.php");
 
 function fetchGenres($conn) {
     $sql = "SELECT * FROM `genres` ORDER BY `name`;";
@@ -454,18 +455,8 @@ function renderListBrowse($fetched, $type) {
 
         if(count($fetched) > 0) {
             $list = '<ul>';
-
             foreach($fetched as $item) {
-
-                $path = '/metadata/'.$item['type'].'/'.$item['uid'].'/'.$item['uid'].'.jpg';
-    
-                $list .= 
-                '<li class="item_container">
-                <p hidden>'.$item['name'].' ('.$item['year'].')</p>
-                <a class="item_link" href="/'.$item['type'].'/'.$item['uid'].'">
-                <img class="poster" src="'.$path.'" alt="Poster">
-                </a>
-                </li>';
+                $list .= readyItemContainer($item['name'], $item['uid'], $item['year'], $item['type'], 'list');
             }
             $list .= '</ul>';
         } else {
