@@ -174,16 +174,28 @@ input[type=text], input[type=password] {
     width: max-content;
     height: max-content;
     padding: 10px;
-    border: 5px solid black;
+    border-bottom: 5px solid black;
 
     display: grid;
     grid-template-columns: 80px 300px;
     grid-template-rows: max-content 160px;
     gap: 10px;
 }
+.review_container.posterless {
+    height: 280px;
+
+    display: grid;
+    grid-template-columns: 380px;
+    grid-template-rows: 1fr 160px 1fr;
+    gap: 10px;
+}
 .review_container .review_item_container {
     grid-row-start: 1;
     grid-row-end: span 2;
+}
+.review_container.posterless .review_item_container {
+    grid-row-start: 1;
+    grid-row-end: unset;
 }
 .review_container .review_item_link.poster {
     width: 80px;
@@ -254,6 +266,23 @@ input[type=text], input[type=password] {
     justify-content: center;
     align-items: center;
     column-gap: 10px;
+}
+.review_container.posterless .bottom_container { 
+    display: flex; 
+    align-items: center;
+}
+.review_container.posterless .bottom_container .button { 
+    margin-right: auto;
+}
+.review_container .like_button { 
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    background-color: palevioletred;
+    margin: 8px 0 0 0;
+}
+.review_container.posterless .like_button { 
+    margin: 0 0 0 8px;
 }
 
 /* ~END OF GENERAL~ */
@@ -469,56 +498,44 @@ section#item_grid_container {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
 }
-
-body#item #main_poster_container {
-    width: 200px;
-    height: 300px;
-
+section#item_grid_container .left_container {
     display: flex;
     justify-content: center;
     align-items: center;
 
-    box-sizing: content-box;
-    background-color: black;
-    border: 0.2rem solid var(--color2);
-    border-radius: 0.5rem;
-    overflow: hidden;
-
     grid-row-start: 1;
     grid-row-end: span 2;
 }
-
-body#item #main_poster_container > img {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: cover;
-}
-
-#title_container {
-    width: 400px;
-}
-
-#actions_container {
+section#item_grid_container #main_poster {
     width: 200px;
     height: 300px;
 
-    background-color: blueviolet;
-
-    grid-column-start: 3;
-    grid-row-start: 1;
-    grid-row-end: span 2;
+    border: 0.2rem solid var(--color2);
+    border-radius: 0.5rem;
 }
 
-#description_container {
-    grid-column-start: 2;
-    grid-row-start: 2;
-}
-
-section#selected_reviews #review_lists {
+section#review_lists {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: max-content;
+}
+section#review_lists .button_container {
+    grid-column-start: 1;
+    grid-column-end: span 3;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+section#review_lists .button_container .button { margin: 0 1rem; }
+section#review_lists .review_list_heading {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+}
+section#review_lists .review_list_limits {
+    height: 560px;
+    overflow-y: scroll;
 }
 
 

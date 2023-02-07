@@ -228,14 +228,26 @@ function fetchItem($conn, $type, $uid) {
     return $item;
 }
 
-function prepareReviewList($reviews) {
+function prepareReviewList($reviews, $name) {
 
     $list = '';
     foreach($reviews as $review) {
-        $list .= prepareReviewContainer($review['username'], $review['user_uid'], $review['entry_id'], $review['rating'], $review['like'], $review['text'], $review['spoilers'], $review['item_name'], $review['item_uid'], $review['item_year'], $review['item_type'], 'list');
+        $list .= prepareReviewContainerPosterless($review['username'], $review['user_uid'], $review['entry_id'], $review['rating'], $review['like'], $review['text'], $review['spoilers'], 'list');
     }
 
-    return $list;
+    $html = 
+    '<div class="review_list_container">
+    <div class="review_list_heading">
+    <h2>'.ucfirst($name).'</h2>
+    </div>
+    <div class="review_list_limits">
+    <ul class="review_list" list-name="'.strtolower($name).'">
+    '.$list.'
+    </ul>
+    </div>
+    </div>';
+
+    return $html;
 }
 
 function renderItem($item) {
@@ -246,11 +258,16 @@ function renderItem($item) {
     //         break;
     // }
 
-    $review_list_popular = prepareReviewList($item['reviews_popular']);
-    $review_list_recent = prepareReviewList($item['reviews_recent']);
-    $review_list_random = prepareReviewList($item['reviews_random']);
+    $reviews10 = [];
+    $reviews10 = array_merge($reviews10, $item['reviews_popular'], $item['reviews_popular'], $item['reviews_popular'], $item['reviews_popular']);
 
-    $poster_path = '/img/'.$item['type'].'/'.$item['uid'].'/'.$item['uid'].'.jpg';
+
+    $review_list_popular = prepareReviewList($reviews10, 'popular');
+    $review_list_recent = prepareReviewList($item['reviews_recent'], 'recent');
+    $review_list_random = prepareReviewList($item['reviews_random'], 'random');
+
+    $poster_path = "'/img/".$item['type']."/".$item['uid']."/".$item['uid']."-poster-full.jpg'";
+    $bg_path = '/img/'.$item['type'].'/'.$item['uid'].'/'.$item['uid'].'-bg.jpg';
 
     $item['directors'] = ['a', 'b'];
     $item['writers'] = ['a', 'c'];
@@ -285,8 +302,8 @@ function renderItem($item) {
 
     $section1 = 
     '<section id="item_grid_container">
-    <div id="main_poster_container">
-    <img src="'.$poster_path.'">
+    <div class="left_container">
+    <div id="main_poster" style="background-image: url('.$poster_path.'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
     </div>
     <div id="title_container">
     <p><span>'.$item['name'].'</span> <a href="#">'.$item['year'].'</a></p>
@@ -297,35 +314,20 @@ function renderItem($item) {
     </div>
     <div id="description_container">
     <p>'.$item['description'].'</p>
-    </div>'.var_dump($item['reviews_popular']).'
+    </div>
     </section>';
 
     $section2 = 
-    '<section id="selected_reviews">
-    <button type="button" class="button">Open all reviews</button>
-    <div id="review_lists">
-    <div class="review_list_container">
-    <ul class="review_list popular">
-    '.$review_list_popular.'
-    </ul>
-    </div>
-    <div class="review_list_container">
-    <ul class="review_list recent">
-    '.$review_list_recent.'
-    </ul>
-    </div>
-    <div class="review_list_container">
-    <button type="button" name="shuffle" class="button">Shuffle</button>
-    <ul class="review_list random">
-    '.$review_list_random.'
-    </ul>
-    </div>
-    </div>
+    '<section id="review_lists">
+    <div class="button_container"><button type="button" class="button">Open all reviews</button></div>'.
+    $review_list_popular.
+    $review_list_recent.
+    $review_list_random.'
     </section>';
 
     $html = 
     '<div id="main_background_container">
-    <img src="">
+    <img src="'.$bg_path.'">
     </div>
     '.$section1.$section2;
     
