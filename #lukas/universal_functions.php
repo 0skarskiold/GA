@@ -137,17 +137,6 @@ function prepareReviewContainerPosterless($user, $user_uid, $entry_id, $rating, 
     $user_url = '/users/'.$user_uid;
     $entry_url = $user_url.'/entries?id='.$entry_id;
 
-    $i = 0;
-    $stars = '';
-    for($j = $rating; $j > 0; $j -= 0.5) {
-        if($i % 2 == 0) {
-            $stars .= '<li class="half_star l"></li>';
-        } else {
-            $stars .= '<li class="half_star r"></li>';
-        }
-        $i++;
-    }
-
     if($spoilers == 1) { 
         $spoilers = 
         '<div class="spoiler_prompt">
@@ -180,5 +169,56 @@ function prepareReviewContainerPosterless($user, $user_uid, $entry_id, $rating, 
     </div>
     </li>';
 
+    return $html;
+}
+
+function prepareStars($rating, $length, $like) {
+
+    if($rating === 'open') {
+
+        $i = 0;
+        $stars = '';
+        for($j = 1; $j <= 5; $j += 0.5) {
+            if($i % 2 == 0) {
+                $stars .= '<li class="half_star l" data-nbr="'.$j.'"></li>';
+            } else {
+                $stars .= '<li class="half_star r" data-nbr="'.$j.'"></li>';
+            }
+            $i++;
+        }
+
+        $html = 
+        '<ul class="stars open inactive" style="--length-local: '.$length.';">
+        '.$stars.'
+        </ul>';
+
+    } elseif(is_numeric($rating)) {
+
+        if($like) {
+            $like = '<li class="like" style="margin-right: calc(var(--length-local)*0.25);"></li>';
+        } else {
+            $like = '';
+        }
+
+        $i = 0;
+        $stars = '';
+        for($j = 1; $j <= $rating; $j += 0.5) {
+            if($i % 2 == 0) {
+                $stars .= '<li class="half_star l"></li>';
+            } else {
+                $stars .= '<li class="half_star r"></li>';
+            }
+            $i++;
+        }
+
+        $html = 
+        '<ul class="stars closed" data-rating="'.$rating.'" style="--length-local: '.$length.';">
+        '.$like.$stars.'
+        </ul>';
+
+    } else {
+        header("location: /?error");
+        exit;
+    }
     return $html;
 }

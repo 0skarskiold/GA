@@ -8,13 +8,25 @@ function renderHeader($user_uid, $item_id) {
         $insert_id = '';
     }
     if(isset($user_uid)) {
+
+        // tänkte göra egen dropdown:
+        // $create = 
+        // '<button class="button" type="button">Create</button>
+        // <form class="dropdown_content" action="/create" method="post" hidden>
+        // '.$insert_id.'
+        // <button class="button" type="submit" name="type" value="review">Review</button>
+        // <button class="button" type="submit" name="type" value="log">Diary entry</button>
+        // </form>';
         $create = 
-        '<button class="button" type="button">Create</button>
-        <form class="dropdown_content" action="/create" method="post" hidden>
+        '<form action="/create" method="post">
         '.$insert_id.'
-        <button class="button" type="submit" name="type" value="review">Review</button>
-        <button class="button" type="submit" name="type" value="log">Diary entry</button>
+        <select name="type">
+        <option value="review">Review</option>
+        <option value="log">Diary Entry</option>
+        </select>
+        <button class="button" type="submit">Create</button>
         </form>';
+
         $profile = '<a href="/users/'.$user_uid.'" class="button">Profile</a>';
         $acc = '<a href="/section_header_receive.php?logout" class="button">Log Out</a>';
     } else {

@@ -134,7 +134,7 @@ function fetchReviews($conn, $item_id) {
 }
 
 function fetchReviewsFull($conn, $item_id) {
-
+    
 }
 
 function fetchItem($conn, $type, $uid) {
@@ -267,7 +267,7 @@ function renderItem($item) {
     $review_list_random = prepareReviewList($item['reviews_random'], 'random');
 
     $poster_path = "'/img/".$item['type']."/".$item['uid']."/".$item['uid']."-poster-full.jpg'";
-    $bg_path = '/img/'.$item['type'].'/'.$item['uid'].'/'.$item['uid'].'-bg.jpg';
+    $bg_path = "'/img/".$item['type']."/".$item['uid']."/".$item['uid']."-bg.jpg'";
 
     $item['directors'] = ['a', 'b'];
     $item['writers'] = ['a', 'c'];
@@ -300,6 +300,13 @@ function renderItem($item) {
         }
     }
 
+    $stars = '<li class="half-star r activated" data-nbr="0"></li>';
+    for($i=1; $i<=10; $i+=2) {
+        $stars .= 
+        '<li class="half_star l" data-nbr="'.$i.'"></li>
+        <li class="half_star r" data-nbr="'.($i+1).'"></li>';
+    }
+
     $section1 = 
     '<section id="item_grid_container">
     <div class="left_container">
@@ -308,9 +315,11 @@ function renderItem($item) {
     <div id="title_container">
     <p><span>'.$item['name'].'</span> <a href="#">'.$item['year'].'</a></p>
     <p>'.$creators_str.'</p>
-    <p>'.ucfirst($item['type']).' • Age-rating: 16'.$item['age-rating'].'</p>
+    <p>'.ucfirst($item['type']).'</p>
     </div>
     <div id="actions_container">
+    <div><div class="check_icon activated"></div><div class="like_icon activated"></div></div>
+    <div><button class="button">Add rating</button><ul class="stars">'.$stars.'</ul></div>
     </div>
     <div id="description_container">
     <p>'.$item['description'].'</p>
@@ -326,9 +335,7 @@ function renderItem($item) {
     </section>';
 
     $html = 
-    '<div id="main_background_container">
-    <img src="'.$bg_path.'">
-    </div>
+    '<div id="main_background_container" style="background-image: url('.$bg_path.'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
     '.$section1.$section2;
     
     
