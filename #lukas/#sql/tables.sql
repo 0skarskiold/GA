@@ -31,23 +31,17 @@ CREATE TABLE types (
     `uid` text NOT NULL
 );
 
-CREATE TABLE types_items (
-    `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `item_id` int NOT NULL,
-    `type_id` int NOT NULL
-);
-
 CREATE TABLE items (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `name` text NOT NULL, -- exempel för säsonger: Season 1
+    `type_id` int NOT NULL,
+    `name` text NOT NULL, -- exempel för säsonger: [series-title]/Season 1
     `uid` text NOT NULL, -- exempelvis breaking-bad-2008 -- ska vara unikt inom typgruppen -- om avsnitt: exempelvis breaking-bad-2008/[säsong]/[nummer]-[avsnittets-namn] -- om det finns två av samma titel från samma år: example-title-20XX och example-title-20XX-2
     `year` int NOT NULL,
     `month` int NOT NULL,
     `day` int NOT NULL,
     `description` text, -- beskrivning -- NULL för säsonger
     `tagline` text,
-    `length` int NOT NULL, -- filmer: minuter, serier: antal säsonger, säsonger: antal avsnitt, avsnitt: minuter, spel: timmar (genomsnitt, avrundas uppåt)
-    `rating` float DEFAULT 0
+    `length` int NOT NULL -- filmer: minuter, serier: antal säsonger, säsonger: antal avsnitt, avsnitt: minuter, spel: timmar (genomsnitt, avrundas uppåt)
 );
 
 CREATE TABLE versions (
