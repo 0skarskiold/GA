@@ -70,7 +70,7 @@ function renderBrowseFilter($conn, $type) {
     }
 
     $html = 
-    '<section id="browse_filter">
+    '<section id="filter">
     <form method="post">
 
     <div class="filter_segment">

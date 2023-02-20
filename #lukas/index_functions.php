@@ -138,30 +138,34 @@ function renderListRecent($recent) { // view
     }
     if(count($recent) === 19) {
         $list .= 
-        '<li class="item_container show_more">
-        <a class="item_link show_more" href="/recent-activity">
-        <p class="1">Show more</p>
-        <p class="2">+</p>
+        '<li class="special_container show_more">
+        <a class="link show_more" href="/recent-activity">
+        <p class="text">Show more</p>
+        <p class="plus">+</p>
         </a>
         </li>';
     } elseif(count($recent) < 19) {
-        '<li class="item_container find_more">
-        <a class="item_link find_more" href="/recent-activity">
-        <p class="1">Find others to follow</p>
-        <p class="2">+</p>
+        $list .= 
+        '<li class="special_container find_more">
+        <a class="link find_more" href="/users">
+        <p class="text">Find others to follow</p>
+        <div class="plus"></div>
         </a>
         </li>';
+    } else {
+        header("location: /?error");
+        exit;
     }
 
     $html =
-    '<section class="item_list_section" list-name="recent">
+    '<section class="list_section horizontal" list-name="recent">
     <h2>Recent</h2>
-    <div class="item_list_container" list-name="recent">
-    <button class="button scroll l" list-name="recent"><</button>
-    <div class="item_list_limits" list-name="recent">
-    <ul class="item_list activity" list-name="recent">'.$list.'</ul>
+    <div class="list_container" list-name="recent">
+    <div class="arrow l"></div>
+    <div class="list_limits" list-name="recent">
+    <ul class="list" list-name="recent">'.$list.'</ul>
     </div>
-    <button class="button scroll r" list-name="recent">></button>
+    <div class="arrow r"></div>
     </div>
     </section>';
 
@@ -239,21 +243,21 @@ function renderListPopular($popular) { // view
     }
 
     $html =
-    '<section class="item_list_section" list-name="popular">
+    '<section class="list_section" list-name="popular">
     <h2>Popular</h2>
     <select name="popular-type">
     <option value="week">This week</option>
     <option value="all">All time</option>
     <option value="week">This month</option>
     </select>
-    <div class="item_list_container" list-name="popular">
-    <button class="button scroll l" list-name="popular"><</button>
-    <div class="item_list_limits" list-name="popular">
-    <ul class="item_list" list-name="popular">
+    <div class="list_container" list-name="popular">
+    <div class="arrow l"></div>
+    <div class="list_limits" list-name="popular">
+    <ul class="list" list-name="popular">
     '.$list.'
     </ul>
     </div>
-    <button class="button scroll r" list-name="popular">></button>
+    <div class="arrow r"></div>
     </div>
     </section>';
 

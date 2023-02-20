@@ -37,8 +37,7 @@ function renderHeader($user_uid, $item_id) {
 
     $html = 
     '<header>
-    <a href="/" class="logo_container"><img class="logo" src="" alt="Website logo"></a>
-    <nav>
+    <a href="/" class="button">Home</a>
     <a href="/browse" class="button">Browse</a>
     '.$profile.'
     <form action="/section_header_receive.php" method="get" class="search_form">

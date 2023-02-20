@@ -36,24 +36,32 @@ function prepareActivityContainer($user, $user_uid, $entry_id, $rating, $date, $
     }
 
     if($rewatch == 1) { 
-        $rewatch = '<div class="icon_rewatch"></div>';
+        $rewatch = '<div class="icon rewatch"></div>';
     } else { $rewatch = ''; }
     if(isset($review)) { 
-        $review = '<div class="icon_review"></div>';
+        $review = '<div class="icon review"></div>';
     } else { $review = ''; }
     if($spoilers == 1) { 
-        $spoilers = '<div class="icon_spoilers"></div>';
+        $spoilers = '<div class="icon spoilers"></div>';
     } else { $spoilers = ''; }
 
     if($for === "list") {
         $html = 
-        '<li class="item_activity_container" data-item-name="'.$item_name.'" data-item-year="'.$item_year.'">
-        <div class="block_top"><a href="'.$user_url.'" class="user">'.$user.'</a></div>
-        <a class="item_activity_link poster" href="'.$entry_url.'" style="background-image: url('.$img_path.'); background-size: cover; background-position: center; background-repeat: no-repeat;"></a>
-        <a class="item_activity_link block_bottom" href="'.$entry_url.'">
-        <ul class="star_container">'.$stars.'</ul>
+        '<li class="activity_container" data-item-name="'.$item_name.'" data-item-year="'.$item_year.'">
+        <div class="main">
+        <div class="user_container">
+        <a class="user_link" href="'.$user_url.'">'.$user.'</a>
+        </div>
+        <a class="activity_link" href="'.$entry_url.'">
+        <div class="poster" style="background-image: url('.$img_path.');"></div>
+        <div class="rating">
+        <ul class="star_container">
+        '.$stars.'
+        </ul>
         '.$review.'
+        </div>
         </a>
+        </div>
         <div class="outer">
         <p class="date">'.$date.'</p>
         '.$rewatch.'
@@ -62,15 +70,23 @@ function prepareActivityContainer($user, $user_uid, $entry_id, $rating, $date, $
         </li>';
     } else {
         $html = 
-        '<div class="item_activity_container" data-item-name="'.$item_name.'" data-item-year="'.$item_year.'">
-        <div class="block_top"><a href="'.$user_url.'" class="user">'.$user.'</a></div>
-        <a class="item_activity_link poster" href="'.$entry_url.'" style="background-image: url('.$img_path.'); background-size: cover; background-position: center; background-repeat: no-repeat;"></a>
-        <a class="item_activity_link block_bottom" href="'.$entry_url.'">
-        <ul class="star_container">'.$stars.'</ul>
+        '<div class="activity_container" data-item-name="'.$item_name.'" data-item-year="'.$item_year.'">
+        <div class="main">
+        <div class="user_container">
+        <a class="user_link" href="'.$user_url.'">'.$user.'</a>
+        </div>
+        <a class="activity_link" href="'.$entry_url.'">
+        <div class="poster" style="background-image: url('.$img_path.');"></div>
+        <div class="rating">
+        <ul class="star_container">
+        '.$stars.'
+        </ul>
         '.$review.'
+        </div>
         </a>
+        </div>
         <div class="outer">
-        <p class="date">2023-01-08</p>
+        <p class="date">'.$date.'</p>
         '.$rewatch.'
         '.$spoilers.'
         </div>
