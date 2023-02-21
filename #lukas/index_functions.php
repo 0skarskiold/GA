@@ -14,10 +14,10 @@ function fetchRecent($conn, $user_id) { // model
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     mysqli_stmt_close($stmt);
-    $following = mysqli_fetch_row($result);
+    $following = mysqli_fetch_array($result, MYSQLI_NUM);
     mysqli_free_result($result);
 
-    if(!(isset($following) && count($following) > 0)) {
+    if(!(isset($following) || count($following) === 0)) {
         return [];
     }
 
@@ -45,12 +45,14 @@ function fetchRecent($conn, $user_id) { // model
     -- COUNT(*) AS `n`, -- funkar inte whyyyy
     `entries`.`rewatch` AS `rewatch`, 
     `entries`.`spoilers` AS `spoilers`,  
-    `items`.`type` AS `item_type`, 
+    `types`.`uid` AS `item_type`, 
     `items`.`uid` AS `item_uid`, 
     `items`.`name` AS `item_name`, 
     `items`.`year` AS `item_year`
     FROM `entries` 
     INNER JOIN `items` ON `items`.`id` = `entries`.`item_id` 
+    INNER JOIN `items_types` ON `items_types`.`item_id` = `items`.`id` 
+    INNER JOIN `types` ON `types`.`id` = `items_types`.`type_id` 
     INNER JOIN `follow` ON `follow`.`to_id` = `entries`.`user_id` 
     INNER JOIN `users` ON `users`.`id` = `follow`.`to_id` 
     WHERE `follow`.`to_id` IN $marks 
@@ -78,7 +80,7 @@ function fetchRecent($conn, $user_id) { // model
 
     // följande är för att ta bort alla förutom den senaste av de av samma användare
 
-    $i=0;
+    $i = 0;
     $arr = [];
 
     while($i < 19) {
@@ -205,20 +207,21 @@ function fetchPopular($conn, $factor) { // model
     }
 
     $sql = "SELECT 
-    `id`, 
-    `name`, 
-    `year`, 
-    `uid`, 
-    `type`, 
-    ($popularity) AS `popularity` 
+    `items`.`id`, 
+    `items`.`name`, 
+    `items`.`year`, 
+    `items`.`uid`, 
+    ($popularity) AS `popularity`, 
+    `types`.`uid` AS `type`
     FROM `items` 
+    INNER JOIN `items_types` ON `items_types`.`item_id` = `items`.`id` 
+    INNER JOIN `types` ON `types`.`id` = `items_types`.`type_id` 
     ORDER BY `popularity` DESC 
     LIMIT 19
     ;";
 
     $result = mysqli_query($conn, $sql);
     $popular = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
     return $popular;
 }
 

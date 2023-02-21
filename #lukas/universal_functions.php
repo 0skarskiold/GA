@@ -1,5 +1,29 @@
 <?php
 
+function fetchTypes($conn) {
+    $sql = "SELECT * FROM `types` ORDER BY `name`;";
+    $result = mysqli_query($conn, $sql);
+    $types = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    mysqli_free_result($result);
+    return $types;
+}
+
+function fetchGenres($conn) {
+    $sql = "SELECT * FROM `genres` ORDER BY `name`;";
+    $result = mysqli_query($conn, $sql);
+    $genres = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    mysqli_free_result($result);
+    return $genres;
+}
+
+function fetchTags($conn) {
+    $sql = "SELECT * FROM `tags` ORDER BY `name`;";
+    $result = mysqli_query($conn, $sql);
+    $tags = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    mysqli_free_result($result);
+    return $tags;
+}
+
 function prepareItemContainer($name, $uid, $year, $type, $for) {
     $path = "'/img/".$type."/".$uid."/".$uid."-poster-small.jpg'";
     $url = '/'.$type.'/'.$uid;

@@ -128,7 +128,7 @@ function submitSignup($conn, $name, $email, $uid, $pwd, $pwdre) {
 
 function submitLogin($conn, $uid_or_email, $pwd) {
 
-    if (emptyInput([$uid_or_email, $pwd]) !== false) {
+    if(emptyInput([$uid_or_email, $pwd]) !== false) {
         header("location: /forms?error=emptyinput");
         exit;
     }
@@ -144,13 +144,13 @@ function renderForms() {
     '<button type="button" name="form_choice" value="login" class="button">Log in</button>
 
     <section id="signup">
-    <div class="sub_header"><h2>Sign up</h2></div>
+    <h2>Sign up</h2>
     <form action="forms_receive.php" method="post" id="signup_form">
-    <input type="text" name="name" placeholder="Name/Nickname...">
+    <input type="text" name="name" placeholder="Name...">
     <input type="text" name="email" placeholder="Email..">
     <input type="text" name="uid" placeholder="Username..">
     <input type="password" name="pwd" placeholder="Password..">
-    <input type="password" name="pwdrepeat" placeholder="Repeat Password...">
+    <input type="password" name="pwdre" placeholder="Repeat...">
     <button type="submit" name="submit-signup" class="button">Sign Up</button>
     </form>
     </section>';

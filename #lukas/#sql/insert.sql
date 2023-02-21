@@ -272,7 +272,7 @@ INSERT INTO `crew_roles` (`id`, `name`, `uid`) VALUES ('14', 'Make-Up', 'make-up
 
 -- främst för böcker:
 INSERT INTO `crew_roles` (`id`, `name`, `uid`) VALUES ('15', 'Author', 'author');
-INSERT INTO `crew_roles` (`id`, `name`, `uid`) VALUES ('16', 'Text Editor', 'text-editor');
+INSERT INTO `crew_roles` (`id`, `name`, `uid`) VALUES ('16', 'Editor (Books)', 'book-editor');
 
 -- CREW:
 INSERT INTO `crew` (`id`, `name`, `uid`, `description`) VALUES ('1', 'Bryan Cranston', 'bryan-cranston', '');
@@ -286,11 +286,13 @@ INSERT INTO `items_collections` (`id`, `item_id`, `collection_id`) VALUES ('2', 
 -- ITEMS:
 
 -- breaking bad:
-INSERT INTO `items` (`id`, `type_id`, `name`, `uid`, `year`, `month`, `day`, `description`, `tagline`, `length`, `rating`) 
-VALUES ('1', '3', 'Breaking Bad', 'breaking-bad-2008', '2008', '1', '20', "A chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine with a former student in order to secure his family's future.", 'Change [the] Equation.', '5', '0');
+INSERT INTO `items` (`id`, `type_id`, `name`, `uid`, `year`, `month`, `day`, `description`, `tagline`, `length`) 
+VALUES ('1', '3', 'Breaking Bad', 'breaking-bad-2008', '2008', '1', '20', "A chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine with a former student in order to secure his family's future.", 'Change [the] Equation.', '5');
 
 INSERT INTO `items_attr_series` (`series_id`, `limited`, `length_episodes`, `length_minutes`, `finale_year`, `finale_month`, `finale_day`) 
-VALUES ('1', '0', '62', '45', '2013', '9', '29');
+VALUES ('1', 0, '62', '45', '2013', '9', '29');
+
+INSERT INTO `items_types` (`item_id`, `type_id`) VALUES ('1', '3');
 
 INSERT INTO `items_genres` (`item_id`, `genre_id`, `number`) VALUES ('1', '8', '1'); -- drama
 INSERT INTO `items_genres` (`item_id`, `genre_id`, `number`) VALUES ('1', '16', '2'); -- thriller
@@ -304,13 +306,17 @@ INSERT INTO `items_collections` (`item_id`, `collection_id`) VALUES ('1', '1'); 
 
 -- breakfast club:
 INSERT INTO `items` (`id`, `type_id`, `name`, `uid`, `year`, `month`, `day`, `description`, `tagline`, `length`) 
-VALUES ('2', '1', 'The Breakfast Club', 'breakfast-club-1985', '1985', '7', '5', 'Five high school students meet in Saturday detention and discover how they have a lot more in common than they thought.', 'They only met once, but it changed their lives forever.', '97', '0');
+VALUES ('2', '1', 'The Breakfast Club', 'breakfast-club-1985', '1985', '7', '5', 'Five high school students meet in Saturday detention and discover how they have a lot more in common than they thought.', 'They only met once, but it changed their lives forever.', '97');
+
+INSERT INTO `items_types` (`item_id`, `type_id`) VALUES ('2', '1');
 
 INSERT INTO `items_genres` (`item_id`, `genre_id`, `number`) VALUES ('2', '8', '1'); -- drama
 
 -- barbarian:
 INSERT INTO `items` (`id`, `type_id`, `name`, `uid`, `year`, `month`, `day`, `description`, `tagline`, `length`) 
-VALUES ('3', '1', 'Barbarian', 'barbarian-2022', '2022', '9', '9', 'In town for a job interview, a young woman arrives at her Airbnb late at night only to find that it has been mistakenly double-booked.', 'Come for a night. Stay forever.', '103', '0');
+VALUES ('3', '1', 'Barbarian', 'barbarian-2022', '2022', '9', '9', 'In town for a job interview, a young woman arrives at her Airbnb late at night only to find that it has been mistakenly double-booked.', 'Come for a night. Stay forever.', '103');
+
+INSERT INTO `items_types` (`item_id`, `type_id`) VALUES ('3', '1');
 
 INSERT INTO `items_genres` (`item_id`, `genre_id`, `number`) VALUES ('3', '11', '1'); -- horror
 INSERT INTO `items_genres` (`item_id`, `genre_id`, `number`) VALUES ('3', '16', '2'); -- thriller
@@ -318,10 +324,12 @@ INSERT INTO `items_genres` (`item_id`, `genre_id`, `number`) VALUES ('3', '13', 
 
 -- better call saul:
 INSERT INTO `items` (`id`, `type_id`, `name`, `uid`, `year`, `month`, `day`, `description`, `tagline`, `length`) 
-VALUES ('4', '3', 'Better Call Saul', 'better-call-saul-2015', '2015', '2', '8', "The trials and tribulations of criminal lawyer Jimmy McGill in the years leading up to his fateful run-in with Walter White and Jesse Pinkman.", 'Make the Call', '6', '0');
+VALUES ('4', '3', 'Better Call Saul', 'better-call-saul-2015', '2015', '2', '8', "The trials and tribulations of criminal lawyer Jimmy McGill in the years leading up to his fateful run-in with Walter White and Jesse Pinkman.", 'Make the Call', '6');
+
+INSERT INTO `items_types` (`item_id`, `type_id`) VALUES ('4', '3');
 
 INSERT INTO `items_attr_series` (`series_id`, `limited`, `length_episodes`, `length_minutes`, `finale_year`, `finale_month`, `finale_day`) 
-VALUES ('4', '0', '62', '45', '2013', '9', '29');
+VALUES ('4', 0, '62', '45', '2013', '9', '29');
 
 INSERT INTO `items_genres` (`item_id`, `genre_id`, `number`) VALUES ('4', '8', '1'); -- drama
 INSERT INTO `items_genres` (`item_id`, `genre_id`, `number`) VALUES ('4', '6', '2'); -- crime
@@ -331,6 +339,8 @@ INSERT INTO `items_crew` (`item_id`, `artist_id`, `role_id`, `character`, `numbe
 -- northman:
 INSERT INTO `items` (`id`, `type_id`, `name`, `uid`, `year`, `month`, `day`, `description`, `tagline`, `length`) 
 VALUES ('5', '1', 'Northman', 'northman-2022', '2022', '4', '22', "A young Viking prince is on a quest to avenge his father's murder.", 'Conquer your fate.', '137');
+
+INSERT INTO `items_types` (`item_id`, `type_id`) VALUES ('5', '1');
 
 INSERT INTO `items_genres` (`item_id`, `genre_id`, `number`) VALUES ('5', '1', '1'); -- action
 INSERT INTO `items_genres` (`item_id`, `genre_id`, `number`) VALUES ('5', '16', '2'); -- thriller

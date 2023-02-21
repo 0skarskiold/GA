@@ -44,6 +44,12 @@ CREATE TABLE items (
     `length` int NOT NULL -- filmer: minuter, serier: antal säsonger, säsonger: antal avsnitt, avsnitt: minuter, spel: timmar (genomsnitt, avrundas uppåt)
 );
 
+CREATE TABLE items_types (
+    `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `item_id` int NOT NULL,
+    `type_id` int NOT NULL
+);
+
 CREATE TABLE versions (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `item_id_1` int NOT NULL, -- t.ex. theatrical cut
@@ -71,8 +77,8 @@ CREATE TABLE genres (
 
 CREATE TABLE genres_types (
     `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    `tag_id` int NOT NULL,
-    `genre_id` int NOT NULL
+    `genre_id` int NOT NULL,
+    `type_id` int NOT NULL
 );
 
 CREATE TABLE items_genres (

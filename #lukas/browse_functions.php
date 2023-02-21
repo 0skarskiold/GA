@@ -1,47 +1,43 @@
 <?php
 require_once("universal_functions.php");
 
-function fetchGenres($conn) {
-    $sql = "SELECT * FROM `genres` ORDER BY `name`;";
-    $result = mysqli_query($conn, $sql);
-    $genres = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    mysqli_free_result($result);
-    return $genres;
-}
-
-function fetchTags($conn) {
-    $sql = "SELECT * FROM `tags` ORDER BY `name`;";
-    $result = mysqli_query($conn, $sql);
-    $tags = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    mysqli_free_result($result);
-    return $tags;
-}
-
 function renderBrowseFilter($conn) {
 
     $genres = fetchGenres($conn);
     $glist = '';
     foreach($genres as $genre) {
-        $glist .= '<option value="'.$genre['id'].'">'.$genre['name'].'</option>';
+        $glist .= '<option value="'.$genre['uid'].'">'.$genre['name'].'</option>';
     }
 
     $tags = fetchTags($conn);
-    $tlist = '';
+    $talist = '';
     foreach($tags as $tag) {
-        $tlist .= '<option value="'.$tag['id'].'">'.$tag['name'].'</option>';
+        $talist .= '<option value="'.$tag['uid'].'">'.$tag['name'].'</option>';
     }
 
     $ylist = '';
-    for ($y = date("Y")+1; $y >= 1870; $y--){
-        if ($y % 10 == 0){
-            $ylist .= '<option value="'.$y.'s">'.$y.'s</option>';
-        }
+    for($y = date("Y")+1; $y >= 1870; $y--) {
+
         $ylist .= '<option value="'.$y.'">'.$y.'</option>';
+
+        if ($y % 10 == 0){
+            $ylist .= '<option value="'.$y.'s" style="text-transform: lowercase !important;">'.$y.'s</option>';
+        }
+    }
+
+    $tylist = '';
+    $types = fetchTypes($conn);
+    foreach($types as $type) {
+        $tylist .= 
+        '<div class="filter_option">
+        <label for="type-'.$type['uid'].'">'.$type['name'].'</label>
+        <input type="checkbox" name="type-'.$type['uid'].'" checked>
+        </div>';
     }
 
     $html = 
     '<section id="filter">
-    <form method="get">
+    <form action="browse_recieve.php" method="get">
 
     <div class="filter_segment">
     <div class="filter_option">
@@ -73,7 +69,7 @@ function renderBrowseFilter($conn) {
     <label for="tag">Tag</label>
     <select name="tag">
     <option value="any">Any</option>
-    '.$tlist.'
+    '.$talist.'
     </select>
     </div>
 
@@ -87,45 +83,7 @@ function renderBrowseFilter($conn) {
     </div>
 
     <div class="filter_segment">
-    <div class="filter_option">
-    <label for="type-film">Films</label>
-    <input type="checkbox" name="type-film" checked>
-    </div>
-
-    <div class="filter_option">
-    <label for="type-short-film">Short-films</label>
-    <input type="checkbox" name="type-short-film" checked>
-    </div>
-
-    <div class="filter_option">
-    <label for="type-series">Series</label>
-    <input type="checkbox" name="type-series" checked>
-    </div>
-
-    <div class="filter_option">
-    <label for="type-mini-series">Mini-series</label>
-    <input type="checkbox" name="type-mini-series" checked>
-    </div>
-
-    <div class="filter_option">
-    <label for="type-series-s">Seasons</label>
-    <input type="checkbox" name="type-series-s" checked>
-    </div>
-
-    <div class="filter_option">
-    <label for="type-series-e">Episodes</label>
-    <input type="checkbox" name="type-series-e" checked>
-    </div>
-
-    <div class="filter_option">
-    <label for="type-game">Games</label>
-    <input type="checkbox" name="type-game" checked>
-    </div>
-
-    <div class="filter_option">
-    <label for="type-book">Books</label>
-    <input type="checkbox" name="type-book" checked>
-    </div>
+    '.$tylist.'
     </div>
 
     <div class="button_container">
@@ -140,7 +98,54 @@ function renderBrowseFilter($conn) {
     return;
 }
 
-function redirectBrowse($filter_arr) {
+function redirectBrowse($filter_arr, $types_arr) {
+
+    $url = '/';
+
+    if(isset($filter_arr['search'])) {
+        $url .= 'search/'.$filter_arr['search'];
+    } else {
+        $url .= 'browse';
+    }
+
+    $arr = [];
+    foreach($types_arr as $type) {
+        if(isset($filter_arr['type-'.$type['uid']])) {
+            array_push($arr, $type['uid']);
+        }
+    }
+    if(count($arr) > 0 && !(count($arr) === count($types_arr))) {
+        if(count($arr) === 1) {
+            $url .= '?type='.$arr[0];
+        } elseif(count($arr) > 1) {
+            $url .= '?types='.implode('+', $arr);
+        }
+    }
+
+    if(isset($filter_arr['genre']) && $filter_arr['genre'] !== 'any') {
+        if(strpos($url, '?') !== false) {
+            $url .= '&genre='.$filter_arr['genre'];
+        } else {
+            $url .= '?genre='.$filter_arr['genre'];
+        }
+    }
+
+    if(isset($filter_arr['tag']) && $filter_arr['tag'] !== 'any') {
+        if(strpos($url, '?') !== false) {
+            $url .= '&tag='.$filter_arr['tag'];
+        } else {
+            $url .= '?tag='.$filter_arr['tag'];
+        }
+    }
+
+    if(isset($filter_arr['year']) && $filter_arr['year'] !== 'any') {
+        if(strpos($url, '?') !== false) {
+            $url .= '&year='.$filter_arr['year'];
+        } else {
+            $url .= '?year='.$filter_arr['year'];
+        }
+    }
+
     if(isset($filter_arr['sort-by'])) {
         switch($filter_arr['sort-by']) {
             case 'popularity':
@@ -153,9 +158,6 @@ function redirectBrowse($filter_arr) {
                         break;
                     case 'all-time':
                         $sort_by = 'sort-by=popularity-all-time';
-                        break;
-                    default:
-                        $sort_by = 'sort-by=popularity-week';
                         break;
                 }
                 break;
@@ -198,29 +200,18 @@ function redirectBrowse($filter_arr) {
                         break;
                 }
                 break;
-            default:
-                $sort_by = 'sort-by=popularity-week';
-                break;
         }
-    } else {
-        $sort_by = '';
-    }
-
-    if(isset($filter_arr['genre'])) {
-        if($filter_arr['genre'] === 'any') {
-            
-        } else {
-            $i = 1;
-            $str = 'genres='.;
-            $key_str = 'genre1';
-            while(isset($filter_arr[$key_str])) {
-                $str .= '+'.$filter_arr[$key_str];
-                substr($key_str, 0, -1); // tar bort sista tecknet i strängen
-                $key_str .= $i;
-                $i++;
+        if($sort_by !== 'sort-by=popularity-week') {
+            if(strpos($url, '?') !== false) {
+                $url .= '&'.$sort_by;
+            } else {
+                $url .= '?'.$sort_by;
             }
         }
     }
+
+    header("location: ".$url);
+    return;
 }
 
 function fetchListBrowse($conn, $filter_arr, $type) {
@@ -423,12 +414,14 @@ function fetchListBrowse($conn, $filter_arr, $type) {
         $sql = "SELECT 
         `items`.`id`,
         `items`.`name`,
-        `items`.`type`,
+        `types`.`uid` AS `type`,
         `items`.`uid`,
         $select
         `items`.`year` 
         $from 
         $where
+        INNER JOIN `items_types` ON `items_types`.`item_id` = `items`.`id` 
+        INNER JOIN `types` ON `types`.`id` = `items_types`.`type_id` 
         ORDER BY $factor $order 
         LIMIT 160 
         $offset
