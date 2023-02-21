@@ -243,7 +243,7 @@ function renderListPopular($popular) { // view
     }
 
     $html =
-    '<section class="list_section" list-name="popular">
+    '<section class="list_section horizontal" list-name="popular">
     <h2>Popular</h2>
     <select name="popular-type">
     <option value="week">This week</option>

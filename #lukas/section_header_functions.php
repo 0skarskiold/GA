@@ -9,16 +9,8 @@ function renderHeader($user_uid, $item_id) {
     }
     if(isset($user_uid)) {
 
-        // tänkte göra egen dropdown:
-        // $create = 
-        // '<button class="button" type="button">Create</button>
-        // <form class="dropdown_content" action="/create" method="post" hidden>
-        // '.$insert_id.'
-        // <button class="button" type="submit" name="type" value="review">Review</button>
-        // <button class="button" type="submit" name="type" value="log">Diary entry</button>
-        // </form>';
         $create = 
-        '<form action="/create" method="post">
+        '<form action="/create" method="post" class="create_form">
         '.$insert_id.'
         <select name="type">
         <option value="review">Review</option>
@@ -44,7 +36,7 @@ function renderHeader($user_uid, $item_id) {
     <input class="search_bar" type="text" name="search" placeholder="Search">
     <button class="button" type="submit" name="submit-search">Search</button>
     </form>
-    '.$acc.$create.'
+    '.$create.$acc.'
     </div>
     </nav>
     </header>';

@@ -1,29 +1,28 @@
 RewriteEngine on
 
-RewriteRule ^dummy.html$ http://www.google.com/ [R=301]
-
-RewriteRule ^users/([^/]+)/?$ profile.php?uid=$1 [L]
-RewriteRule ^users/([^/]+)/entry/?$ entry.php [L]
-RewriteRule ^users/([^/]+)/ratings/?$ entry.php?user_uid=$1&list=ratings [L]
-RewriteRule ^users/([^/]+)/reviews/?$ entry.php?user_uid=$1&list=reviews [L]
-RewriteRule ^users/([^/]+)/diary/?$ entry.php?user_uid=$1&list=logs [L]
-
 RewriteRule ^forms$ forms.php [L]
+RewriteRule ^browse$ browse.php [L]
+RewriteRule ^create$ create.php [L]
+
+RewriteRule ^types/?$ browse.php?types=on [L]
+RewriteRule ^type-([^/]+)/?$ browse.php?type=$1 [L]
+RewriteRule ^type-([^/]+)/([^/]+)/?$ item.php?type=$1&uid=$2 [L]
+
+RewriteRule ^users$ browse.php?users=on [L]
+RewriteRule ^user-([^/]+)/?$ profile.php?uid=$1 [L]
+RewriteRule ^user-([^/]+)/entry/?$ entry.php [L]
+RewriteRule ^user-([^/]+)/ratings/?$ entry.php?user_uid=$1&list=ratings [L]
+RewriteRule ^user-([^/]+)/reviews/?$ entry.php?user_uid=$1&list=reviews [L]
+RewriteRule ^user-([^/]+)/diary/?$ entry.php?user_uid=$1&list=logs [L]
 
 RewriteRule ^browse.php?search=$1/?$ search/([^/]+)/? [R=301]
 RewriteRule ^search/([^/]+)/?$ browse.php?search=$1 [QSA,L]
 
-RewriteRule ^genres/([^/]+)/?$ browse.php?genre=$1 [L]
-RewriteRule ^tags/([^/]+)/?$ browse.php?tag=$1 [L]
-RewriteRule ^crew/([^/]+)/?$ browse.php?artist=$1 [L]
-RewriteRule ^collections/([^/]+)/?$ browse.php?collection=$1 [L]
-
-RewriteRule ^browse$ browse.php [L]
-RewriteRule ^users$ browse.php?users=on [L]
-
-RewriteRule ^create$ create.php [L]
-
-RewriteRule ^series/([^/]+)/?$ item.php?type=series&uid=$1 [L]
-RewriteRule ^film/([^/]+)/?$ item.php?type=film&uid=$1 [L]
-
-RewriteRule ^/([^/]+)/([^/]+)/?$ item.php?type=$1&uid=$2 [L]
+RewriteRule ^genres/?$ browse.php?genres=on [L]
+RewriteRule ^genre-([^/]+)/?$ browse.php?genre=$1 [L]
+RewriteRule ^tags/?$ browse.php?tags=on [L]
+RewriteRule ^tag-([^/]+)/?$ browse.php?tag=$1 [L]
+RewriteRule ^crew/?$ browse.php?crew=on [L]
+RewriteRule ^artist-([^/]+)/?$ browse.php?artist=$1 [L]
+RewriteRule ^collections/?$ browse.php?collections=on [L]
+RewriteRule ^collection-([^/]+)/?$ browse.php?collection=$1 [L]

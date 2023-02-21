@@ -83,7 +83,7 @@ function renderBrowseFilter($conn, $type) {
     </select>
     </div>
 
-    <div class="filter_option">
+    <div class="filter_option extra">
     <select name="sort-by-popularity">
     <option value="week">This week</option>
     <option value="month">This month</option>
@@ -160,6 +160,7 @@ function renderBrowseFilter($conn, $type) {
 
     <div class="button_container">
     <button type="submit" class="button">Apply</button>
+    <div class="arrow u"></div>
     </div>
 
     </form>
@@ -454,18 +455,25 @@ function renderListBrowse($fetched, $type) {
     if($type === 'browse') {
 
         if(count($fetched) > 0) {
-            $list = '<ul>';
+            $list = '';
             foreach($fetched as $item) {
                 $list .= prepareItemContainer($item['name'], $item['uid'], $item['year'], $item['type'], 'list');
             }
-            $list .= '</ul>';
         } else {
             $list = '';
         }
 
         $html = 
-        '<section id="browse_items">
+        '<section class="list_section grid" list-name="browse">
+        <h2>Browse</h2>
+        <p>Filters:</p>
+        <div class="list_container" list-name="browse">
+        <div class="list_limits" list-name="browse">
+        <ul class="list" list-name="browse">
         '.$list.'
+        </ul>
+        </div>
+        </div>
         </section>';
 
         echo $html;
