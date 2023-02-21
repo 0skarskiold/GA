@@ -17,7 +17,7 @@ function fetchTags($conn) {
     return $tags;
 }
 
-function renderBrowseFilter($conn, $type) {
+function renderBrowseFilter($conn) {
 
     $genres = fetchGenres($conn);
     $glist = '';
@@ -39,47 +39,17 @@ function renderBrowseFilter($conn, $type) {
         $ylist .= '<option value="'.$y.'">'.$y.'</option>';
     }
 
-    if($type === 'browse') {
-
-    } elseif($type === 'search') {
-        
-    } elseif($type === 'users') {
-
-    } elseif($type === 'collection') {
-
-    } elseif($type === 'artist') {
-
-    } elseif($type === 'films') {
-
-    } elseif($type === 's-films') {
-
-    } elseif($type === 'series') {
-
-    } elseif($type === 'm-series') {
-
-    } elseif($type === 'series-s') {
-
-    } elseif($type === 'series-e') {
-
-    } elseif($type === 'games') {
-
-    } elseif($type === 'books') {
-
-    } else {
-        return;
-    }
-
     $html = 
     '<section id="filter">
-    <form method="post">
+    <form method="get">
 
     <div class="filter_segment">
     <div class="filter_option">
     <label for="sort-by">Sort by</label>
     <select name="sort-by">
-        <option value="popularity">Popularity</option>
-        <option value="rating">Rating</option>
-        <option value="name">Name</option>
+    <option value="popularity">Popularity</option>
+    <option value="rating">Rating</option>
+    <option value="name">Name</option>
     </select>
     </div>
 
@@ -168,6 +138,89 @@ function renderBrowseFilter($conn, $type) {
 
     echo $html;
     return;
+}
+
+function redirectBrowse($filter_arr) {
+    if(isset($filter_arr['sort-by'])) {
+        switch($filter_arr['sort-by']) {
+            case 'popularity':
+                switch($filter_arr['sort-by-popularity']) {
+                    case 'week':
+                        $sort_by = 'sort-by=popularity-week';
+                        break;
+                    case 'month':
+                        $sort_by = 'sort-by=popularity-month';
+                        break;
+                    case 'all-time':
+                        $sort_by = 'sort-by=popularity-all-time';
+                        break;
+                    default:
+                        $sort_by = 'sort-by=popularity-week';
+                        break;
+                }
+                break;
+            case 'rating':
+                switch($filter_arr['sort-by-rating']) {
+                    case 'high':
+                        $sort_by = 'sort-by=rating-high';
+                        break;
+                    case 'low':
+                        $sort_by = 'sort-by=rating-low';
+                        break;
+                    default:
+                        $sort_by = 'sort-by=rating-high';
+                        break;
+                }
+                break;
+            case 'release':
+                switch($filter_arr['sort-by-release']) {
+                    case 'recent':
+                        $sort_by = 'sort-by=release-recent';
+                        break;
+                    case 'old':
+                        $sort_by = 'sort-by=release-old';
+                        break;
+                    default:
+                        $sort_by = 'sort-by=release-recent';
+                        break;
+                }
+                break;
+            case 'title':
+                switch($filter_arr['sort-by-title']) {
+                    case 'desc':
+                        $sort_by = 'sort-by=title-desc';
+                        break;
+                    case 'asc':
+                        $sort_by = 'sort-by=title-asc';
+                        break;
+                    default:
+                        $sort_by = 'sort-by=title-desc';
+                        break;
+                }
+                break;
+            default:
+                $sort_by = 'sort-by=popularity-week';
+                break;
+        }
+    } else {
+        $sort_by = '';
+    }
+
+    if(isset($filter_arr['genre'])) {
+        if($filter_arr['genre'] === 'any') {
+            
+        } else {
+            $i = 1;
+            $str = 'genres='.;
+            $key_str = 'genre1';
+            while(isset($filter_arr[$key_str])) {
+                $str .= '+'.$filter_arr[$key_str];
+                substr($key_str, 0, -1); // tar bort sista tecknet i strängen
+                $key_str .= $i;
+                $i++;
+            }
+        }
+    }
 }
 
 function fetchListBrowse($conn, $filter_arr, $type) {

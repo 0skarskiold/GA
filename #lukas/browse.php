@@ -12,9 +12,14 @@
     <main>
 
         <?php 
-            renderBrowseFilter($conn, 'browse'); // todo: $_GET['type'] eller liknande som andra argument så småningom
-            $items = fetchListBrowse($conn, $_POST, 'browse');
-            renderListBrowse($items, 'browse');
+            if(isset($_GET['users'])) {
+                // $users = fetchListUsers($conn, $_POST, 'browse');
+                // renderListUsers($items, 'browse');
+            } else {
+                renderBrowseFilter($conn);
+                $items = fetchListBrowse($conn, $_GET, 'browse');
+                renderListBrowse($items, 'browse');
+            }
         ?>
 
     </main>
