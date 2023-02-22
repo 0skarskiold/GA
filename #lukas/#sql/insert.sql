@@ -272,7 +272,7 @@ INSERT INTO `crew_roles` (`id`, `name`, `uid`) VALUES ('14', 'Make-Up', 'make-up
 
 -- främst för böcker:
 INSERT INTO `crew_roles` (`id`, `name`, `uid`) VALUES ('15', 'Author', 'author');
-INSERT INTO `crew_roles` (`id`, `name`, `uid`) VALUES ('16', 'Editor (Books)', 'book-editor');
+INSERT INTO `crew_roles` (`id`, `name`, `uid`) VALUES ('16', 'Book Editor', 'book-editor');
 
 -- CREW:
 INSERT INTO `crew` (`id`, `name`, `uid`, `description`) VALUES ('1', 'Bryan Cranston', 'bryan-cranston', '');

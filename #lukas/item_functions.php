@@ -1,7 +1,7 @@
 <?php
 require_once("universal_functions.php");
 
-function fetchGenres($conn, $item_id) {
+function fetchItemGenres($conn, $item_id) {
 
     $sql = "SELECT 
     `genres`.* 
@@ -17,7 +17,7 @@ function fetchGenres($conn, $item_id) {
     return $genres;
 }
 
-function fetchTags($conn, $item_id) {
+function fetchItemTags($conn, $item_id) {
 
     $sql = "SELECT 
     `tags`.* 
@@ -33,14 +33,15 @@ function fetchTags($conn, $item_id) {
     return $tags;
 }
 
-function fetchCrewAndCollections($conn, $item_id) {
+function fetchItemCrewAndCollections($conn, $item_id) {
 
     $sql = "SELECT 
     `crew`.*, 
-    `items_crew`.`role`, 
+    `crew_roles`.`uid` AS `role`, 
     `items_crew`.`character`
     FROM `crew` 
     INNER JOIN `items_crew` ON `crew`.`id` = `items_crew`.`artist_id` 
+    INNER JOIN `crew_roles` ON `items_crew`.`role_id` = `crew_roles`.`id` 
     WHERE `items_crew`.`item_id` = $item_id
     ;";
 
@@ -62,85 +63,102 @@ function fetchCrewAndCollections($conn, $item_id) {
     return [$crew, $collections];
 }
 
-function fetchReviews($conn, $item_id) {
+function fetchItemReviews($conn, $item_id, $list, $lim) {
 
-    // hämtar de tio populäraste recensionerna
-    $sql = "SELECT 
-    `entries`.*, 
-    `users`.`uid` AS `user_uid`, 
-    `users`.`name` AS `username`, 
-    (
-        SELECT 
-        COUNT(*) 
-        FROM `review_likes` 
-        WHERE `entry_id` = `entries`.`id`
-    ) AS `likes` 
-    FROM `entries` 
-    INNER JOIN `users` ON `entries`.`user_id` = `users`.`id` 
-    WHERE `review_date` IS NOT NULL AND `item_id` = $item_id 
-    ORDER BY `likes` DESC 
-    LIMIT 10
-    ;";
-    
+    switch($list) {
+        case 'popular':
+            $sql = "SELECT 
+            `entries`.*, 
+            `users`.`uid` AS `user_uid`, 
+            `users`.`name` AS `username`, 
+            (
+                SELECT 
+                COUNT(*) 
+                FROM `review_likes` 
+                WHERE `entry_id` = `entries`.`id`
+            ) AS `likes` 
+            FROM `entries` 
+            INNER JOIN `users` ON `entries`.`user_id` = `users`.`id` 
+            WHERE `review_date` IS NOT NULL AND `item_id` = $item_id 
+            ORDER BY `likes` DESC 
+            LIMIT $lim
+            ;";
+            break;
+        case 'recent':
+            $sql = "SELECT 
+            `entries`.*, 
+            `users`.`uid` AS `user_uid`, 
+            `users`.`name` AS `username`, 
+            (
+                SELECT 
+                COUNT(*) 
+                FROM `review_likes` 
+                WHERE `entry_id` = `entries`.`id`
+            ) AS `likes` 
+            FROM `entries` 
+            INNER JOIN `users` ON `entries`.`user_id` = `users`.`id` 
+            WHERE `review_date` IS NOT NULL AND `item_id` = $item_id 
+            ORDER BY `review_date` DESC 
+            LIMIT $lim
+            ;";
+            break;
+        case 'random':
+            $sql = "SELECT 
+            `entries`.*, 
+            `users`.`uid` AS `user_uid`, 
+            `users`.`name` AS `username`, 
+            (
+                SELECT 
+                COUNT(*) 
+                FROM `review_likes` 
+                WHERE `entry_id` = `entries`.`id`
+            ) AS `likes` 
+            FROM `entries` 
+            INNER JOIN `users` ON `entries`.`user_id` = `users`.`id` 
+            WHERE `review_date` IS NOT NULL AND `item_id` = $item_id 
+            ORDER BY RAND() 
+            LIMIT $lim
+            ;";
+            break;
+    }
+
     $result = mysqli_query($conn, $sql);
-    $reviews_popular = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    mysqli_free_result($result);
-    
-    // hämtar de tio senaste recensionerna
-    $sql = "SELECT 
-    `entries`.*, 
-    `users`.`uid` AS `user_uid`, 
-    `users`.`name` AS `username`, 
-    (
-        SELECT 
-        COUNT(*) 
-        FROM `review_likes` 
-        WHERE `entry_id` = `entries`.`id`
-    ) AS `likes` 
-    FROM `entries` 
-    INNER JOIN `users` ON `entries`.`user_id` = `users`.`id` 
-    WHERE `review_date` IS NOT NULL AND `item_id` = $item_id 
-    ORDER BY `review_date` DESC 
-    LIMIT 10
-    ;";
-    
-    $result = mysqli_query($conn, $sql);
-    $reviews_recent = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    mysqli_free_result($result);
-    
-    // hämtar tio slumpmässigt utvalda recensioner
-    $sql = "SELECT 
-    `entries`.*, 
-    `users`.`uid` AS `user_uid`, 
-    `users`.`name` AS `username`, 
-    (
-        SELECT 
-        COUNT(*) 
-        FROM `review_likes` 
-        WHERE `entry_id` = `entries`.`id`
-    ) AS `likes` 
-    FROM `entries` 
-    INNER JOIN `users` ON `entries`.`user_id` = `users`.`id` 
-    WHERE `review_date` IS NOT NULL AND `item_id` = $item_id 
-    ORDER BY RAND() 
-    LIMIT 10
-    ;";
-    
-    $result = mysqli_query($conn, $sql);
-    $reviews_random = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $reviews = mysqli_fetch_all($result, MYSQLI_ASSOC);
     mysqli_free_result($result);
 
-    return array('popular' => $reviews_popular, 'recent' => $reviews_recent, 'random' => $reviews_random);
-}
-
-function fetchReviewsFull($conn, $item_id) {
-    
+    return $reviews;
 }
 
 function fetchItem($conn, $type, $uid) {
 
-    if($type === 'film') {
+    if($type[-1] === 's') {
+        $attr_table = '`items_attr_'.$type.'`';
+    } else {
+        $attr_table = '`items_attr_'.$type.'s`';
+    }
 
+    $column = '`'.$type.'_id`';
+
+    if(mysqli_query($conn, "DESCRIBE $attr_table")) {
+        $sql = 
+        "SELECT 
+        `items`.*, 
+        `types`.`uid` AS `type_uid`,
+        `types`.`name` AS `type_name`,
+        (
+            SELECT AVG(`rating`) 
+            FROM `ratings` 
+            WHERE `ratings`.`item_id` = `items`.`id`
+        ) AS `rating`,
+        $attr_table.*
+        FROM `items` 
+        INNER JOIN `items_types` ON `items_types`.`item_id` = `items`.`id`
+        INNER JOIN `types` ON `types`.`id` = `items_types`.`type_id`
+        INNER JOIN $attr_table ON `items`.`id` = $attr_table.$column
+        WHERE `types`.`uid` = ? AND `items`.`uid` = ? 
+        LIMIT 1
+        ;";
+    } else {
         $sql = 
         "SELECT 
         `items`.*, 
@@ -150,54 +168,12 @@ function fetchItem($conn, $type, $uid) {
             WHERE `ratings`.`item_id` = `items`.`id`
         ) AS `rating` 
         FROM `items` 
-        WHERE `items`.`type` = ? AND `items`.`uid` = ? 
+        INNER JOIN `items_types` ON `items_types`.`item_id` = `items`.`id`
+        INNER JOIN `types` ON `types`.`id` = `items_types`.`type_id`
+        WHERE `types`.`uid` = ? AND `items`.`uid` = ? 
         LIMIT 1
         ;";
-
-    } elseif($type === 'series') {
-
-        $sql = 
-        "SELECT 
-        `items`.*, 
-        (
-            SELECT AVG(`rating`) 
-            FROM `ratings` 
-            WHERE `ratings`.`item_id` = `items`.`id`
-        ) AS `rating`,
-        `attributes_series`.*
-        FROM `items` 
-        INNER JOIN `attributes_series` ON `items`.`id` = `attributes_series`.`series_id`
-        WHERE `items`.`type` = ? AND `items`.`uid` = ? 
-        LIMIT 1
-        ;";
-
-    } // elseif($type === 'games') {
-
-    //     $sql = 
-    //     "SELECT 
-    //     `items`.*, 
-    //     (
-    //         SELECT AVG(`rating`) FROM `ratings` WHERE `ratings`.`item_id` = `items`.`id`
-    //     ) AS `rating` 
-    //     FROM `items` 
-    //     WHERE `items`.`type` = ? AND `items`.`uid` = ? 
-    //     LIMIT 1
-    //     ;";
-
-    // } elseif($type === 'books') {
-
-    //     $sql = 
-    //     "SELECT 
-    //     `items`.*, 
-    //     (
-    //         SELECT AVG(`rating`) FROM `ratings` WHERE `ratings`.`item_id` = `items`.`id`
-    //     ) AS `rating` 
-    //     FROM `items` 
-    //     WHERE `items`.`type` = ? AND `items`.`uid` = ? 
-    //     LIMIT 1
-    //     ;";
-
-    // } 
+    }
 
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)) {
@@ -212,18 +188,20 @@ function fetchItem($conn, $type, $uid) {
     $item = mysqli_fetch_assoc($result);
     mysqli_free_result($result);
 
-    $genres = fetchGenres($conn, $item['id']);
-    $tags = fetchGenres($conn, $item['id']);
-    list($crew, $collections) = fetchCrewAndCollections($conn, $item['id']);
-    $reviews = fetchReviews($conn, $item['id']);
+    $genres = fetchItemGenres($conn, $item['id']);
+    $tags = fetchItemGenres($conn, $item['id']);
+    list($crew, $collections) = fetchItemCrewAndCollections($conn, $item['id']);
+    $reviews_popular = fetchItemReviews($conn, $item['id'], 'popular', 10);
+    $reviews_recent = fetchItemReviews($conn, $item['id'], 'recent', 10);
+    $reviews_random = fetchItemReviews($conn, $item['id'], 'random', 10);
 
     $item['genres'] = $genres;
     $item['tags'] = $tags;
     $item['crew'] = $crew;
     $item['collections'] = $collections;
-    $item['reviews_popular'] = $reviews['popular'];
-    $item['reviews_recent'] = $reviews['recent'];
-    $item['reviews_random'] = $reviews['random'];
+    $item['reviews_popular'] = $reviews_popular;
+    $item['reviews_recent'] = $reviews_recent;
+    $item['reviews_random'] = $reviews_random;
 
     return $item;
 }
@@ -231,19 +209,34 @@ function fetchItem($conn, $type, $uid) {
 function prepareReviewList($reviews, $name) {
 
     $list = '';
-    foreach($reviews as $review) {
-        $list .= prepareReviewContainerPosterless($review['username'], $review['user_uid'], $review['entry_id'], $review['rating'], $review['like'], $review['text'], $review['spoilers'], 'list');
+    if(count($reviews) > 0) {
+        foreach($reviews as $review) {
+            $list .= prepareReviewContainerPosterless($review['username'], $review['user_uid'], $review['entry_id'], $review['rating'], $review['like'], $review['text'], $review['spoilers'], 'list');
+        }
+        if(count($reviews) === 11) {
+            $list .= 
+            '<li class="item_container show_more">
+            <a class="item_link show_more" href="/recent-activity">
+            <p class="1">Show more</p>
+            <p class="2">+</p>
+            </a>
+            </li>';
+        }
     }
-
-    $html = 
-    '<div class="review_list_container">
-    <div class="review_list_heading">
+    
+    $html =
+    '<div>
+    <div class="title_container">
     <h2>'.ucfirst($name).'</h2>
+    <div class="arrow u"></div>
     </div>
-    <div class="review_list_limits">
-    <ul class="review_list" list-name="'.strtolower($name).'">
+    <div class="list_container" list-name="'.strtolower($name).'">
+    <div class="list_limits" list-name="'.strtolower($name).'">
+    <ul class="list" list-name="'.strtolower($name).'">
     '.$list.'
     </ul>
+    </div>
+    <div class="arrow d"></div>
     </div>
     </div>';
 
@@ -252,22 +245,15 @@ function prepareReviewList($reviews, $name) {
 
 function renderItem($item) {
 
-    // switch($item['type']) {
-    //     case 'film':
-    //         $html = prepareItemFilm($item);
-    //         break;
-    // }
-
-    $reviews10 = [];
-    $reviews10 = array_merge($reviews10, $item['reviews_popular'], $item['reviews_popular'], $item['reviews_popular'], $item['reviews_popular']);
-
+    $reviewcool = ['username' => 'guy', 'user_uid' => 'guy', 'entry_id' => 100, 'rating' => 4.5, 'like' => 1, 'text' => 'serobuh uahrg uqotuhwqpr qpw34ghi hg3w HO3WH W5HQ4UTQ34 09U GWEGH HX9C8 W8 GP9', 'spoilers' => 1];
+    $reviews10 = [$reviewcool, $reviewcool, $reviewcool];
 
     $review_list_popular = prepareReviewList($reviews10, 'popular');
     $review_list_recent = prepareReviewList($item['reviews_recent'], 'recent');
     $review_list_random = prepareReviewList($item['reviews_random'], 'random');
 
-    $poster_path = "'/img/".$item['type']."/".$item['uid']."/".$item['uid']."-poster-full.jpg'";
-    $bg_path = "'/img/".$item['type']."/".$item['uid']."/".$item['uid']."-bg.jpg'";
+    $poster_path = "'/img/".$item['type_uid']."/".$item['uid']."/".$item['uid']."-poster-full.jpg'";
+    $bg_path = "'/img/".$item['type_uid']."/".$item['uid']."/".$item['uid']."-bg.jpg'";
 
     $item['directors'] = ['a', 'b'];
     $item['writers'] = ['a', 'c'];
@@ -315,11 +301,13 @@ function renderItem($item) {
     <div id="title_container">
     <p><span>'.$item['name'].'</span> <a href="#">'.$item['year'].'</a></p>
     <p>'.$creators_str.'</p>
-    <p>'.ucfirst($item['type']).'</p>
+    <p>'.$item['type_name'].'</p>
     </div>
-    <div id="actions_container">
-    <div><div class="check_icon activated"></div><div class="like_icon activated"></div></div>
-    <div><button class="button">Add rating</button><ul class="stars">'.$stars.'</ul></div>
+    <div class="right_container">
+    <div id="actions">
+    <div class="top"><div class="check_icon activated"></div><div class="like_icon activated"></div></div>
+    <div class="bottom"><button class="button">Add rating</button><ul class="stars">'.$stars.'</ul></div>
+    </div>
     </div>
     <div id="description_container">
     <p>'.$item['description'].'</p>
@@ -327,16 +315,14 @@ function renderItem($item) {
     </section>';
 
     $section2 = 
-    '<section id="review_lists">
-    <div class="button_container"><button type="button" class="button">Open all reviews</button></div>'.
+    '<section class="list_section multiple vertical">
+    <div class="button_container"><button type="button" class="button">See all reviews</button></div>'.
     $review_list_popular.
     $review_list_recent.
     $review_list_random.'
     </section>';
 
-    $html = 
-    '<div id="main_background_container" style="background-image: url('.$bg_path.'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
-    '.$section1.$section2;
+    $html = $section1.'<div id="bg" style="background-image: url('.$bg_path.');"></div>'.$section2;
     
     
 

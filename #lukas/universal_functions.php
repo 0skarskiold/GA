@@ -26,7 +26,7 @@ function fetchTags($conn) {
 
 function prepareItemContainer($name, $uid, $year, $type, $for) {
     $path = "'/img/".$type."/".$uid."/".$uid."-poster-small.jpg'";
-    $url = '/'.$type.'/'.$uid;
+    $url = '/type-'.$type.'/'.$uid;
 
     if($for === "list") {
         $html = 
@@ -45,7 +45,7 @@ function prepareItemContainer($name, $uid, $year, $type, $for) {
 
 function prepareActivityContainer($user, $user_uid, $entry_id, $rating, $date, $rewatch, $review, $spoilers, $item_name, $item_uid, $item_year, $item_type, $for) {
     $img_path = "'/img/".$item_type."/".$item_uid."/".$item_uid."-poster-small.jpg'";
-    $user_url = '/users/'.$user_uid;
+    $user_url = '/user-'.$user_uid;
     $entry_url = $user_url.'/entries?id='.$entry_id;
 
     $i = 0;
@@ -177,10 +177,21 @@ function prepareReviewContainerPosterless($user, $user_uid, $entry_id, $rating, 
     $user_url = '/users/'.$user_uid;
     $entry_url = $user_url.'/entries?id='.$entry_id;
 
+    $i = 0;
+    $stars = '';
+    for($j = $rating; $j > 0; $j -= 0.5) {
+        if($i % 2 == 0) {
+            $stars .= '<li class="half_star l"></li>';
+        } else {
+            $stars .= '<li class="half_star r"></li>';
+        }
+        $i++;
+    }
+
     if($spoilers == 1) { 
         $spoilers = 
         '<div class="spoiler_prompt">
-        <div class="icon_spoilers"></div>
+        <div class="icon spoilers"></div>
         <button type="button" name="reveal_spoilers" class="button">Reveal</button>
         </div>';
         $text = '<p hidden>'.$review.'</p>';
@@ -189,23 +200,24 @@ function prepareReviewContainerPosterless($user, $user_uid, $entry_id, $rating, 
         $text = '<p>'.$review.'</p>';
     }
     if($like == 1) { 
-        $like = '<li class="icon_like"></li>';
+        $like = '<div class="icon like"></div>';
     } else { $like = ''; }
 
     $html = 
     '<li class="review_container posterless">
-    <div class="top_container">
+    <div class="grid rating">
     <a href="'.$user_url.'" class="user">'.$user.'</a>
     <ul class="star_container">
-    '.$stars.$like.'
+    '.$stars.'
     </ul>
+    '.$like.'
     </div>
-    <div class="review_text">
+    <div class="grid text">
     '.$spoilers.$text.'
     </div>
-    <div class="bottom_container">
+    <div class="grid bottom">
     <a href="'.$entry_url.'" class="button">Full</a>
-    <p>Like review</p><div class="like_button"></div>
+    <div class="like_box"><div class="like_button"></div><p class="like_count">167</p></div>
     </div>
     </li>';
 
@@ -216,17 +228,18 @@ function prepareUserContainer($name, $uid, $reviews, $followers, $completions, $
    
     $html = 
     '<li class="user_container">
-    <a href="/user-'.$uid.'">
+    <a href="/user-'.$uid.'" class="user_link">
     <div class="top">
     <p class="name">'.$name.'</p>
     <p class="uid">@'.$uid.'</p>
     </div>
     <div class="bottom">
-    <p class="stats followers">Followers: '.$followers.'</p>
-    <p class="stats reviews">Reviews: '.$reviews.'</p>
-    <p class="stats completions">Completions: '.$completions.'</p>
+    <p class="stats followers">Followers: <span>osubsodaucbaouebf'.$followers.'</span></p>
+    <p class="stats reviews">Reviews: <span>'.$reviews.'</span></p>
+    <p class="stats completions">Completions: <span>'.$completions.'</span></p>
     </div>
     </a>
+    <button type="button" name="follow" class="button">Follow</button>
     </li>';
 
     return $html;

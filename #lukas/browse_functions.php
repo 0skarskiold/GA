@@ -108,7 +108,11 @@ function redirectBrowse($filter_arr, $types_arr) {
     $url = '/';
 
     if(isset($filter_arr['search'])) {
-        $url .= 'search/'.$filter_arr['search'];
+        if(strlen($filter_arr['search']) === 0) {
+            $url .= 'browse';
+        } else {
+            $url .= 'search/'.$filter_arr['search'];
+        }
     } else {
         $url .= 'browse';
     }

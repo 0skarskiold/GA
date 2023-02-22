@@ -8,13 +8,12 @@
 ?>
 <body id="item">
     <?php include_once("section_header.php"); ?>
+    
 
     <main>
         <?php
-
             $item = fetchItem($conn, $_GET['type'], $_GET['uid']);
             renderItem($item);
-
         ?>
     </main>
 

@@ -17,9 +17,9 @@ function fetchRecent($conn, $user_id) { // model
     $following = mysqli_fetch_array($result, MYSQLI_NUM);
     mysqli_free_result($result);
 
-    if(!(isset($following) || count($following) === 0)) {
-        return [];
-    }
+    // if(!(isset($following) || count($following) === 0)) {
+    //     return [];
+    // }
 
     $num = count($following);
     $marks = "(".str_repeat("?, ", $num-1)."?)";
@@ -41,8 +41,6 @@ function fetchRecent($conn, $user_id) { // model
             )
         )
     ) AS `main_date`, 
-    -- ROW_NUMBER() OVER (PARTITION BY `user_id` ORDER BY `main_date` DESC) AS `count_user_id`, -- funkar inte whyyyy
-    -- COUNT(*) AS `n`, -- funkar inte whyyyy
     `entries`.`rewatch` AS `rewatch`, 
     `entries`.`spoilers` AS `spoilers`,  
     `types`.`uid` AS `item_type`, 
