@@ -2,12 +2,12 @@
 
 function renderHeader($user_uid, $item_id) {
 
-    if(isset($item_id)) {
+    if($item_id) {
         $insert_id = '<input type="hidden" name="itemid" value="'.$item_id.'">';
     } else {
         $insert_id = '';
     }
-    if(isset($user_uid)) {
+    if($user_uid) {
 
         $create = 
         '<form action="/create" method="post" class="create_form">
@@ -24,7 +24,7 @@ function renderHeader($user_uid, $item_id) {
     } else {
         $create = '';
         $profile = '';
-        $acc = '<a href="/forms" class="button">Join</a>';
+        $acc = '<a href="/forms" class="button">Log in</a>';
     }
 
     $html = 
@@ -32,9 +32,9 @@ function renderHeader($user_uid, $item_id) {
     <a href="/" class="button">Home</a>
     <a href="/browse" class="button">Browse</a>
     '.$profile.'
-    <form action="/section_header_receive.php" method="get" class="search_form">
+    <form action="/browse_recieve.php" method="get" class="search_form">
     <input class="search_bar" type="text" name="search" placeholder="Search">
-    <button class="button" type="submit" name="submit-search">Search</button>
+    <button class="button" type="submit">Search</button>
     </form>
     '.$create.$acc.'
     </div>

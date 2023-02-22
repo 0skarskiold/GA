@@ -212,6 +212,26 @@ function prepareReviewContainerPosterless($user, $user_uid, $entry_id, $rating, 
     return $html;
 }
 
+function prepareUserContainer($name, $uid, $reviews, $followers, $completions, $for) {
+   
+    $html = 
+    '<li class="user_container">
+    <a href="/user-'.$uid.'">
+    <div class="top">
+    <p class="name">'.$name.'</p>
+    <p class="uid">@'.$uid.'</p>
+    </div>
+    <div class="bottom">
+    <p class="stats followers">Followers: '.$followers.'</p>
+    <p class="stats reviews">Reviews: '.$reviews.'</p>
+    <p class="stats completions">Completions: '.$completions.'</p>
+    </div>
+    </a>
+    </li>';
+
+    return $html;
+}
+
 function prepareStars($rating, $length, $like) {
 
     if($rating === 'open') {

@@ -13,12 +13,16 @@
 
         <?php 
             if(isset($_GET['users'])) {
-                // $users = fetchListUsers($conn, $_POST, 'browse');
-                // renderListUsers($items, 'browse');
+                $items = fetchListBrowse($conn, $_GET, 'users');
+                renderListBrowse($items, 'users');
             } else {
-                renderBrowseFilter($conn);
-                $items = fetchListBrowse($conn, $_GET, 'browse');
-                renderListBrowse($items, 'browse');
+                if(isset($_GET['search'])) {
+                    renderBrowseFilter($conn, $_GET['search']);
+                } else {
+                    renderBrowseFilter($conn, false);
+                }
+                $items = fetchListBrowse($conn, $_GET, 'items');
+                renderListBrowse($items, 'items');
             }
         ?>
 

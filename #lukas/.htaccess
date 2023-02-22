@@ -15,8 +15,8 @@ RewriteRule ^user-([^/]+)/ratings/?$ entry.php?user_uid=$1&list=ratings [L]
 RewriteRule ^user-([^/]+)/reviews/?$ entry.php?user_uid=$1&list=reviews [L]
 RewriteRule ^user-([^/]+)/diary/?$ entry.php?user_uid=$1&list=logs [L]
 
-RewriteRule ^browse.php?search=$1/?$ search/([^/]+)/? [R=301]
 RewriteRule ^search/([^/]+)/?$ browse.php?search=$1 [QSA,L]
+RewriteRule ^search-users/([^/]+)/?$ browse.php?users=on&search=$1 [QSA,L]
 
 RewriteRule ^genres/?$ browse.php?genres=on [L]
 RewriteRule ^genre-([^/]+)/?$ browse.php?genre=$1 [L]

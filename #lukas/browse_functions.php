@@ -1,7 +1,7 @@
 <?php
 require_once("universal_functions.php");
 
-function renderBrowseFilter($conn) {
+function renderBrowseFilter($conn, $search) {
 
     $genres = fetchGenres($conn);
     $glist = '';
@@ -35,9 +35,14 @@ function renderBrowseFilter($conn) {
         </div>';
     }
 
+    if($search !== false) {
+        $search = '<input type="hidden" name="search" value="'.$search.'"></input>';
+    }
+
     $html = 
     '<section id="filter">
-    <form action="browse_recieve.php" method="get">
+    <form action="/browse_recieve.php" method="get">
+    '.$search.'
 
     <div class="filter_segment">
     <div class="filter_option">
@@ -139,10 +144,18 @@ function redirectBrowse($filter_arr, $types_arr) {
     }
 
     if(isset($filter_arr['year']) && $filter_arr['year'] !== 'any') {
-        if(strpos($url, '?') !== false) {
-            $url .= '&year='.$filter_arr['year'];
+        if($filter_arr['year'][-1] === "s") {
+            if(strpos($url, '?') !== false) {
+                $url .= '&decade='.$filter_arr['year'];
+            } else {
+                $url .= '?decade='.$filter_arr['year'];
+            }
         } else {
-            $url .= '?year='.$filter_arr['year'];
+            if(strpos($url, '?') !== false) {
+                $url .= '&year='.$filter_arr['year'];
+            } else {
+                $url .= '?year='.$filter_arr['year'];
+            }
         }
     }
 
@@ -216,7 +229,7 @@ function redirectBrowse($filter_arr, $types_arr) {
 
 function fetchListBrowse($conn, $filter_arr, $type) {
 
-    if($type === 'browse') {
+    if($type === 'items') {
 
         $stmt = mysqli_stmt_init($conn);
         $values = [];
@@ -226,7 +239,108 @@ function fetchListBrowse($conn, $filter_arr, $type) {
         $from = "FROM `items`";
 
 
-        if(!isset($filter_arr["sortby"])) {
+        if(isset($filter_arr["search"])) {
+
+            $where = "WHERE `items`.`name` LIKE ?";
+            $search_str = "%".$filter_arr["search"]."%";
+            array_push($values, $search_str); 
+        }
+
+        if(isset($filter_arr['types'])) {
+
+            $types = explode(' ', $filter_arr['types']); // obs: php behandlar plus som mellanrum
+            if(count($types) < 2) {
+                header("location: /?error");
+                exit;
+            } else {
+                $in = "IN (".str_repeat("?, ", count($types)-1)."?)";
+            }
+
+            if($where !== "") {
+                $where .= " AND `types`.`uid` ".$in;
+            } else {
+                $where .= "WHERE `types`.`uid` ".$in;
+            }
+
+            array_push($values, ...$types);
+
+        } elseif(isset($filter_arr['type'])) {
+
+            if($where !== "") {
+                $where .= " AND `type` = ?";
+            } else {
+                $where .= "WHERE `type` = ?";
+            }
+
+            array_push($values, $filter_arr['type']);
+        }
+
+        
+        if(isset($filter_arr["genre"])) {
+
+            $from .= 
+            " INNER JOIN `items_genres` ON `items`.`id` = `items_genres`.`item_id` 
+            INNER JOIN `genres` ON `items_genres`.`genre_id` = `genres`.`id`";
+
+            if($where !== "") {
+                $where .= " AND `genres`.`uid` = ?";
+            } else {
+                $where = "WHERE `genres`.`uid` = ?";
+            }
+
+            array_push($values, $filter_arr['genre']);
+        }
+
+    
+        if(isset($filter_arr["tag"])) {
+
+            $from .= 
+            " INNER JOIN `items_tags` ON `items`.`id` = `items_tags`.`item_id` 
+            INNER JOIN `tags` ON `items_tags`.`tag_id` = `tags`.`id`";
+
+            if($where !== "") {
+                $where .= " AND `tags`.`uid` = ?";
+            } else {
+                $where = "WHERE `tags`.`uid` = ?";
+            }
+
+            array_push($values, $filter_arr['tag']);
+        }
+        
+    
+        if(isset($filter_arr['year'])) {
+
+            if($where !== "") {
+                $where .= " AND `items`.`year` = ?";
+            } else {
+                $where = "WHERE `items`.`year` = ?";
+            }
+
+            array_push($values, intval($filter_arr['year']));
+
+        } elseif(isset($filter_arr['decade'])) {
+
+            $y = intval(rtrim($filter_arr['decade'], "s"));
+            $years = [];
+
+            $lim = $y+10;
+            for($y; $y < $lim; $y++) { 
+                array_push($years, $y); 
+            }
+
+            $in = "IN (".str_repeat("?, ", 9)."?)";
+
+            if($where !== "") {
+                $where .= " AND `items`.`year` ".$in;
+            } else {
+                $where = "WHERE `items`.`year` ".$in;
+            }
+
+            array_push($values, ...$years);
+        }
+
+
+        if(!isset($filter_arr["sort-by"])) {
             $factor = "`popularity`";
             $tmp = date('Y-m-d', strtotime('-1 week'));
             $select .=  // todo: ändra så att om entry och rating är från samma tillfälle så räknas endast en av dem med
@@ -239,28 +353,7 @@ function fetchListBrowse($conn, $filter_arr, $type) {
 
         } else {
 
-            switch($filter_arr["sortby"]) {
-                case "rating-high":
-                    $factor = "`rating`";
-                    $select = "(SELECT AVG(`rating`) FROM `ratings` WHERE `item_id` = `items`.`id`) AS `rating`";
-                    $order = "DESC";
-                    break;
-                case "rating-low":
-                    $factor = "`rating`";
-                    $select = "(SELECT AVG(`rating`) FROM `ratings` WHERE `item_id` = `items`.`id`) AS `rating`";
-                    $order = "ASC";
-                    break;
-                case "popularity-week":
-                    $factor = "`popularity`";
-                    $tmp = date('Y-m-d', strtotime('-1 week'));
-                    $select .= 
-                    "(
-                        (SELECT COUNT(*) FROM `ratings` WHERE `ratings`.`item_id` = `items`.`id` AND `ratings`.`created_date` > '$tmp')
-                        + 
-                        (SELECT COUNT(*) FROM `entries` WHERE `entries`.`item_id` = `items`.`id` AND `entries`.`log_date` > '$tmp')
-                    ) AS `popularity`,";
-                    $order = "DESC";
-                    break;
+            switch($filter_arr["sort-by"]) {
                 case "popularity-month":
                     $factor = "`popularity`";
                     $tmp = date('Y-m-d', strtotime('-1 month'));
@@ -272,12 +365,26 @@ function fetchListBrowse($conn, $filter_arr, $type) {
                     ) AS `popularity`,";
                     $order = "DESC";
                     break;
-                case "popularity-all":
+                case "popularity-all-time":
                     $factor = "`popularity`";
                     $select .= "(SELECT COUNT(*) FROM `ratings` WHERE `ratings`.`item_id` = `items`.`id`) AS `popularity`,";
                     $order = "DESC";
                     break;
-                case "title":
+                case "rating-high":
+                    $factor = "`rating`";
+                    $select .= "(SELECT AVG(`rating`) FROM `ratings` WHERE `item_id` = `items`.`id`) AS `rating`,";
+                    $order = "DESC";
+                    break;
+                case "rating-low":
+                    $factor = "`rating`";
+                    $select .= "(SELECT AVG(`rating`) FROM `ratings` WHERE `item_id` = `items`.`id`) AS `rating`,";
+                    $order = "ASC";
+                    break;
+                case "title-desc":
+                    $factor = "`items`.`name`";
+                    $order = "DESC";
+                    break;
+                case "title-asc":
                     $factor = "`items`.`name`";
                     $order = "ASC";
                     break;
@@ -297,103 +404,39 @@ function fetchListBrowse($conn, $filter_arr, $type) {
 
 
         if(isset($filter_arr['page'])) {
-            $offset = "OFFSET ".(160*($filter_arr['page']-1));
+            if($filter_arr['page'] < 2) {
+                header("location: /?error");
+                exit;
+            } else {
+                $offset = "OFFSET ".(160*($filter_arr['page']-1));
+            }
         } else {
             $offset = "";
         }
-
-
-        if(isset($filter_arr["genre"]) && $filter_arr["genre"] !== "any") {
-
-            $from .= " INNER JOIN `items_genres` ON `items`.`id` = `items_genres`.`item_id`";
-            $where = "WHERE `items_genres`.`genre_id` = ?";
-            array_push($values, intval($filter_arr['genre']));
-        }
-
     
-        if(isset($filter_arr["tag"]) && $filter_arr["tag"] !== "any") {
-
-            $from .= " INNER JOIN `items_tags` ON `items`.`id` = `items_tags`.`item_id`";
-
-            if($where !== "") {
-                $where .= " AND `items_tags`.`tag_id` = ?";
-            } else {
-                $where = "WHERE `items_tags`.`tag_id` = ?";
-            }
-
-            array_push($values, intval($filter_arr['tag']));
-        }
-        
     
-        if(isset($filter_arr['year']) && $filter_arr['year'] !== "any") {
-    
-            if(is_numeric($filter_arr['year'])) {
+        $sql = "SELECT 
+        `items`.`id`,
+        `items`.`name`,
+        `types`.`uid` AS `type`,
+        `items`.`uid`,
+        $select
+        `items`.`year`
+        $from
+        INNER JOIN `items_types` ON `items_types`.`item_id` = `items`.`id`
+        INNER JOIN `types` ON `types`.`id` = `items_types`.`type_id`
+        $where
+        ORDER BY $factor $order
+        LIMIT 160
+        $offset
+        ;";
 
-                $year = intval($filter_arr['year']);
-                $tmp = "= ?";
-                array_push($values,$year);
-    
-            } elseif($filter_arr['year'][-1] === "s") {
-    
-                $tmp = intval(rtrim($filter_arr['year'], "s"));
-                $year = [];
-    
-                for($y = $tmp; $y <= $tmp+9; $y++) { 
-                    array_push($year, $y); 
-                }
-
-                $tmp = "IN (".str_repeat('?, ', 9)."?)";
-                array_push($values,...$year);
-            } 
-
-            if($where !== "") {
-                $where .= " AND `items`.`year` ".$tmp;
-            } else {
-                $where = "WHERE `items`.`year` ".$tmp;
-            }
-        }
-
-        
-        $types = [];
-        if(isset($filter_arr['type-film'])) {
-            array_push($types,"film");
-        }
-        if(isset($filter_arr['type-short-film'])) {
-            array_push($types,"short-film");
-        }
-        if(isset($filter_arr['type-series'])) {
-            array_push($types,"series");
-        }
-        if(isset($filter_arr['type-mini-series'])) {
-            array_push($types,"mini-series");
-        }
-        if(isset($filter_arr['type-series-s'])) {
-            array_push($types,"series-s");
-        }
-        if(isset($filter_arr['type-series-e'])) {
-            array_push($types,"series-e");
-        }
-        if(isset($filter_arr['type-game'])) {
-            array_push($types,"game");
-        }
-        if(isset($filter_arr['type-book'])) {
-            array_push($types,"book");
-        }
-        if($types !== []) {
-
-            $tmp = "IN (".str_repeat('?, ', count($types)-1)."?)";
-
-            if($where !== "") {
-                $where .= " AND `items`.`type` ".$tmp;
-            } else {
-                $where = "WHERE `items`.`type` ".$tmp;
-            }
-
-            array_push($values,...$types);
+        if(!mysqli_stmt_prepare($stmt, $sql)) {
+            header("location: /?error");
+            exit;
         }
 
         $param_str = "";
-
         foreach($values as $val) {
 
             if(gettype($val) === "integer") {
@@ -406,29 +449,9 @@ function fetchListBrowse($conn, $filter_arr, $type) {
                 $param_str .= "d";
 
             } else {
-                return [];
+                header("location: /?error");
+                exit;
             }
-        }
-    
-    
-        $sql = "SELECT 
-        `items`.`id`,
-        `items`.`name`,
-        `types`.`uid` AS `type`,
-        `items`.`uid`,
-        $select
-        `items`.`year` 
-        $from 
-        $where
-        INNER JOIN `items_types` ON `items_types`.`item_id` = `items`.`id` 
-        INNER JOIN `types` ON `types`.`id` = `items_types`.`type_id` 
-        ORDER BY $factor $order 
-        LIMIT 160 
-        $offset
-        ;";
-
-        if(!mysqli_stmt_prepare($stmt, $sql)) {
-            return [];
         }
 
         if(strlen($param_str) > 0) { 
@@ -443,122 +466,69 @@ function fetchListBrowse($conn, $filter_arr, $type) {
 
         return $items;
 
-    } elseif($type === "search") {
-
-        // if(isset($filter_arr["search"])) {
-        //     $search = $filter_arr["search"];
-        // } else {
-        //     $search = false;
-        // }
-
-        // if($search) {
-        //     if($where !== "") {
-        //         $where .= " AND `items`.`name` LIKE ?";
-        //     } else {
-        //         $where = "WHERE `items`.`name` LIKE ?";
-        //     }
-        //     $search_str = "'%".$search."%'";
-        //     array_push($values,$search_str); 
-        // }
-
-    } elseif($type === "collection") {
-
-        // if($collection) {
-        //     $from .= " INNER JOIN `items_collections` ON `items`.`id` = `items_collections`.`item_id`";
-        //     if($where !== "") {
-        //         $where .= " AND `items_collections`.`collection_id` = ?";
-        //     } else {
-        //         $where = "WHERE `items_collections`.`collection_id` = ?";
-        //     }
-        //     array_push($values,$collection); 
-        // }
-
-    } elseif($type === "artist") {
-
-        // if($artist) {
-        //     $from .= " INNER JOIN `items_crew` ON `items`.`id` = `items_crew`.`item_id`";
-        //     if($where !== "") {
-        //         $where .= " AND `items_crew`.`artist_id` = ?";
-        //     } else {
-        //         $where = "WHERE `items_crew`.`artist_id` = ?";
-        //     }
-        //     array_push($values,$artist); 
-        // }
-
     } elseif($type === "users") {
 
-        // $sql = "SELECT `id`, `name`, `uid` FROM `users` ORDER BY `name`;";
-        // $result = mysqli_query($conn, $sql);
-        // $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        // mysqli_free_result($result);
-        // return $users;
+        if(isset($filter_arr['search'])) {
 
+            $stmt = mysqli_stmt_init($conn);
+            $search_str = "%".$filter_arr["search"]."%";
+
+            $sql = "SELECT `id`, `name`, `uid` FROM `users` WHERE `name` LIKE ? OR `uid` LIKE ? ORDER BY `name`;";
+
+            if(!mysqli_stmt_prepare($stmt, $sql)) {
+                header("location: /?error");
+                exit;
+            }
+    
+            mysqli_stmt_bind_param($stmt, "ss", $search_str, $search_str); 
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+            mysqli_stmt_close($stmt);
+            $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            mysqli_free_result($result);
+
+        } else {
+
+            $sql = "SELECT `id`, `name`, `uid` FROM `users` ORDER BY `name`;";
+            $result = mysqli_query($conn, $sql);
+            $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            mysqli_free_result($result);
+
+        }
+
+        return $users;
     }
 }
 
 function renderListBrowse($fetched, $type) {
 
-    if($type === 'browse') {
+    $list = '';
+    if(count($fetched) > 0) {
 
-        if(count($fetched) > 0) {
-            $list = '';
+        if($type === 'items') {
             foreach($fetched as $item) {
                 $list .= prepareItemContainer($item['name'], $item['uid'], $item['year'], $item['type'], 'list');
             }
-        } else {
-            $list = '';
-        }
-
-        $html = 
-        '<section class="list_section grid" list-name="browse">
-        <h2>Browse</h2>
-        <p>Filters:</p>
-        <div class="list_container" list-name="browse">
-        <div class="list_limits" list-name="browse">
-        <ul class="list" list-name="browse">
-        '.$list.'
-        </ul>
-        </div>
-        </div>
-        </section>';
-
-        echo $html;
-        return;
-
-    } elseif($type === 'users') {
-
-        if(count($fetched) > 0) {
-            $list = '<ul>';
-
+        } elseif($type === 'users') {
             foreach($fetched as $user) {
-
-                $path = "/profile-imgs/".$user['uid'].".jpg";
-    
-                $list .= 
-                '<li class="user_container">
-                <a href="/'.$user['uid'].'">
-                <h2>'.$user['username'].'</h2>
-                <h3>@'.$user['uid'].'</h3>
-                <img class="poster" src="'.$path.'" alt="Profile picture for '.$user['username'].'">
-                </a>
-                </li>';
+                $list .= prepareUserContainer($user['name'], $user['uid'], $user['reviews'], $user['followers'], $user['completions'], 'list');
             }
-            $list .= '</ul>';
-        } else {
-            $list = '';
         }
-
-        $html = 
-        '<section id="browse_users">
-        '.$list.'
-        </section>';
-
-        echo $html;
-        return;
-
-    } elseif($type === 'crew') {
-
-    } else {
-        return;
     }
+
+    $html = 
+    '<section class="list_section grid" list-name="browse">
+    <h2>Browse</h2>
+    <p>Filters:</p>
+    <div class="list_container" list-name="browse">
+    <div class="list_limits" list-name="browse">
+    <ul class="list" list-name="browse">
+    '.$list.'
+    </ul>
+    </div>
+    </div>
+    </section>';
+
+    echo $html;
+    return;
 }

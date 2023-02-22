@@ -67,6 +67,9 @@ input[type=text], input[type=password] {
 input[type=checkbox] {
     accent-color: var(--global-color-1);
 }
+input[type=checkbox]:hover {
+    cursor: pointer;
+}
 
 select {
     height: calc(var(--global-poster-width) * 0.25);
@@ -86,6 +89,9 @@ select {
 }
 select * {
     font: unset;
+}
+select:hover {
+    cursor: pointer;
 }
 
 
@@ -129,11 +135,16 @@ select * {
     background-color: var(--global-color-3-1);
     border: var(--global-border-width-2) solid var(--global-color-1);
     border-radius: var(--global-border-radius);
+    transition: background-color ease 0.2s;
 }
 a.button {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.button:hover {
+    cursor: pointer;
+    background-color: var(--global-color-3-2);
 }
 
 
@@ -199,6 +210,7 @@ ul.star_container > .half_star:last-child {
     height: calc(var(--global-poster-height) + var(--global-border-width-1) * 2);
     border: var(--global-border-width-1) solid var(--global-color-3-1);
     border-radius: var(--global-border-radius);
+    transition: border-color ease 0.2s;
     overflow: hidden;
 }
 .item_container > a.item_link.poster {
@@ -209,6 +221,9 @@ ul.star_container > .half_star:last-child {
     display: block;
     width: 100% !important;
     height: 100% !important;
+}
+.item_container:hover {
+    border-color: var(--global-color-4-1);
 }
 
 
@@ -223,12 +238,16 @@ ul.star_container > .half_star:last-child {
 
     border: var(--global-border-width-1) solid var(--global-color-3-1);
     border-radius: var(--global-border-radius);
+    transition: border-color ease 0.2s;
     overflow: hidden;
 
     display: grid;
     grid-template-rows:
         calc(var(--global-poster-width) * 0.2) 
         calc(var(--global-poster-height) + var(--global-poster-width) * 0.3);
+}
+.activity_container > .main:hover {
+    border-color: var(--global-color-3-2);
 }
 .activity_container > .main > .user_container {
     padding: 
