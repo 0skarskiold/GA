@@ -10,7 +10,7 @@ function renderHeader($user_uid, $item_id) {
     if($user_uid) {
 
         $create = 
-        '<form action="/create" method="post" class="create_form">
+        '<form action="/create" method="get" class="create_form">
         '.$insert_id.'
         <select name="type">
         <option value="review">Review</option>
@@ -19,7 +19,7 @@ function renderHeader($user_uid, $item_id) {
         <button class="button" type="submit">Create</button>
         </form>';
 
-        $profile = '<a href="/users/'.$user_uid.'" class="button">Profile</a>';
+        $profile = '<a href="/user-'.$user_uid.'" class="button">Profile</a>';
         $acc = '<a href="/section_header_receive.php?logout" class="button">Log Out</a>';
     } else {
         $create = '';

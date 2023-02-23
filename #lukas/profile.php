@@ -6,10 +6,10 @@
     
     require_once("section_contents.php"); 
 ?>
-<body>
+<body id="profile">
     <?php include_once("section_header.php"); ?>
 
-    <main id="profile">
+    <main>
         <?php
 
             $user = fetchUser($conn, $_GET['uid'], $_SESSION['useruid'], $_SESSION['userid']);

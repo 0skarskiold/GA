@@ -1,8 +1,9 @@
-<?php
+<?php 
+require_once("universal_functions.php");
 
-function fetchItem($conn, $id) {
+function fetchItem($conn, $uid) {
 
-    $sql = "SELECT * FROM `items` WHERE `id` = ?;";
+    $sql = "SELECT * FROM `items` WHERE `uid` = ?;";
 
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) { 
@@ -10,7 +11,7 @@ function fetchItem($conn, $id) {
         exit; 
     }
     
-    mysqli_stmt_bind_param($stmt, "i", $id);
+    mysqli_stmt_bind_param($stmt, "s", $uid);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     mysqli_stmt_close($stmt);
@@ -20,64 +21,152 @@ function fetchItem($conn, $id) {
     return $item;
 }
 
+function fetchQuickSearch($conn, $input) {
+
+    $arr = explode(" ", $input); // delar string till array utefter mellanrum
+    for($i = 0; $i < count($arr); $i++) {
+
+        if(is_numeric($arr[$i])) { // om något ord från input är numeriskt
+
+            $year = "%".$arr[$i]."%";
+            array_splice($arr, $i, 1);
+            $input = join($arr);
+            break;
+        }
+    }
+    $input = "%".$input."%";
+
+    $stmt = mysqli_stmt_init($conn);
+
+    if(!isset($year)) {
+
+        $sql = "SELECT 
+        `id`, 
+        `name`, 
+        `uid`, 
+        `year` 
+        FROM `items` 
+        WHERE `name` LIKE ? 
+        LIMIT 5
+        ;";
+
+        if(!mysqli_stmt_prepare($stmt, $sql)) {
+            header("location: /?error");
+            exit;
+        }
+
+        mysqli_stmt_bind_param($stmt, "s", $input);
+
+    } else {
+
+        $sql = "SELECT 
+        `id`, 
+        `name`, 
+        `year` 
+        FROM `items` 
+        WHERE `name` LIKE ? 
+        AND `year` LIKE ? 
+        LIMIT 5
+        ;";
+
+        if(!mysqli_stmt_prepare($stmt, $sql)) {
+            header("location: /?error");
+            exit;
+        }
+
+        mysqli_stmt_bind_param($stmt, "ss", $input, $year);
+    }
+    
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    mysqli_stmt_close($stmt);
+    $items = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    mysqli_free_result($result);
+
+    return $items;
+}
+
+function preparePromptExclusive($for, $hide) {
+    $date = date('Y-m-d');
+    if($for === 'log') {
+        $html =     
+        '<div class="log_exclusive" '.$hide.'>
+        <div class="form_segment log_date">
+        <label for="log-date">When watched</label>
+        <input type="date" value="'.$date.'" name="log-date" />
+        </div>
+        <div class="form_segment rewatch">
+        <label for="rewatch">Have you seen this before?</label><!--todo: seen ändras till played om item-type=spel-->
+        <input type="checkbox" name="rewatch" />
+        </div>
+        </div>';
+    } elseif($for === 'review') {
+        $html = 
+        '<div class="review_exclusive" '.$hide.'>
+        <div class="form_segment review_text">
+        <label for="review-text">Write your review</label>
+        <textarea name="review-text" maxlength="10000" cols="30" rows="10" style="resize: none;"></textarea>
+        </div>
+        <div class="form_segment review_date">
+        <label for="review-date">Date of review</label>
+        <input type="date" value="'.$date.'" name="review-date" />
+        </div>
+        <div class="form_segment review_spoilers">
+        <label for="review-date">Does your review include spoilers?</label>
+        <input type="checkbox" name="spoilers" />
+        </div>
+        </div>';
+    } else {
+        header("location: /?error");
+        exit;
+    }
+    return $html;
+}
+
 function renderCreatePrompt($entry_type, $item, $user_id) {
 
-    if($entry_type === "log") { 
-        $hideForLog = "hidden"; 
-        $hideForReview = "";
-    } elseif ($entry_type === "review") {
-        $hideForReview = "hidden";
-        $hideForLog = "";
-    } elseif ($entry_type === "full") { // todo: kan inte bli detta, hur istället?
-        $hideForReview = "";
-        $hideForLog = "";
+    if($entry_type === 'log') { 
+        $log_exclusive = preparePromptExclusive($entry_type, '');
+        $review_exclusive = preparePromptExclusive('review', 'style="display: none !important;"');
+        $expand_button = '<button type="button" name="toggle-review" class="button add">Attach Review</button>';
+    } elseif ($entry_type === 'review') {
+        $review_exclusive = preparePromptExclusive($entry_type, '');
+        $log_exclusive = preparePromptExclusive('log', 'style="display: none !important;"');
+        $expand_button = '<button type="button" name="toggle-log" class="button add">Attach Diary Entry</button>';
     } else {
-        return;
+        header("location: /?error");
+        exit;
     }
 
-    $stars = '<li class="half-star r activated" data-nbr="0"></li>';
-    for($i=1; $i<=10; $i+=2) {
-        $stars .= 
-        '<li class="half-star l" data-nbr="'.$i.'"></li>
-        <li class="half-star r" data-nbr="'.($i+1).'"></li>';
-    }
-
-    $star_prompt = 
-    '<div id="star_container" class="inactive">
-    <ul class="stars">
-    '.$stars.'
-    </ul>
-    </div>';
-
-    $date = date('Y-m-d');
+    $stars = prepareStars('open', '40px');
 
     $form = 
-    '<form method="post">
+    '<form action="/create_receive.php" method="post">
+
     <input type="hidden" value="'.$item['id'].'" name="item-id" />
     <input type="hidden" value="0" name="like">
     <input type="hidden" value="null" name="rating">
-    <div class="log-exclusive" '.$hideForReview.'>
-    <label for="log-date">When watched</label>
-    <input type="date" value="'.$date.'" name="log-date" />
-    <input type="checkbox" name="rewatch">I\'ve seen this before</input> <!--gör att seen ändras till played om item-type=spel-->
-    </div>
-    <div class="review-exclusive" '.$hideForLog.'>
-    <textarea name="review-text" maxlength="10000" cols="30" rows="10" style="resize: none;"></textarea>
-    <label for="review-date">Date of review</label>
-    <input type="date" value="'.$date.'" name="review-date" />
-    <input type="checkbox" name="spoilers">Includes spoilers</input>
-    </div>
-    <button type="submit" name="submit-create">Submit</button>
+
+    '.$log_exclusive.$review_exclusive.'
+
+    <button type="submit" name="submit-create" class="button">Submit</button>
     </form>';
 
     $html = 
-    '<section class="create">
+    '<section id="create_section">
     <h2>'.$item['name'].'</h2>
-    <button type="button" name="toggle-log" class="add" '.$hideForLog.'>Attach diary entry</button>
-    <button type="button" name="toggle-review" class="add" '.$hideForReview.'>Attach review</button>
-    <div id="like" class="inactive"></div>
-    <button type="button" name="toggle-rating" class="add">Add rating</button>
-    '.$star_prompt.$form.'
+
+    <div class="form_segment expand">
+    <button type="button" name="toggle-rating" class="button add">Add Rating</button>
+    '.$expand_button.'
+    </div>
+
+    <div class="form_segment rating">
+    <div class="like_button off"></div>
+    '.$stars.'
+    </div>
+    
+    '.$form.'
     </section>';
 
     echo $html;

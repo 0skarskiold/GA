@@ -130,14 +130,11 @@ function renderProfile($user, $visitor_id) {
     }
 
     $html =
-    '<h2>'.$user['name'].'</h2>
+    '<h2 class="username">'.$user['name'].'</h2>
     '.$follow_button.'
-    <ul class="link_list">
-    <li><a href="/users/'.$user['uid'].'/ratings">Ratings</a></li>
-    <li><a href="/users/'.$user['uid'].'/reviews">Reviews</a></li>
-    <li><a href="/users/'.$user['uid'].'/diary">Diary</a></li>
-    </ul>
-    ';
+    <a class="button" href="/user-'.$user['uid'].'/ratings">Ratings</a>
+    <a class="button" href="/user-'.$user['uid'].'/reviews">Reviews</a>
+    <a class="button" href="/user-'.$user['uid'].'/diary">Diary</a>';
 
     echo $html;
     return;

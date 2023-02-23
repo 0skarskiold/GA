@@ -1,3 +1,5 @@
+<?php require_once("create_functions.php"); ?>
+
 <script>
 
 $(document).ready(function() {
@@ -59,7 +61,7 @@ $(document).ready(function() {
         };
     });
 
-    $('input#create-search').focus(function() {
+    $('section#create_search input').focus(function() {
         $(this).keyup(function() {
             
             let str = $(this).val()
@@ -71,20 +73,20 @@ $(document).ready(function() {
                     context: this,
                     url:'create_receive.php',
                     method:"POST",
-                    data:{createSearch:"on", input:str},
+                    data:{csearch:"on", input:str},
 
                     success: function(data) {
 
                         items = JSON.parse(data);
                         if(items.length > 0) {
-                            let type = '<?php echo $_POST['type']; ?>';
+                            let type = '<?php echo $_GET['type']; ?>';
                             let result = '';
 
                             items.forEach(function(item) {
-                                result += '<form action="/create" method="post">';
-                                result += '<input type="hidden" name="itemid" value="'.concat(item['id'].toString(), '">');
+                                result += '<form action="/create" method="get">';
+                                result += '<input type="hidden" name="item" value="'.concat(item['uid'].toString(), '">');
                                 result += '<input type="hidden" name="type" value="'.concat(type, '">');
-                                result += '<button type="submit">';
+                                result += '<button type="submit" class="button">';
                                 result += item['name'].concat(' (', item['year'].toString(), ')');
                                 result += '</button></form>';
                             });
@@ -104,29 +106,29 @@ $(document).ready(function() {
 
     $('button[name="toggle-review"]').click(function() {
         if($(this).hasClass('add')) {
-            $('.log-exclusive').after('<div class="review-exclusive"><textarea name="review_text" maxlength="10000" cols="30" rows="10" style="resize: none;"></textarea><label for="review-date">Date of review</label><input type="date" value="<?php echo date('Y-m-d'); ?>" name="review-date" /><input type="checkbox" name="spoilers">Includes Spoilers</input></div>');
+            $('.log_exclusive').after(<?php echo json_encode(preparePromptExclusive('review', '')); ?>);
             $(this).removeClass('add');
             $(this).addClass('remove');
-            $(this).text('Remove review');
+            $(this).text('Remove Review');
         } else if($(this).hasClass('remove')) {
-            $('.review-exclusive').remove();
+            $('.review_exclusive').remove();
             $(this).removeClass('remove');
             $(this).addClass('add');
-            $(this).text('Attach review');
+            $(this).text('Attach Review');
         }
     });
 
     $('button[name="toggle-log"]').click(function() {
         if($(this).hasClass('add')) {
-            $('.review-exclusive').before('<div class="log-exclusive"><label for="log-date">When watched</label><input type="date" value="<?php echo date('Y-m-d'); ?>" name="log-date" /><input type="checkbox" name="rewatch">I\'ve seen this before</input></div>');
+            $('.review_exclusive').before(<?php echo json_encode(preparePromptExclusive('log', '')); ?>);
             $(this).removeClass('add');
             $(this).addClass('remove');
-            $(this).text('Remove diary entry');
+            $(this).text('Remove Diary Entry');
         } else if($(this).hasClass('remove')) {
-            $('.log-exclusive').remove();
+            $('.log_exclusive').remove();
             $(this).removeClass('remove');
             $(this).addClass('add');
-            $(this).text('Attach diary entry');
+            $(this).text('Attach Diary Entry');
         }
     });
 });

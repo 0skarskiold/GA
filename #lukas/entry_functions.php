@@ -56,7 +56,7 @@ function renderEntry($entry) {
     } elseif(isset($entry['log_date'])) {
 
     } else {
-        header("location: /error");
+        header("location: /?error");
         exit;
     }
 

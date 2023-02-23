@@ -48,16 +48,7 @@ function prepareActivityContainer($user, $user_uid, $entry_id, $rating, $date, $
     $user_url = '/user-'.$user_uid;
     $entry_url = $user_url.'/entries?id='.$entry_id;
 
-    $i = 0;
-    $stars = '';
-    for($j = $rating; $j > 0; $j -= 0.5) {
-        if($i % 2 == 0) {
-            $stars .= '<li class="half_star l"></li>';
-        } else {
-            $stars .= '<li class="half_star r"></li>';
-        }
-        $i++;
-    }
+    $stars = prepareStars($rating, 'calc(var(--global-poster-width) * 0.08)');
 
     if($rewatch == 1) { 
         $rewatch = '<div class="icon rewatch"></div>';
@@ -79,9 +70,7 @@ function prepareActivityContainer($user, $user_uid, $entry_id, $rating, $date, $
         <a class="activity_link" href="'.$entry_url.'">
         <div class="poster" style="background-image: url('.$img_path.');"></div>
         <div class="rating">
-        <ul class="star_container">
         '.$stars.'
-        </ul>
         '.$review.'
         </div>
         </a>
@@ -126,16 +115,7 @@ function prepareReviewContainer($user, $user_uid, $entry_id, $rating, $like, $re
     $user_url = '/users/'.$user_uid;
     $entry_url = $user_url.'/entries?id='.$entry_id;
 
-    $i = 0;
-    $stars = '';
-    for($j = $rating; $j > 0; $j -= 0.5) {
-        if($i % 2 == 0) {
-            $stars .= '<li class="half_star l"></li>';
-        } else {
-            $stars .= '<li class="half_star r"></li>';
-        }
-        $i++;
-    }
+    $stars = prepareStars($rating, 'calc(var(--global-poster-width) * 0.1)');
 
     if($spoilers == 1) { 
         $spoilers = 
@@ -177,16 +157,7 @@ function prepareReviewContainerPosterless($user, $user_uid, $entry_id, $rating, 
     $user_url = '/users/'.$user_uid;
     $entry_url = $user_url.'/entries?id='.$entry_id;
 
-    $i = 0;
-    $stars = '';
-    for($j = $rating; $j > 0; $j -= 0.5) {
-        if($i % 2 == 0) {
-            $stars .= '<li class="half_star l"></li>';
-        } else {
-            $stars .= '<li class="half_star r"></li>';
-        }
-        $i++;
-    }
+    $stars = prepareStars($rating, 'calc(var(--global-poster-width) * 0.1)');
 
     if($spoilers == 1) { 
         $spoilers = 
@@ -207,10 +178,7 @@ function prepareReviewContainerPosterless($user, $user_uid, $entry_id, $rating, 
     '<li class="review_container posterless">
     <div class="grid rating">
     <a href="'.$user_url.'" class="user">'.$user.'</a>
-    <ul class="star_container">
-    '.$stars.'
-    </ul>
-    '.$like.'
+    '.$stars.$like.'
     </div>
     <div class="grid text">
     '.$spoilers.$text.'
@@ -245,13 +213,13 @@ function prepareUserContainer($name, $uid, $reviews, $followers, $completions, $
     return $html;
 }
 
-function prepareStars($rating, $length, $like) {
+function prepareStars($rating, $size) {
 
     if($rating === 'open') {
 
         $i = 0;
         $stars = '';
-        for($j = 1; $j <= 5; $j += 0.5) {
+        for($j = 0.5; $j <= 5; $j += 0.5) {
             if($i % 2 == 0) {
                 $stars .= '<li class="half_star l" data-nbr="'.$j.'"></li>';
             } else {
@@ -261,21 +229,15 @@ function prepareStars($rating, $length, $like) {
         }
 
         $html = 
-        '<ul class="stars open inactive" style="--length-local: '.$length.';">
+        '<ul class="star_container open" style="--size: '.$size.';">
         '.$stars.'
         </ul>';
 
     } elseif(is_numeric($rating)) {
 
-        if($like) {
-            $like = '<li class="like" style="margin-right: calc(var(--length-local)*0.25);"></li>';
-        } else {
-            $like = '';
-        }
-
         $i = 0;
         $stars = '';
-        for($j = 1; $j <= $rating; $j += 0.5) {
+        for($j = 0.5; $j <= $rating; $j += 0.5) {
             if($i % 2 == 0) {
                 $stars .= '<li class="half_star l"></li>';
             } else {
@@ -285,8 +247,8 @@ function prepareStars($rating, $length, $like) {
         }
 
         $html = 
-        '<ul class="stars closed" data-rating="'.$rating.'" style="--length-local: '.$length.';">
-        '.$like.$stars.'
+        '<ul class="star_container closed" data-rating="'.$rating.'" style="--size: '.$size.';">
+        '.$stars.'
         </ul>';
 
     } else {

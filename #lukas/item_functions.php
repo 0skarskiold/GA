@@ -286,31 +286,32 @@ function renderItem($item) {
         }
     }
 
-    $stars = '<li class="half-star r activated" data-nbr="0"></li>';
-    for($i=1; $i<=10; $i+=2) {
-        $stars .= 
-        '<li class="half_star l" data-nbr="'.$i.'"></li>
-        <li class="half_star r" data-nbr="'.($i+1).'"></li>';
-    }
+    $stars = prepareStars('open', 'calc(var(--global-icon-size-1) * 3)');
 
     $section1 = 
     '<section id="item_grid_container">
     <div class="left_container">
-    <div id="main_poster" style="background-image: url('.$poster_path.'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
+    <div id="main_poster" style="background-image: url('.$poster_path.');"></div>
     </div>
     <div id="title_container">
-    <p><span>'.$item['name'].'</span> <a href="#">'.$item['year'].'</a></p>
-    <p>'.$creators_str.'</p>
-    <p>'.$item['type_name'].'</p>
+    <p class="main"><span class="title">'.$item['name'].'</span>  <a class="release" href="#">'.$item['year'].'</a>  <a class="type" href="#">'.$item['type_name'].'</a></p>
+    <p class="creators">'.$creators_str.'</p>
     </div>
     <div class="right_container">
     <div id="actions">
-    <div class="top"><div class="check_icon activated"></div><div class="like_icon activated"></div></div>
-    <div class="bottom"><button class="button">Add rating</button><ul class="stars">'.$stars.'</ul></div>
+    <div class="top">
+    <div class="check_button on"></div>
+    <p class="check_label">Mark as</br>watched</p>
+    <div class="like_button on"></div>
+    <p class="like_label">Like</br>series</p>
+    </div>
+    <div class="bottom">
+    '.$stars.'
+    </div>
     </div>
     </div>
     <div id="description_container">
-    <p>'.$item['description'].'</p>
+    <p class="desc">'.$item['description'].'</p>
     </div>
     </section>';
 

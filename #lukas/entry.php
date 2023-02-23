@@ -6,47 +6,31 @@
 
     require_once("section_contents.php"); 
 ?>
-<body>
-    <?php include_once("section_header.php"); 
-    if(isset($_GET['id'])): ?>
+<body id="entry">
+    <?php include_once("section_header.php"); ?>
+    <main>
+    <?php if(isset($_GET['id'])) {
 
-        <main>
+        $entry = fetchUserEntry($conn, $_GET['id'], $_SESSION['userid']);
+        renderUserEntry($entry);
 
-            <?php
-                $entry = fetchEntry($conn, $_GET['id'], $_SESSION['userid']);
-                renderEntry($entry);
-            ?>
+    } elseif($_GET['list'] === 'ratings') {
 
-        </main>
+        $entry = fetchUserRatings($conn, $_GET['id'], $_SESSION['userid']);
+        renderListRatings($entry);
 
-    <?php elseif($_GET['list'] === 'ratings'): ?>
+    } elseif($_GET['list'] === 'reviews') {
 
-        <main>
-            
+        $reviews = fetchUserReviews($conn, $_GET['user_uid']);
+        renderListUserReviews($reviews);
 
+    } elseif($_GET['list'] === 'logs') {
 
-        </main>
+        $entry = fetchUserEntries($conn, $_GET['id'], $_SESSION['userid']);
+        renderListDiary($entry);
 
-    <?php elseif($_GET['list'] === 'reviews'): ?>
-
-        <main>
-            
-            <?php 
-                $reviews = fetchReviews($conn, $_GET['user_uid']);
-                renderReviews($reviews);
-            ?>
-
-        </main>
-
-    <?php elseif($_GET['list'] === 'logs'): ?>
-
-        <main>
-
-
-
-        </main>
-
-    <?php else: header("location: /error"); endif; 
-    include_once("section_footer.php"); ?>
+    } else { header("location: /?error"); } ?>
+    </main>
+    <?php include_once("section_footer.php"); ?>
 </body>
 </html>
