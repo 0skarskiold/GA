@@ -506,32 +506,47 @@ function fetchListBrowse($conn, $filter_arr, $type) {
 
 function renderListBrowse($fetched, $type) {
 
-    $list = '';
-    if(count($fetched) > 0) {
+    if($type === 'items') {
 
-        if($type === 'items') {
+        $list = '';
+        if(count($fetched) > 0) {
             foreach($fetched as $item) {
                 $list .= prepareItemContainer($item['name'], $item['uid'], $item['year'], $item['type'], 'list');
             }
-        } elseif($type === 'users') {
+        }
+    
+        $html = 
+        '<section class="list_section grid items" list-name="browse">
+        <h2>Browse</h2>
+        <div class="list_container" list-name="browse">
+        <div class="list_limits" list-name="browse">
+        <ul class="list" list-name="browse">
+        '.$list.'
+        </ul>
+        </div>
+        </div>
+        </section>';
+    } elseif($type === 'users') {
+
+        $list = '';
+        if(count($fetched) > 0) {
             foreach($fetched as $user) {
                 $list .= prepareUserContainer($user['name'], $user['uid'], $user['reviews'], $user['followers'], $user['completions'], 'list');
             }
         }
+    
+        $html = 
+        '<section class="list_section grid users" list-name="browse">
+        <h2>Users</h2>
+        <div class="list_container" list-name="browse">
+        <div class="list_limits" list-name="browse">
+        <ul class="list" list-name="browse">
+        '.$list.'
+        </ul>
+        </div>
+        </div>
+        </section>';
     }
-
-    $html = 
-    '<section class="list_section grid" list-name="browse">
-    <h2>Browse</h2>
-    <p>Filters:</p>
-    <div class="list_container" list-name="browse">
-    <div class="list_limits" list-name="browse">
-    <ul class="list" list-name="browse">
-    '.$list.'
-    </ul>
-    </div>
-    </div>
-    </section>';
 
     echo $html;
     return;

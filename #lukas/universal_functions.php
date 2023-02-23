@@ -48,7 +48,7 @@ function prepareActivityContainer($user, $user_uid, $entry_id, $rating, $date, $
     $user_url = '/user-'.$user_uid;
     $entry_url = $user_url.'/entries?id='.$entry_id;
 
-    $stars = prepareStars($rating, 'calc(var(--global-poster-width) * 0.08)');
+    $stars = prepareClosedStars($rating);
 
     if($rewatch == 1) { 
         $rewatch = '<div class="icon rewatch"></div>';
@@ -115,7 +115,7 @@ function prepareReviewContainer($user, $user_uid, $entry_id, $rating, $like, $re
     $user_url = '/users/'.$user_uid;
     $entry_url = $user_url.'/entries?id='.$entry_id;
 
-    $stars = prepareStars($rating, 'calc(var(--global-poster-width) * 0.1)');
+    $stars = prepareClosedStars($rating);
 
     if($spoilers == 1) { 
         $spoilers = 
@@ -157,7 +157,7 @@ function prepareReviewContainerPosterless($user, $user_uid, $entry_id, $rating, 
     $user_url = '/users/'.$user_uid;
     $entry_url = $user_url.'/entries?id='.$entry_id;
 
-    $stars = prepareStars($rating, 'calc(var(--global-poster-width) * 0.1)');
+    $stars = prepareClosedStars($rating);
 
     if($spoilers == 1) { 
         $spoilers = 
@@ -213,47 +213,60 @@ function prepareUserContainer($name, $uid, $reviews, $followers, $completions, $
     return $html;
 }
 
-function prepareStars($rating, $size) {
+function prepareClosedStars($rating) {
 
-    if($rating === 'open') {
+    /* todo: validering för rating */
 
-        $i = 0;
-        $stars = '';
-        for($j = 0.5; $j <= 5; $j += 0.5) {
-            if($i % 2 == 0) {
-                $stars .= '<li class="half_star l" data-nbr="'.$j.'"></li>';
-            } else {
-                $stars .= '<li class="half_star r" data-nbr="'.$j.'"></li>';
-            }
-            $i++;
+    $i = 0;
+    $stars = '';
+    for($j = 0.5; $j <= $rating; $j += 0.5) {
+        if($i % 2 == 0) {
+            $dir = 'l';
+        } else {
+            $dir = 'r';
         }
+        $stars .= '<li class="half_star r"></li>';
+        $i++;
+    }
 
-        $html = 
-        '<ul class="star_container open" style="--size: '.$size.';">
-        '.$stars.'
-        </ul>';
+    $html = 
+    '<ul class="star_container closed" data-rating="'.$rating.'";">
+    '.$stars.'
+    </ul>';
 
-    } elseif(is_numeric($rating)) {
+    return $html;
+}
 
-        $i = 0;
-        $stars = '';
-        for($j = 0.5; $j <= $rating; $j += 0.5) {
-            if($i % 2 == 0) {
-                $stars .= '<li class="half_star l"></li>';
-            } else {
-                $stars .= '<li class="half_star r"></li>';
-            }
-            $i++;
-        }
+function prepareOpenStars($rating, $state) {
 
-        $html = 
-        '<ul class="star_container closed" data-rating="'.$rating.'" style="--size: '.$size.';">
-        '.$stars.'
-        </ul>';
+    /* todo: validering för rating */
 
-    } else {
+    if($state != 'on' && $state != 'off') {
         header("location: /?error");
         exit;
     }
+
+    $i = 0;
+    $stars = '';
+    for($j = 0.5; $j <= 5; $j += 0.5) {
+        if($j <= $rating) {
+            $state2 = 'on';
+        } elseif($j > $rating) {
+            $state2 = 'off';
+        }
+        if($i % 2 == 0) {
+            $dir = 'l';
+        } else {
+            $dir = 'r';
+        }
+        $stars .= '<li class="half_star '.$dir.' '.$state2.'" data-nbr="'.$j.'"></li>';
+        $i++;
+    }
+
+    $html = 
+    '<ul class="star_container open '.$state.'";">
+    '.$stars.'
+    </ul>';
+
     return $html;
 }

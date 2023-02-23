@@ -286,7 +286,7 @@ function renderItem($item) {
         }
     }
 
-    $stars = prepareStars('open', 'calc(var(--global-icon-size-1) * 3)');
+    $stars = prepareOpenStars(3.5, 'on'); /* todo: sätt in användarens nuvarande rating */
 
     $section1 = 
     '<section id="item_grid_container">

@@ -4,59 +4,66 @@
 
 $(document).ready(function() {
 
-    $('#like').click(function() {
-        if($(this).hasClass('inactive')) {
-            $(this).removeClass('inactive');
-            $(this).addClass('active');
+    $('.like_button').click(function() {
+        if($(this).hasClass('off')) {
+            $(this).removeClass('off');
+            $(this).addClass('on');
             $('input[name="like"]').attr('value', '1');
-            // ngn animation
-        } else if($(this).hasClass('active')) {
-            $(this).removeClass('active');
-            $(this).addClass('inactive');
+            // todo: ngn animation?
+        } else if($(this).hasClass('on')) {
+            $(this).removeClass('on');
+            $(this).addClass('off');
             $('input[name="like"]').attr('value', '0');
-            // ngn animation
         }
     });
 
     $('button[name="toggle-rating"]').click(function() {
         if($(this).hasClass('add')) {
-            $('#star_container').removeClass('inactive');
+            $('input[name="rating"]').attr('value', 0);
+            $('.star_container').first().removeClass('off');
+            $('.star_container').first().addClass('on');
             $(this).removeClass('add');
             $(this).addClass('remove');
             $(this).text('Remove rating');
         } else if($(this).hasClass('remove')) {
-            $('#star_container').addClass('inactive');
+            $('input[name="rating"]').attr('value', 'null');
+            $('.star_container').first().removeClass('on');
+            $('.star_container').first().addClass('off');
             $(this).removeClass('remove');
             $(this).addClass('add');
             $(this).text('Add rating');
+            for(let i = 0; i <= 5; i+=0.5) {
+                $('.half_star[data-nbr="'+i+'"').addClass('off').removeClass('on');
+            }
         }
     });
 
-    $('ul.stars').hover(function() {
-        $('.half-star').mouseover(function() {
-            if(!$('#star_container').hasClass('inactive')) {
+    $('ul.star_container.open').hover(function() {
+        star_container = $(this);
+        $('.half_star').mouseover(function() {
+            if(!(star_container.hasClass('off'))) {
                 let lim = $(this).data("nbr");
-                for(let i = 0; i <= lim; i++) {
-                    $('.half-star[data-nbr="'+i+'"').addClass('hover');
+                for(let i = 0.5; i <= lim; i+=0.5) {
+                    $('.half_star[data-nbr="'+i+'"').addClass('hover');
                 }
-                for(let i = lim+1; i <= 10; i++) {
-                    $('.half-star[data-nbr="'+i+'"').removeClass('hover');
+                for(let i = lim+1; i <= 5; i+=0.5) {
+                    $('.half_star[data-nbr="'+i+'"').removeClass('hover');
                 }
             };
         });
     }, function() {
-        $('.half-star').removeClass('hover');
+        $('.half_star').removeClass('hover');
     });
 
-    $('.half-star').click(function() {
-        if(!$('#star_container').hasClass('inactive')) {
+    $('.half_star').click(function() {
+        if(!$(this).parent('.star_container.open').hasClass('off')) {
             let score = $(this).data("nbr");
-            $('input[name="rating"]').attr('value', score/2);
-            for(let i = 0; i <= score; i++) {
-                $('.half-star[data-nbr="'+i+'"').addClass('activated');
+            $('input[name="rating"]').attr('value', score);
+            for(let i = 0; i <= score; i+=0.5) {
+                $('.half_star[data-nbr="'+i+'"').addClass('on').removeClass('off');
             }
-            for(let i = score+1; i <= 10; i++) {
-                $('.half-star[data-nbr="'+i+'"').removeClass('activated');
+            for(let i = score+0.5; i <= 5; i+=0.5) {
+                $('.half_star[data-nbr="'+i+'"').addClass('off').removeClass('on');
             }
         };
     });

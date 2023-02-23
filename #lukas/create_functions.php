@@ -138,7 +138,7 @@ function renderCreatePrompt($entry_type, $item, $user_id) {
         exit;
     }
 
-    $stars = prepareStars('open', '40px');
+    $stars = prepareOpenStars(0, 'off');
 
     $form = 
     '<form action="/create_receive.php" method="post">
