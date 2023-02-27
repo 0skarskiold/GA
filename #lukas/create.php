@@ -20,7 +20,7 @@
         } elseif(isset($_GET['item'])) { 
             
             $item = fetchItem($conn, $_GET['item']);
-            renderCreatePrompt($_GET['type'], $item, $_SESSION['userid']);
+            renderCreatePrompt($_GET['type'], $item, $_SESSION['user-id']);
         
         } else {
 

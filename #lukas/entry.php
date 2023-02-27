@@ -11,12 +11,12 @@
     <main>
     <?php if(isset($_GET['id'])) {
 
-        $entry = fetchUserEntry($conn, $_GET['id'], $_SESSION['userid']);
+        $entry = fetchUserEntry($conn, $_GET['id'], $_SESSION['user-id']);
         renderUserEntry($entry);
 
     } elseif($_GET['list'] === 'ratings') {
 
-        $entry = fetchUserRatings($conn, $_GET['id'], $_SESSION['userid']);
+        $entry = fetchUserRatings($conn, $_GET['id'], $_SESSION['user-id']);
         renderListRatings($entry);
 
     } elseif($_GET['list'] === 'reviews') {
@@ -26,7 +26,7 @@
 
     } elseif($_GET['list'] === 'logs') {
 
-        $entry = fetchUserEntries($conn, $_GET['id'], $_SESSION['userid']);
+        $entry = fetchUserEntries($conn, $_GET['id'], $_SESSION['user-id']);
         renderListDiary($entry);
 
     } else { header("location: /?error"); } ?>

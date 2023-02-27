@@ -10,7 +10,7 @@ $(document).ready(function() {
         }
 
         var entry_id = $(this).data("entryid");
-        var user_id = <?php if(isset($_SESSION['userid'])) { echo $_SESSION['userid']; } else { echo "null"; } ?>;	
+        var user_id = <?php if(isset($_SESSION['user-id'])) { echo $_SESSION['user-id']; } else { echo "null"; } ?>;	
 
         $.ajax({
 

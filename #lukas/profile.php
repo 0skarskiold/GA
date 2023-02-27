@@ -12,8 +12,8 @@
     <main>
         <?php
 
-            $user = fetchUser($conn, $_GET['uid'], $_SESSION['useruid'], $_SESSION['userid']);
-            renderProfile($user, $_SESSION['userid']);
+            $user = fetchUser($conn, $_GET['uid'], $_SESSION['user-uid'], $_SESSION['user-id']);
+            renderProfile($user, $_SESSION['user-id']);
 
         ?>
     </main>

@@ -1,4 +1,5 @@
 <?php
+require_once("conn/dbh.php");
 require_once("create_functions.php");
 
 if(isset($_POST['csearch'])) {
@@ -8,5 +9,5 @@ if(isset($_POST['csearch'])) {
     echo json_encode($items);
 
 } elseif(isset($_POST['submit-create'])) {
-    submitCreate($conn, $_POST, $_SESSION['userid']);
+    submitCreate($conn, $_POST, $_SESSION['user-id']);
 }

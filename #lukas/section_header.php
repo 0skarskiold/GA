@@ -6,7 +6,7 @@ require_once("section_header_functions.php");
 $item_uid = false; 
 $user_uid = false; 
 if(isset($_GET['uid'])) { $item_uid = $_GET['uid']; }
-if(isset($_SESSION['useruid'])) { $user_uid = $_SESSION['useruid']; }
+if(isset($_SESSION['user-uid'])) { $user_uid = $_SESSION['user-uid']; }
 
 renderHeader($user_uid, $item_uid); 
 

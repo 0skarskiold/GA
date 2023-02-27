@@ -92,8 +92,8 @@ function loginUser($conn, $uid_or_email, $pwd) {
     } else {
 
         session_start();
-        $_SESSION["userid"] = $user["id"];
-        $_SESSION["useruid"] = $user["uid"];
+        $_SESSION['user-id'] = $user['id'];
+        $_SESSION['user-uid'] = $user['uid'];
     }
 }
 

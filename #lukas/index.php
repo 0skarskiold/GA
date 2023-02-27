@@ -15,8 +15,8 @@
 
         <?php 
             // om du är inloggad
-            if(isset($_SESSION['userid'])) {
-                $recent = fetchRecent($conn, $_SESSION['userid']);
+            if(isset($_SESSION['user-id'])) {
+                $recent = fetchRecent($conn, $_SESSION['user-id']);
                 // om funktionen hittar aktivitet från de du följer
                 renderListRecent($recent);
             } 

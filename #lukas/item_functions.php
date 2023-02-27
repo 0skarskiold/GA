@@ -225,14 +225,14 @@ function prepareReviewList($reviews, $name) {
     }
     
     $html =
-    '<div>
+    '<div list-name="'.strtolower($name).'">
     <div class="title_container">
     <h2>'.ucfirst($name).'</h2>
     <div class="arrow u"></div>
     </div>
-    <div class="list_container" list-name="'.strtolower($name).'">
-    <div class="list_limits" list-name="'.strtolower($name).'">
-    <ul class="list" list-name="'.strtolower($name).'">
+    <div class="list_container"">
+    <div class="list_limits">
+    <ul class="list">
     '.$list.'
     </ul>
     </div>

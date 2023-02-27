@@ -11,7 +11,7 @@ $(document).ready(function() {
         }
 
         var to_id = $(this).data("userid");
-        var from_id = <?php if(isset($_SESSION['userid'])) { echo $_SESSION['userid']; } else { echo "null"; } ?>; // hur gör man detta utan att blanda js och php?
+        var from_id = <?php if(isset($_SESSION['user-id'])) { echo $_SESSION['user-id']; } else { echo "null"; } ?>; // hur gör man detta utan att blanda js och php?
 
         $.ajax({
 

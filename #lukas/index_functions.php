@@ -160,10 +160,10 @@ function renderListRecent($recent) { // view
     $html =
     '<section class="list_section horizontal" list-name="recent">
     <h2>Recent</h2>
-    <div class="list_container" list-name="recent">
+    <div class="list_container">
     <div class="arrow l"></div>
-    <div class="list_limits" list-name="recent">
-    <ul class="list" list-name="recent">'.$list.'</ul>
+    <div class="list_limits">
+    <ul class="list">'.$list.'</ul>
     </div>
     <div class="arrow r"></div>
     </div>
@@ -177,7 +177,8 @@ function fetchPopular($conn, $factor) { // model
 
     // validering
     if($factor !== 'week' && $factor !== 'month' && $factor !== 'all') {
-        return [];
+        header("location: /?error");
+        exit;
     }
 
     if($factor === 'all') {
@@ -201,7 +202,8 @@ function fetchPopular($conn, $factor) { // model
             (SELECT COUNT(*) FROM `entries` WHERE `entries`.`item_id` = `items`.`id` AND `entries`.`log_date` > '$date')
         ";
     } else {
-        return [];
+        header("location: /?error");
+        exit;
     }
 
     $sql = "SELECT 
@@ -233,15 +235,13 @@ function renderListPopular($popular) { // view
     foreach($popular as $p) {
         $list .= prepareItemContainer($p['name'], $p['uid'], $p['year'], $p['type'], 'list');
     }
-    if(count($popular) === 19) {
-        $list .= 
-        '<li class="item_container show_more">
-        <a class="item_link show_more" href="/recent-activity">
-        <p class="1">Show more</p>
-        <p class="2">+</p>
-        </a>
-        </li>';
-    }
+    $list .= 
+    '<li class="item_container show_more">
+    <a class="item_link show_more" href="/recent-activity">
+    <p class="1">Show more</p>
+    <p class="2">+</p>
+    </a>
+    </li>';
 
     $html =
     '<section class="list_section horizontal" list-name="popular">
@@ -251,10 +251,10 @@ function renderListPopular($popular) { // view
     <option value="all">All time</option>
     <option value="week">This month</option>
     </select>
-    <div class="list_container" list-name="popular">
+    <div class="list_container">
     <div class="arrow l"></div>
-    <div class="list_limits" list-name="popular">
-    <ul class="list" list-name="popular">
+    <div class="list_limits">
+    <ul class="list">
     '.$list.'
     </ul>
     </div>

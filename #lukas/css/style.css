@@ -259,7 +259,7 @@ ul.star_container > .half_star:last-child {
         calc(var(--global-poster-height) + var(--global-poster-width) * 0.3);
 }
 .activity_container > .main:hover {
-    border-color: var(--global-color-3-2);
+    border-color: var(--global-color-4-1);
 }
 .activity_container > .main > .user_container {
     padding: 
@@ -472,6 +472,11 @@ ul.star_container > .half_star:last-child {
     border-radius: var(--global-border-radius);
     background-color: var(--global-color-1);
     margin-bottom: auto;
+
+    transition: border-color ease 0.2s;
+}
+.special_container:hover {
+    border-color: var(--global-color-4-1);
 }
 .special_container > a.link {
     width: 100%;

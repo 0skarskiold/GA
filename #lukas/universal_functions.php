@@ -225,7 +225,7 @@ function prepareClosedStars($rating) {
         } else {
             $dir = 'r';
         }
-        $stars .= '<li class="half_star r"></li>';
+        $stars .= '<li class="half_star '.$dir.'"></li>';
         $i++;
     }
 

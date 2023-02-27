@@ -2,32 +2,33 @@
 
 $(document).ready(function() {
 
-    $('.item_list').each(function() {
+    $('.list_section .list').each(function() {
         if($(this).children('li').length <= 5) {
-            let button_selector = '.item_list_section[list-name="' + $(this).attr('list-name') + '"] .button.scroll';
-            $(button_selector).attr('hidden', true);
-            // $(button_selector + '.l, ' + button_selector + '.r').attr('hidden', true);
+            var button_selector = $(this).parents('.list_section').find('.arrow');
+            console.log(button_selector);
+            button_selector.css('display', 'none');
         }
     });
 
-    $('.button.scroll').click(function() {
-        var list_selector = '.item_list[list-name="' + $(this).attr('list-name') + '"]';
+    $('.list_section .arrow').click(function() {
+        var list_selector = $(this).parents('.list_section').find('.list');
             
-        var num_children = $(list_selector).children('li').length;
-        var lim = 0;
+        var children_count = list_selector.children('li').length;
+        // var children_width = list_selector.children('li').width;
+        var lim_factor = parseInt(list_selector.parents('.list_limits').width()) + parseInt(list_selector.css('gap'));
 
-        for(let i = num_children; i > 5; i--) {
-            if(i % 5 == 1) { lim -= 550; }
+        var lim = 0;
+        for(let i = children_count; i > 5; i--) {
+            if(i % 5 == 1) {lim -= lim_factor;}
         }
 
         if($(this).hasClass('r')) {
-            console.log(num_children);
-            if(parseInt($(list_selector).css('left')) > lim && !$(list_selector).is(':animated')) {
-                $(list_selector).animate({left: "-=550px"});
+            if(parseInt(list_selector.css('left')) > lim && !list_selector.is(':animated')) {
+                list_selector.animate({left: "-="+lim_factor+"px"});
             }
         } else if($(this).hasClass('l')) {
-            if(parseInt($(list_selector).css('left')) < 0 && !$(list_selector).is(':animated')) {
-                $(list_selector).animate({left: "+=550px"});
+            if(parseInt(list_selector.css('left')) < 0 && !list_selector.is(':animated')) {
+                list_selector.animate({left: "+="+lim_factor+"px"});
             }
         }
     });

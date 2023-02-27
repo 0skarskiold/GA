@@ -266,7 +266,13 @@ function submitRating($conn, $arr, $user_id) {
 
 function submitCreate($conn, $arr, $user_id) {
 
-    if(isset($arr['log-date']) && isset($arr['review-date'])) {
+    if(isset($arr['log-date']) && isset($arr['review-date'])) { 
+
+        // validering:
+        if(strlen($arr['review-text']) === 0) {
+            header("location: /?error");
+            exit;
+        }
 
         if(isset($arr['rewatch'])) {
             $rewatch = 1;
@@ -279,6 +285,7 @@ function submitCreate($conn, $arr, $user_id) {
             $spoilers = 0;
         }
 
+        // todo: om datumen är samma sätt kolumnerna till "" och ha ny kolumn date -- date skulle kunna användas annars också: innehåller det största datumet
         $sql = "INSERT INTO 
         `entries` (`user_id`, `item_id`, `log_date`, `review_date`, `like`, `rating`, `rewatch`, `text`, `spoilers`) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
@@ -289,7 +296,7 @@ function submitCreate($conn, $arr, $user_id) {
             exit; 
         }
 
-        mysqli_stmt_bind_param($stmt, "iissidisi", $user_id, $arr['item-id'], $arr['log-date'], $review_date, $arr['like'], $arr['rating'], $rewatch, $arr['review-text'], $spoilers);
+        mysqli_stmt_bind_param($stmt, "iissidisi", $user_id, $arr['item-id'], $arr['log-date'], $arr['review-date'], $arr['like'], $arr['rating'], $rewatch, $arr['review-text'], $spoilers);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
@@ -321,6 +328,12 @@ function submitCreate($conn, $arr, $user_id) {
         submitRating($conn, $arr, $user_id);
 
     } elseif(isset($arr['review-date'])) {
+
+        // validering:
+        if(strlen($arr['review-text']) === 0) {
+            header("location: /?error");
+            exit;
+        }
 
         if(isset($arr['spoilers'])) {
             $spoilers = 1;

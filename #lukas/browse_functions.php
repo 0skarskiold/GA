@@ -518,9 +518,9 @@ function renderListBrowse($fetched, $type) {
         $html = 
         '<section class="list_section grid items" list-name="browse">
         <h2>Browse</h2>
-        <div class="list_container" list-name="browse">
-        <div class="list_limits" list-name="browse">
-        <ul class="list" list-name="browse">
+        <div class="list_container">
+        <div class="list_limits">
+        <ul class="list">
         '.$list.'
         </ul>
         </div>
@@ -538,9 +538,9 @@ function renderListBrowse($fetched, $type) {
         $html = 
         '<section class="list_section grid users" list-name="browse">
         <h2>Users</h2>
-        <div class="list_container" list-name="browse">
-        <div class="list_limits" list-name="browse">
-        <ul class="list" list-name="browse">
+        <div class="list_container">
+        <div class="list_limits">
+        <ul class="list">
         '.$list.'
         </ul>
         </div>
