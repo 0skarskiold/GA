@@ -192,7 +192,7 @@ function prepareReviewContainerPosterless($user, $user_uid, $entry_id, $rating, 
     return $html;
 }
 
-function prepareUserContainer($name, $uid, $reviews, $followers, $completions, $for) {
+function prepareUserContainer($name, $uid, $id, $from_id, $reviews, $followers, $completions, $for) {
    
     $html = 
     '<li class="user_container">
@@ -207,7 +207,7 @@ function prepareUserContainer($name, $uid, $reviews, $followers, $completions, $
     <p class="stats completions">Completions: <span>'.$completions.'</span></p>
     </div>
     </a>
-    <button type="button" name="follow" class="button">Follow</button>
+    <button type="button" class="button follow" data-to-id="'.$id.'" data-from-id="'.$from_id.'">Follow</button>
     </li>';
 
     return $html;

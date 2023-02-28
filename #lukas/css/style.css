@@ -601,6 +601,12 @@ section.list_section.grid > .list_container > .list_limits > .list {
     grid-template-columns: repeat(5, 1fr);
 }
 
+section.list_section.users.grid .list_limits {
+    width: max-content;
+}
+section.list_section.users.grid .list {
+    grid-template-columns: repeat(3, 1fr) !important;
+}
 section.list_section.users .user_container {
     width: var(--global-poster-height);
     
@@ -619,7 +625,7 @@ section.list_section.users .user_container > a.user_link {
 }
 section.list_section.users .user_container > a.user_link > div.top {
     display: flex;
-    align-items: flex-end;
+    flex-direction: column;
     margin-bottom: calc(var(--global-gap) * 0.5);
 }
 section.list_section.users .user_container > a.user_link p.name {
@@ -634,6 +640,11 @@ section.list_section.users .user_container > a.user_link p.name {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+
+    transition: color ease 0.2s;
+}
+section.list_section.users .user_container > a.user_link p.name.hover {
+    color: var(--global-color-4-1);
 }
 section.list_section.users .user_container > a.user_link p.uid {
     font: 
@@ -1166,7 +1177,7 @@ body#create section#create_section textarea {
     border-radius: var(--global-border-radius);
 }
 body#create section#create_section .form_segment.expand {
-    width: calc(var(--global-poster-height) * 1.6);
+    width: calc(var(--global-poster-height) * 2);
 }
 body#create section#create_section label {
     font: 
@@ -1178,7 +1189,7 @@ body#create section#create_section label {
     letter-spacing: calc(var(--global-border-width-2) / 2);
 }
 body#create section#create_section h2 {
-    width: calc(var(--global-poster-height) * 1.6);
+    width: calc(var(--global-poster-height) * 2);
     margin-top: var(--global-gap);
 
     color: var(--global-color-3-1);

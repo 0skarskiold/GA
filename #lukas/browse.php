@@ -14,7 +14,7 @@
         <?php 
             if(isset($_GET['users'])) {
                 $items = fetchListBrowse($conn, $_GET, 'users');
-                renderListBrowse($items, 'users');
+                renderListBrowse($_SESSION['user-id'], $items, 'users');
             } else {
                 if(isset($_GET['search'])) {
                     renderBrowseFilter($conn, $_GET['search']);
@@ -22,7 +22,7 @@
                     renderBrowseFilter($conn, false);
                 }
                 $items = fetchListBrowse($conn, $_GET, 'items');
-                renderListBrowse($items, 'items');
+                renderListBrowse($_SESSION['user-id'], $items, 'items');
             }
         ?>
 

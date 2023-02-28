@@ -504,7 +504,7 @@ function fetchListBrowse($conn, $filter_arr, $type) {
     }
 }
 
-function renderListBrowse($fetched, $type) {
+function renderListBrowse($from_id, $fetched, $type) {
 
     if($type === 'items') {
 
@@ -531,7 +531,7 @@ function renderListBrowse($fetched, $type) {
         $list = '';
         if(count($fetched) > 0) {
             foreach($fetched as $user) {
-                $list .= prepareUserContainer($user['name'], $user['uid'], $user['reviews'], $user['followers'], $user['completions'], 'list');
+                $list .= prepareUserContainer($user['name'], $user['uid'], $user['id'], $from_id, $user['reviews'], $user['followers'], $user['completions'], 'list');
             }
         }
     
