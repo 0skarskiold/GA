@@ -19,5 +19,6 @@
     </main>
 
     <?php include_once("section_footer.php"); ?>
+    <?php include_once("profile_js.php"); ?>
 </body>
 </html>

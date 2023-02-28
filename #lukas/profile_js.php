@@ -2,16 +2,18 @@
 
 $(document).ready(function() {
 
-    $('.follow').click(function() {
+    $('.button.follow, .button.unfollow').click(function() {
 
-        if($(this).hasClass('insert')) {
+        console.log('hey');
+
+        if($(this).hasClass('follow')) {
             var action = "follow";
-        } else if($(this).hasClass('delete')) {
+        } else if($(this).hasClass('unfollow')) {
             var action = "unfollow";
         }
 
-        var to_id = $(this).data("userid");
-        var from_id = <?php if(isset($_SESSION['user-id'])) { echo $_SESSION['user-id']; } else { echo "null"; } ?>; // hur gör man detta utan att blanda js och php?
+        var to_id = $(this).data("to-id");
+        var from_id = $(this).data("from-id");
 
         $.ajax({
 
@@ -23,15 +25,13 @@ $(document).ready(function() {
             success: function() {
 
                 if(action === "follow") {
-                    $(this).removeClass('insert');
-                    $(this).addClass('delete');
+                    $(this).addClass('unfollow');
+                    $(this).removeClass('follow');
                     $(this).text('Unfollow');
-                    action = "unfollow";
                 } else if(action === "unfollow") {
-                    $(this).removeClass('delete');
-                    $(this).addClass('insert');
+                    $(this).addClass('follow');
+                    $(this).removeClass('unfollow');
                     $(this).text('Follow');
-                    action = "follow";
                 }
             }
         });

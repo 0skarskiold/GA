@@ -9,5 +9,5 @@ if(isset($_POST['csearch'])) {
     echo json_encode($items);
 
 } elseif(isset($_POST['submit-create'])) {
-    submitCreate($conn, $_POST, $_SESSION['user-id']);
+    submitCreate($conn, $_POST);
 }

@@ -21,7 +21,7 @@
                 renderListRecent($recent);
             } 
 
-            $popular = fetchPopular($conn, 'all');
+            $popular = fetchPopular($conn, 'week');
             renderListPopular($popular);
         ?> 
 

@@ -14,12 +14,15 @@ function fetchRecent($conn, $user_id) { // model
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     mysqli_stmt_close($stmt);
-    $following = mysqli_fetch_array($result, MYSQLI_NUM);
+    $following = [];
+    while ($id = mysqli_fetch_array($result, MYSQLI_NUM)[0]) {
+        array_push($following, $id);  
+    }
     mysqli_free_result($result);
 
-    // if(!(isset($following) || count($following) === 0)) {
-    //     return [];
-    // }
+    if(!(isset($following) || count($following) === 0)) {
+        return [];
+    }
 
     $num = count($following);
     $marks = "(".str_repeat("?, ", $num-1)."?)";
@@ -41,6 +44,7 @@ function fetchRecent($conn, $user_id) { // model
             )
         )
     ) AS `main_date`, 
+    `entries`.`text` AS `text`, 
     `entries`.`rewatch` AS `rewatch`, 
     `entries`.`spoilers` AS `spoilers`,  
     `types`.`uid` AS `item_type`, 
@@ -55,7 +59,7 @@ function fetchRecent($conn, $user_id) { // model
     INNER JOIN `users` ON `users`.`id` = `follow`.`to_id` 
     WHERE `follow`.`to_id` IN $marks 
     ORDER BY `main_date` DESC 
-    LIMIT 200 -- hade hellre haft 19 här men kan inte då vi inte vill ha dubletter, och har inte lyckats ta bort de direkt i query:n, så eftersom de ska tas bort efter att query:n körts så behöver vi hämte fler än vad som troligen behövs
+    LIMIT 19 
     ;";
 
     $param_str = str_repeat("i", $num);
@@ -76,53 +80,6 @@ function fetchRecent($conn, $user_id) { // model
         return [];
     }
 
-    // följande är för att ta bort alla förutom den senaste av de av samma användare
-
-    $i = 0;
-    $arr = [];
-
-    while($i < 19) {
-
-        if(in_array($recent[$i]['user_id'], $arr)) {
-            array_splice($recent, $i, 1);
-        } else {
-            $arr += [$recent[$i]['user_id']];
-            $i++;
-        }
-        if(count($recent) <= $i) {
-            break;
-        }
-
-    }
-
-    foreach($recent as $k => $r) {
-        if(isset($r['log_date'])) {
-
-            if(isset($r['review_date'])) {
-
-                $t = strtotime($r['log_date']);
-                $log_date = date('Y-m-d', $t);
-
-                $t = strtotime($r['review_date']);
-                $review_date = date('Y-m-d', $t);
-
-                if($r['review_date'] > $r['log_date']) {
-                    $date = $review_date;
-                } elseif($r['log_date'] > $r['review_date']) {
-                    $date = $log_date;
-                } else {
-                    $date = $review_date;
-                }
-
-            } else {
-                $date = date('Y-m-d', strtotime($r['log_date']));
-            }
-        } else {
-            $date = date('Y-m-d', strtotime($r['review_date']));
-        }
-        $recent[$k]['date'] = $date;
-    }
-
     return $recent;
 }
 
@@ -134,11 +91,11 @@ function renderListRecent($recent) { // view
 
     $list = '';
     foreach($recent as $r) {
-        $list .= prepareActivityContainer($r['username'], $r['user_uid'], $r['entry_id'], $r['rating'], $r['date'], $r['rewatch'], $r['review'], $r['spoilers'], $r['item_name'], $r['item_uid'], $r['item_year'], $r['item_type'], 'list');
+        $list .= prepareActivityContainer($r['username'], $r['user_uid'], $r['entry_id'], $r['rating'], $r['date'], $r['rewatch'], $r['text'], $r['spoilers'], $r['item_name'], $r['item_uid'], $r['item_year'], $r['item_type'], 'list');
     }
     if(count($recent) === 19) {
         $list .= 
-        '<li class="special_container show_more">
+        '<li class="special_container activity show_more">
         <a class="link show_more" href="/recent-activity">
         <p class="text">Show more</p>
         <p class="plus">+</p>
@@ -146,7 +103,7 @@ function renderListRecent($recent) { // view
         </li>';
     } elseif(count($recent) < 19) {
         $list .= 
-        '<li class="special_container find_more">
+        '<li class="special_container activity find_more">
         <a class="link find_more" href="/users">
         <p class="text">Find others to follow</p>
         <div class="plus"></div>
@@ -236,10 +193,10 @@ function renderListPopular($popular) { // view
         $list .= prepareItemContainer($p['name'], $p['uid'], $p['year'], $p['type'], 'list');
     }
     $list .= 
-    '<li class="item_container show_more">
-    <a class="item_link show_more" href="/recent-activity">
-    <p class="1">Show more</p>
-    <p class="2">+</p>
+    '<li class="special_container item show_more">
+    <a class="link show_more" href="/popular">
+    <p class="text">Show more</p>
+    <div class="plus"></div>
     </a>
     </li>';
 

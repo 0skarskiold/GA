@@ -120,13 +120,15 @@ function renderProfile($user, $visitor_id) {
 
     if(isset($visitor_id) && $user['you'] !== 1) { // om du är inloggad
         if($user['following'] === 0) {
-            $follow_button = '<button type="button" class="button follow insert" data-userid="'.$user['id'].'">Follow</button>';
+            $follow_button = '<button type="button" class="button follow" data-to-id="'.$user['id'].'" data-from-id="'.$visitor_id.'">Follow</button>';
         } elseif($user['following'] === 1) {
-            $follow_button = '<button type="button" class="button follow delete" data-userid="'.$user['id'].'">Unfollow</button>';
+            $follow_button = '<button type="button" class="button unfollow" data-to-id="'.$user['id'].'" data-from-id="'.$visitor_id.'">Unfollow</button>';
         } else {
             header("location: /?error");
             exit;
-        }
+        }  
+    } elseif(isset($visitor_id) && $user['you'] === 1) {
+        $follow_button = '';
     }
 
     $html =

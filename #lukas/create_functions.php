@@ -146,6 +146,7 @@ function renderCreatePrompt($entry_type, $item, $user_id) {
     <input type="hidden" value="'.$item['id'].'" name="item-id" />
     <input type="hidden" value="0" name="like">
     <input type="hidden" value="null" name="rating">
+    <input type="hidden" value="'.$user_id.'" name="user-id">
 
     '.$log_exclusive.$review_exclusive.'
 
@@ -172,7 +173,7 @@ function renderCreatePrompt($entry_type, $item, $user_id) {
     echo $html;
 }
 
-function submitRating($conn, $arr, $user_id) {
+function submitRating($conn, $arr) {
 
     // kollar om du redan rate:at item:et
     $sql = "SELECT COUNT(*) 
@@ -185,7 +186,7 @@ function submitRating($conn, $arr, $user_id) {
         exit; 
     }
 
-    mysqli_stmt_bind_param($stmt, "ii", $user_id, $item_id);
+    mysqli_stmt_bind_param($stmt, "ii",  $arr['user-id'],  $arr['item-id']);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     mysqli_stmt_close($stmt);
@@ -207,7 +208,7 @@ function submitRating($conn, $arr, $user_id) {
             exit; 
         }
 
-        mysqli_stmt_bind_param($stmt, "iiidss", $user_id, $arr['item-id'], $arr['like'], $arr['rating'], $date, $date);
+        mysqli_stmt_bind_param($stmt, "iiidss", $arr['user-id'], $arr['item-id'], $arr['like'], $arr['rating'], $date, $date);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
@@ -224,7 +225,7 @@ function submitRating($conn, $arr, $user_id) {
             exit; 
         }
 
-        mysqli_stmt_bind_param($stmt, "idsii", $like, $rating, $date, $user_id, $item_id);
+        mysqli_stmt_bind_param($stmt, "idsii",  $arr['like'],  $arr['rating'], $date, $arr['user-id'], $arr['item-id']);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
@@ -242,7 +243,7 @@ function submitRating($conn, $arr, $user_id) {
             exit; 
         }
 
-        mysqli_stmt_bind_param($stmt, "ii", $user_id, $item_id);
+        mysqli_stmt_bind_param($stmt, "ii", $arr['user-id'], $arr['item-id']);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
@@ -257,14 +258,14 @@ function submitRating($conn, $arr, $user_id) {
             exit; 
         }
 
-        mysqli_stmt_bind_param($stmt, "idsii", $like, $rating, $date, $user_id, $item_id);
+        mysqli_stmt_bind_param($stmt, "idsii", $arr['like'], $arr['rating'], $date, $arr['user-id'], $arr['item-id']);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
     }
     return;
 }
 
-function submitCreate($conn, $arr, $user_id) {
+function submitCreate($conn, $arr) {
 
     if(isset($arr['log-date']) && isset($arr['review-date'])) { 
 
@@ -296,11 +297,11 @@ function submitCreate($conn, $arr, $user_id) {
             exit; 
         }
 
-        mysqli_stmt_bind_param($stmt, "iissidisi", $user_id, $arr['item-id'], $arr['log-date'], $arr['review-date'], $arr['like'], $arr['rating'], $rewatch, $arr['review-text'], $spoilers);
+        mysqli_stmt_bind_param($stmt, "iissidisi", $arr['user-id'], $arr['item-id'], $arr['log-date'], $arr['review-date'], $arr['like'], $arr['rating'], $rewatch, $arr['review-text'], $spoilers);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
-        submitRating($conn, $arr, $user_id);
+        submitRating($conn, $arr);
 
     } elseif(isset($arr['log-date'])) {
 
@@ -321,11 +322,11 @@ function submitCreate($conn, $arr, $user_id) {
             exit; 
         }
 
-        mysqli_stmt_bind_param($stmt, "iisidi", $user_id, $arr['item-id'], $arr['log-date'], $arr['like'], $arr['rating'], $rewatch);
+        mysqli_stmt_bind_param($stmt, "iisidi", $arr['user-id'], $arr['item-id'], $arr['log-date'], $arr['like'], $arr['rating'], $rewatch);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
-        submitRating($conn, $arr, $user_id);
+        submitRating($conn, $arr);
 
     } elseif(isset($arr['review-date'])) {
 
@@ -351,11 +352,11 @@ function submitCreate($conn, $arr, $user_id) {
             exit; 
         }
 
-        mysqli_stmt_bind_param($stmt, "iisidsi", $user_id, $arr['item-id'], $arr['review-date'], $arr['like'], $arr['rating'], $arr['review-text'], $spoilers);
+        mysqli_stmt_bind_param($stmt, "iisidsi", $arr['user-id'], $arr['item-id'], $arr['review-date'], $arr['like'], $arr['rating'], $arr['review-text'], $spoilers);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
-        submitRating($conn, $arr, $user_id);
+        submitRating($conn, $arr);
 
     } else {
         header("location: /?error");
