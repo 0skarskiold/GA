@@ -46,7 +46,7 @@ function prepareItemContainer($name, $uid, $year, $type, $for) {
 function prepareActivityContainer($user, $user_uid, $entry_id, $rating, $date, $rewatch, $review, $spoilers, $item_name, $item_uid, $item_year, $item_type, $for) {
     $img_path = "'/img/".$item_type."/".$item_uid."/".$item_uid."-poster-small.jpg'";
     $user_url = '/user-'.$user_uid;
-    $entry_url = $user_url.'/entries?id='.$entry_id;
+    $entry_url = $user_url.'/entry?id='.$entry_id;
 
     $stars = prepareClosedStars($rating);
 
@@ -76,7 +76,7 @@ function prepareActivityContainer($user, $user_uid, $entry_id, $rating, $date, $
         </a>
         </div>
         <div class="outer">
-        <p class="date">'.$date.'</p>
+        <p class="date">'.date('Y-m-d', strtotime($date)).'</p>
         '.$rewatch.'
         '.$spoilers.'
         </div>
@@ -99,7 +99,7 @@ function prepareActivityContainer($user, $user_uid, $entry_id, $rating, $date, $
         </a>
         </div>
         <div class="outer">
-        <p class="date">'.$date.'</p>
+        <p class="date">'.date('Y-m-d', strtotime($date)).'</p>
         '.$rewatch.'
         '.$spoilers.'
         </div>
@@ -113,7 +113,7 @@ function prepareReviewContainer($user, $user_uid, $entry_id, $rating, $like, $re
     $img_path = "'/img/".$item_type."/".$item_uid."/".$item_uid."-poster-small.jpg'";
     $item_url = '/'.$item_type.'/'.$item_uid;
     $user_url = '/users/'.$user_uid;
-    $entry_url = $user_url.'/entries?id='.$entry_id;
+    $entry_url = $user_url.'/entry?id='.$entry_id;
 
     $stars = prepareClosedStars($rating);
 
@@ -155,7 +155,7 @@ function prepareReviewContainer($user, $user_uid, $entry_id, $rating, $like, $re
 
 function prepareReviewContainerPosterless($user, $user_uid, $entry_id, $rating, $like, $review, $spoilers, $for) {
     $user_url = '/users/'.$user_uid;
-    $entry_url = $user_url.'/entries?id='.$entry_id;
+    $entry_url = $user_url.'/entry?id='.$entry_id;
 
     $stars = prepareClosedStars($rating);
 

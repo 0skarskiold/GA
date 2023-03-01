@@ -10,7 +10,7 @@ RewriteRule ^type-([^/]+)/([^/]+)/?$ item.php?type=$1&uid=$2 [L]
 
 RewriteRule ^users$ browse.php?users=on [L]
 RewriteRule ^user-([^/]+)/?$ profile.php?uid=$1 [L]
-RewriteRule ^user-([^/]+)/entry/?$ entry.php [L]
+RewriteRule ^user-([^/]+)/entry/?$ entry.php?user_uid=$1 [QSA,L]
 RewriteRule ^user-([^/]+)/ratings/?$ entry.php?user_uid=$1&list=ratings [L]
 RewriteRule ^user-([^/]+)/reviews/?$ entry.php?user_uid=$1&list=reviews [L]
 RewriteRule ^user-([^/]+)/diary/?$ entry.php?user_uid=$1&list=logs [L]

@@ -16,7 +16,7 @@
 
     } elseif($_GET['list'] === 'ratings') {
 
-        $entry = fetchUserRatings($conn, $_GET['id'], $_SESSION['user-id']);
+        $entry = fetchUserRatings($conn, $_GET['user_uid']);
         renderListRatings($entry);
 
     } elseif($_GET['list'] === 'reviews') {
@@ -26,7 +26,7 @@
 
     } elseif($_GET['list'] === 'logs') {
 
-        $entry = fetchUserEntries($conn, $_GET['id'], $_SESSION['user-id']);
+        $entry = fetchUserEntries($conn, $_GET['user_uid']);
         renderListDiary($entry);
 
     } else { header("location: /?error"); } ?>

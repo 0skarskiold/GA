@@ -32,6 +32,10 @@ $(document).ready(function() {
             }
         }
     });
+
+    $('select[name=popular]').on('change', function() {
+        $(this).parent().submit();
+    });
 });
 
 </script>

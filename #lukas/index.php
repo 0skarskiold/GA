@@ -21,8 +21,13 @@
                 renderListRecent($recent);
             } 
 
-            $popular = fetchPopular($conn, 'week');
-            renderListPopular($popular);
+            if(isset($_GET['popular'])) {
+                $popular = fetchPopular($conn, $_GET['popular']);
+                renderListPopular($popular, $_GET['popular']);
+            } else {
+                $popular = fetchPopular($conn, 'week');
+                renderListPopular($popular, 'week');
+            }
         ?> 
 
     </main>

@@ -43,7 +43,7 @@ function fetchRecent($conn, $user_id) { // model
                 `log_date` >= `review_date`, `log_date`, `review_date`
             )
         )
-    ) AS `main_date`, 
+    ) AS `date`, 
     `entries`.`text` AS `text`, 
     `entries`.`rewatch` AS `rewatch`, 
     `entries`.`spoilers` AS `spoilers`,  
@@ -57,7 +57,7 @@ function fetchRecent($conn, $user_id) { // model
     INNER JOIN `follow` ON `follow`.`to_id` = `entries`.`user_id` 
     INNER JOIN `users` ON `users`.`id` = `follow`.`to_id` 
     WHERE `follow`.`to_id` IN $marks 
-    ORDER BY `main_date` DESC 
+    ORDER BY `date` DESC 
     LIMIT 19 
     ;";
 
@@ -180,7 +180,21 @@ function fetchPopular($conn, $factor) { // model
     return $popular;
 }
 
-function renderListPopular($popular) { // view
+function renderListPopular($popular, $factor) { // view
+
+    if($factor === 'week') {
+        $defaultw = 'selected="selected"';
+        $defaultm = '';
+        $defaulta = '';
+    } elseif($factor === 'month') {
+        $defaultw = '';
+        $defaultm = 'selected="selected"';
+        $defaulta = '';
+    } elseif($factor === 'all') {
+        $defaultw = '';
+        $defaultm = '';
+        $defaulta = 'selected="selected"';
+    }
 
     if(!(count($popular) > 0)) {
         return;
@@ -201,11 +215,13 @@ function renderListPopular($popular) { // view
     $html =
     '<section class="list_section horizontal" list-name="popular">
     <h2>Popular</h2>
-    <select name="popular-type">
-    <option value="week">This week</option>
-    <option value="all">All time</option>
-    <option value="week">This month</option>
+    <form method="get">
+    <select name="popular">
+    <option value="week" '.$defaultw.'>This week</option>
+    <option value="all" '.$defaulta.'>All time</option>
+    <option value="month" '.$defaultm.'>This month</option>
     </select>
+    </form>
     <div class="list_container">
     <div class="arrow l"></div>
     <div class="list_limits">
