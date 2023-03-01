@@ -131,6 +131,8 @@ function fetchItemReviews($conn, $item_id, $list, $lim) {
 
 function fetchItem($conn, $type, $uid) {
 
+    str_replace('-', '_', $type);
+
     if($type[-1] === 's') {
         $attr_table = '`items_attr_'.$type.'`';
     } else {
@@ -139,41 +141,23 @@ function fetchItem($conn, $type, $uid) {
 
     $column = '`'.$type.'_id`';
 
-    if(mysqli_query($conn, "DESCRIBE $attr_table")) {
-        $sql = 
-        "SELECT 
-        `items`.*, 
-        `types`.`uid` AS `type_uid`,
-        `types`.`name` AS `type_name`,
-        (
-            SELECT AVG(`rating`) 
-            FROM `ratings` 
-            WHERE `ratings`.`item_id` = `items`.`id`
-        ) AS `rating`,
-        $attr_table.*
-        FROM `items` 
-        INNER JOIN `items_types` ON `items_types`.`item_id` = `items`.`id`
-        INNER JOIN `types` ON `types`.`id` = `items_types`.`type_id`
-        INNER JOIN $attr_table ON `items`.`id` = $attr_table.$column
-        WHERE `types`.`uid` = ? AND `items`.`uid` = ? 
-        LIMIT 1
-        ;";
-    } else {
-        $sql = 
-        "SELECT 
-        `items`.*, 
-        (
-            SELECT AVG(`rating`) 
-            FROM `ratings` 
-            WHERE `ratings`.`item_id` = `items`.`id`
-        ) AS `rating` 
-        FROM `items` 
-        INNER JOIN `items_types` ON `items_types`.`item_id` = `items`.`id`
-        INNER JOIN `types` ON `types`.`id` = `items_types`.`type_id`
-        WHERE `types`.`uid` = ? AND `items`.`uid` = ? 
-        LIMIT 1
-        ;";
-    }
+    $sql = 
+    "SELECT 
+    `items`.*, 
+    `types`.`uid` AS `type_uid`,
+    `types`.`name` AS `type_name`,
+    (
+        SELECT AVG(`rating`) 
+        FROM `ratings` 
+        WHERE `ratings`.`item_id` = `items`.`id`
+    ) AS `rating`,
+    $attr_table.*
+    FROM `items` 
+    INNER JOIN `types` ON `types`.`id` = `items`.`type_id`
+    INNER JOIN $attr_table ON `items`.`id` = $attr_table.$column
+    WHERE `types`.`uid` = ? AND `items`.`uid` = ? 
+    LIMIT 1
+    ;";
 
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)) {

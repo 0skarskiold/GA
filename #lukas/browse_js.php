@@ -22,7 +22,33 @@ $(document).ready(function() {
         $(this).find('p.name').removeClass('hover');
     });
 
-    $('section#filter .arrow').click();
+    $('section#filter .arrow').click(function() {
+        if($(this).hasClass('u')) {
+
+            $(this).removeClass('u');
+            $(this).addClass('d');
+            $(this).css('right', '48%');
+
+            filter = $(this).parents('main');
+            height = 'calc(-' + filter.find('.filter_segment').first().height() + 'px - var(--global-gap) * 3.5)';
+            filter.css('top', height);
+
+            button = filter.find('button[type="submit"]');
+            button.css('filter', 'opacity(0)');
+
+        } else if($(this).hasClass('d')) {
+
+            $(this).removeClass('d');
+            $(this).addClass('u');
+            $(this).css('right', 'var(--global-border-width-1)');
+
+            filter = $(this).parents('main');
+            filter.css('top', '0');
+
+            button = filter.find('button[type="submit"]');
+            button.css('filter', 'opacity(1)');
+        }
+    });
 
     $('.button.follow, .button.unfollow').click(function() {
 

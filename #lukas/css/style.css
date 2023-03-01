@@ -171,7 +171,7 @@ a.button {
     border-width: 0 var(--line-width) var(--line-width) 0;
     display: inline-block;
 
-    transition: border-color ease 0.2s;
+    transition: border-color ease 0.2s, transform ease 0.5s, -webkit-transform ease 0.5s;
 }
 .arrow.r {
     transform: rotate(-45deg);
@@ -687,7 +687,7 @@ section.list_section.users .user_container > .button {
 
 /* ~END OF GENERAL~ */
 
-/* ~HEADER & FOOTER~ */
+/* ~HEADER, MAIN & FOOTER~ */
 
 
 
@@ -716,6 +716,9 @@ header {
         var(--height);
 
     background: var(--global-color-2-2);
+
+    position: relative;
+    z-index: 1;
 }
 header form.search_form, header form.create_form {
     height: max-content;
@@ -726,6 +729,11 @@ header form.search_form, header form.create_form {
 
     border-radius: calc(var(--global-border-radius) * 1.3);
     background-color: var(--global-color-4-1);
+}
+main {
+    position: relative;
+    top: 0px;
+    transition: top ease 0.5s;
 }
 footer:first-of-type { display: none; }
 
@@ -793,14 +801,23 @@ body#browse section#filter > form {
     gap: var(--global-gap);
 }
 body#browse section#filter .button_container { 
+    height: calc(var(--global-poster-width) * 0.25);
     grid-column-end: span 2;
-    
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    position: relative;
 }
 body#browse section#filter .button_container > .arrow {
-    margin-right: var(--global-border-width-1);
+    position: absolute;
+    right: var(--global-border-width-1);
+    top: 35%;
+
+    transition: border-color ease 0.2s, transform ease 0.5s, -webkit-transform ease 0.5s, right ease 0.5s;
+}
+body#browse section#filter .button_container > .button {
+    position: absolute;
+    left: 0px;
+
+    filter: opacity(1);
+    transition: filter ease 0.2s;
 }
 body#browse section#filter .filter_segment {
     padding: calc(var(--global-gap) * 0.8);

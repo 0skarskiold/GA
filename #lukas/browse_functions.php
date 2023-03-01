@@ -427,8 +427,7 @@ function fetchListBrowse($conn, $filter_arr, $type) {
         $select
         `items`.`year`
         $from
-        INNER JOIN `items_types` ON `items_types`.`item_id` = `items`.`id`
-        INNER JOIN `types` ON `types`.`id` = `items_types`.`type_id`
+        INNER JOIN `types` ON `types`.`id` = `items`.`type_id`
         $where
         ORDER BY $factor $order
         LIMIT 160

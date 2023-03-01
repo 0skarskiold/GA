@@ -53,8 +53,7 @@ function fetchRecent($conn, $user_id) { // model
     `items`.`year` AS `item_year`
     FROM `entries` 
     INNER JOIN `items` ON `items`.`id` = `entries`.`item_id` 
-    INNER JOIN `items_types` ON `items_types`.`item_id` = `items`.`id` 
-    INNER JOIN `types` ON `types`.`id` = `items_types`.`type_id` 
+    INNER JOIN `types` ON `types`.`id` = `items`.`type_id` 
     INNER JOIN `follow` ON `follow`.`to_id` = `entries`.`user_id` 
     INNER JOIN `users` ON `users`.`id` = `follow`.`to_id` 
     WHERE `follow`.`to_id` IN $marks 
@@ -171,8 +170,7 @@ function fetchPopular($conn, $factor) { // model
     ($popularity) AS `popularity`, 
     `types`.`uid` AS `type`
     FROM `items` 
-    INNER JOIN `items_types` ON `items_types`.`item_id` = `items`.`id` 
-    INNER JOIN `types` ON `types`.`id` = `items_types`.`type_id` 
+    INNER JOIN `types` ON `types`.`id` = `items`.`type_id` 
     ORDER BY `popularity` DESC 
     LIMIT 19
     ;";
