@@ -29,7 +29,7 @@ $(document).ready(function() {
 
             $(this).removeClass('u');
             $(this).addClass('d');
-            $(this).css('right', '48%');
+            $(this).css('right', '48.8%');
 
             filter = $(this).parents('main');
             height = 'calc(-' + filter.find('.filter_segment').first().height() + 'px - var(--global-gap) * 3.5)';

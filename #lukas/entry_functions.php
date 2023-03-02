@@ -2,18 +2,30 @@
 
 function fetchEntry($conn, $entry_id, $user_id) {
 
+    // kollar om du likat den
     if(isset($user_id)) {
         $str = "SELECT COUNT(*) 
         FROM `review_likes` 
         WHERE `entry_id` = ? AND `user_id` = ? 
         LIMIT 1";
 
-        $subsql = ",(".$str.") AS `liked`";
+        $subsql = 
+        ", 
+        IF(`user_id` = ?, 0, 1) AS `yours`,
+        (".$str.") AS `liked`";
     }
 
-    $sql = "SELECT * $subsql 
+    $sql = "SELECT 
+    `entries`.*,
+    `users`.`name` AS `username`,
+    `items`.`name` AS `item_name`,
+    `items`.`uid` AS `item_uid`,
+    `items`.`year` AS `item_year`
+    $subsql
     FROM `entries` 
-    WHERE `id` = ? 
+    INNER JOIN `users` ON `entries`.`user_id` = `users`.`id`
+    INNER JOIN `items` ON `entries`.`item_id` = `items`.`id`
+    WHERE `entries`.`id` = ? 
     LIMIT 1;";
 
     $stmt = mysqli_stmt_init($conn);
@@ -23,7 +35,7 @@ function fetchEntry($conn, $entry_id, $user_id) {
     }
 
     if(isset($user_id)) {
-        mysqli_stmt_bind_param($stmt, "iii", $entry_id, $user_id, $entry_id);
+        mysqli_stmt_bind_param($stmt, "iiii", $user_id, $entry_id, $user_id, $entry_id);
     } else {
         mysqli_stmt_bind_param($stmt, "i", $entry_id);
     }
@@ -86,6 +98,7 @@ function renderEntry($entry) {
     </div>
     ';
 
+    echo $html;
 }
  
 function fetchReviews($conn, $user_uid) {

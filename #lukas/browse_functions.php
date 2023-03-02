@@ -256,8 +256,6 @@ function fetchListBrowse($conn, $filter_arr, $type) {
 
         if(isset($filter_arr["popular"])) {
 
-            echo $filter_arr["by"];
-
             if($filter_arr["by"] === 'week') {
                 $date = date('Y-m-d', strtotime('-1 week'));
                 $tmp1 = "AND `ratings`.`created_date` > '$date'";

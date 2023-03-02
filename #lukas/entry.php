@@ -11,8 +11,8 @@
     <main>
     <?php if(isset($_GET['id'])) {
 
-        $entry = fetchUserEntry($conn, $_GET['id'], $_SESSION['user-id']);
-        renderUserEntry($entry);
+        $entry = fetchEntry($conn, $_GET['id'], $_SESSION['user-id']);
+        renderEntry($entry);
 
     } elseif($_GET['list'] === 'ratings') {
 
@@ -22,7 +22,7 @@
     } elseif($_GET['list'] === 'reviews') {
 
         $reviews = fetchUserReviews($conn, $_GET['user_uid']);
-        renderListUserReviews($reviews);
+        renderListReviews($reviews);
 
     } elseif($_GET['list'] === 'logs') {
 
