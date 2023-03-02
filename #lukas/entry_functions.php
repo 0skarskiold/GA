@@ -1,4 +1,5 @@
 <?php
+require_once('universal_functions.php');
 
 function fetchEntry($conn, $entry_id, $user_id) {
 
@@ -18,13 +19,16 @@ function fetchEntry($conn, $entry_id, $user_id) {
     $sql = "SELECT 
     `entries`.*,
     `users`.`name` AS `username`,
+    `users`.`uid` AS `user_uid`,
     `items`.`name` AS `item_name`,
     `items`.`uid` AS `item_uid`,
-    `items`.`year` AS `item_year`
+    `items`.`year` AS `item_year`,
+    `types`.`uid` AS `item_type`
     $subsql
     FROM `entries` 
     INNER JOIN `users` ON `entries`.`user_id` = `users`.`id`
     INNER JOIN `items` ON `entries`.`item_id` = `items`.`id`
+    INNER JOIN `types` ON `items`.`type_id` = `types`.`id`
     WHERE `entries`.`id` = ? 
     LIMIT 1;";
 
@@ -51,25 +55,34 @@ function fetchEntry($conn, $entry_id, $user_id) {
 
 function renderEntry($entry) {
 
+    $date_str = '';
     if(isset($entry['log_date']) && isset($entry['review_date'])) {
-
-    } elseif(isset($entry['review_date'])) {
-
-        if($entry['spoilers'] == 1) { 
-            $text = 
-            '<p>This review may include spoilers!</p>
-            <button type="button name="reveal-spoilers">Reveal</button>
-            <p class="review-text" hidden>'.$entry['review_text'].'</p>';
+        if($entry['log_date'] === $entry['review_date']) {
+            $date_str .= 'Whatched and reviewed '.date('Y-m-d', strtotime($entry['log_date']));
         } else {
-            $text = 
-            '<p class="review-text">'.$entry['review_text'].'</p>';
+            $date_str .= 'Whatched '.date('Y-m-d', strtotime($entry['log_date'])).' and reviewed '.date('Y-m-d', strtotime($entry['review_date']));
         }
-
-    } elseif(isset($entry['log_date'])) {
-
     } else {
-        header("location: /?error");
-        exit;
+        if(isset($entry['log_date'])) {
+            $date_str .= 'Watched '.date('Y-m-d', strtotime($entry['log_date']));
+        }
+        if(isset($entry['review_date'])) {
+            $date_str .= 'Reviewed '.date('Y-m-d', strtotime($entry['review_date']));
+    
+            // if($entry['spoilers'] == 1) { 
+            //     $text = 
+            //     '<p>This review may include spoilers!</p>
+            //     <button type="button name="reveal-spoilers">Reveal</button>
+            //     <p class="review-text" hidden>'.$entry['review_text'].'</p>';
+            // } else {
+            //     $text = 
+            //     '<p class="review-text">'.$entry['review_text'].'</p>';
+            // }
+        }
+    }
+
+    if(!isset($entry['text'])) {
+        $entry['text'] = '';
     }
 
     if(isset($entry['rating'])) {
@@ -85,20 +98,59 @@ function renderEntry($entry) {
         }
     }
     if($entry['like'] == 1) { 
-        $like = '<div class="entry_like"></div>';
+        $like = '<div class="icon like"></div>';
     } else { $like = ''; }
+
+    if($entry['liked'] == 1) { 
+        $like_button = '<div class="like_button on"></div>';
+    } else { $like_button = '<div class="like_button off"></div>'; }
 
     $html =
     '<div class="entry_container">
-    <h2>'.$entry['username'].'</h2>
-    <h2>'.$entry['item_name'].'</h2>
-    <div class="entry_stars">'.$stars.'</div>
-    '.$like.'
-    <div class="review_text">'.$text.'</div>
+    <div class="top_container">
+    <a class="item_name" href="/type-'.$entry['item_type'].'/'.$entry['item_uid'].'">'.$entry['item_name'].'</a>
+    <p class="by">'.$date_str.' by <a href="/user-'.$entry['user_uid'].'">'.$entry['username'].'</a></p>
     </div>
-    ';
+    <div class="poster_parent">
+    '.prepareItemContainer($entry['item_name'], $entry['item_uid'], $entry['item_year'], $entry['item_type'], 'non-list').'
+    </div>
+    <div class="text_container"><p class="review">'.$entry['text'].'</p></div>
+    <div class="bottom_container">
+    <div class="right">
+    '.prepareClosedStars($entry['rating']).'
+    '.$like.'
+    </div>
+    <div class="left">
+    '.$like_button.'
+    </div>
+    </div>';
 
     echo $html;
+
+
+    // <div class="entry_container">
+    // <div class="top_container">
+    // <a class="item_name">Northman</a>
+    // <a class="username" href="user-Array">Oskar</a>
+    // </div>
+    // <p class="date">Whatched and reviewed 2023-02-28</p>
+    // <div class="poster_parent">
+    // <div class="item_container" data-item-name="Northman" data-item-year="2022">
+    // <a class="item_link poster" href="/type-film/northman-2022" style="background-image: url('/img/film/northman-2022/northman-2022-poster-small.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;"></a>
+    // </div>
+    // </div>
+    // <div class="text_container"><p class="review">meh</p></div>
+    // </div>
+    // <div class="bottom_container">
+    // <div class="right">
+    // <ul class="star_container closed" data-rating="2.5";">
+    // <li class="half_star l"></li><li class="half_star r"></li><li class="half_star l"></li><li class="half_star r"></li><li class="half_star l"></li>
+    // </ul>
+    // </div>
+    // <div class="left">
+    // <div class="like_button off"></div>
+    // </div>
+    // </div>  
 }
  
 function fetchReviews($conn, $user_uid) {

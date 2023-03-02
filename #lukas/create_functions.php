@@ -297,7 +297,7 @@ function submitCreate($conn, $arr) {
             exit; 
         }
 
-        mysqli_stmt_bind_param($stmt, "iissidisi", $arr['user-id'], $arr['item-id'], $arr['log-date'], $arr['review-date'], $arr['like'], $arr['rating'], $rewatch, $arr['review-text'], $spoilers);
+        mysqli_stmt_bind_param($stmt, "iissidisi", $arr['user-id'], $arr['item-id'], date('Y-m-d H:i:s', (strtotime($arr['log-date']) + strtotime(date('H:i:s')))), date('Y-m-d H:i:s', (strtotime($arr['review-date']) + strtotime(date('H:i:s')))), $arr['like'], $arr['rating'], $rewatch, $arr['review-text'], $spoilers);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
@@ -322,7 +322,7 @@ function submitCreate($conn, $arr) {
             exit; 
         }
 
-        mysqli_stmt_bind_param($stmt, "iisidi", $arr['user-id'], $arr['item-id'], $arr['log-date'], $arr['like'], $arr['rating'], $rewatch);
+        mysqli_stmt_bind_param($stmt, "iisidi", $arr['user-id'], $arr['item-id'], date('Y-m-d H:i:s', (strtotime($arr['log-date']) + strtotime(date('H:i:s')))), $arr['like'], $arr['rating'], $rewatch);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
@@ -352,7 +352,7 @@ function submitCreate($conn, $arr) {
             exit; 
         }
 
-        mysqli_stmt_bind_param($stmt, "iisidsi", $arr['user-id'], $arr['item-id'], $arr['review-date'], $arr['like'], $arr['rating'], $arr['review-text'], $spoilers);
+        mysqli_stmt_bind_param($stmt, "iisidsi", $arr['user-id'], $arr['item-id'], date('Y-m-d H:i:s', (strtotime($arr['review-date']) + strtotime(date('H:i:s')))), $arr['like'], $arr['rating'], $arr['review-text'], $spoilers);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
