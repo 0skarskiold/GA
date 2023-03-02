@@ -92,26 +92,13 @@ function renderListRecent($recent) { // view
     foreach($recent as $r) {
         $list .= prepareActivityContainer($r['username'], $r['user_uid'], $r['entry_id'], $r['rating'], $r['date'], $r['rewatch'], $r['text'], $r['spoilers'], $r['item_name'], $r['item_uid'], $r['item_year'], $r['item_type'], 'list');
     }
-    if(count($recent) === 19) {
-        $list .= 
-        '<li class="special_container activity show_more">
-        <a class="link show_more" href="/recent-activity">
-        <p class="text">Show more</p>
-        <p class="plus">+</p>
-        </a>
-        </li>';
-    } elseif(count($recent) < 19) {
-        $list .= 
-        '<li class="special_container activity find_more">
-        <a class="link find_more" href="/users">
-        <p class="text">Find others to follow</p>
-        <div class="plus"></div>
-        </a>
-        </li>';
-    } else {
-        header("location: /?error");
-        exit;
-    }
+    $list .= 
+    '<li class="special_container activity show_more">
+    <a class="link show_more" href="/recent-activity">
+    <p class="text">Show more</p>
+    <p class="plus">+</p>
+    </a>
+    </li>';
 
     $html =
     '<section class="list_section horizontal" list-name="recent">
@@ -138,29 +125,26 @@ function fetchPopular($conn, $factor) { // model
     }
 
     if($factor === 'all') {
-        $popularity = "SELECT 
-        COUNT(*) 
-        FROM `ratings` 
-        WHERE `ratings`.`item_id` = `items`.`id`
-        ";
+        $tmp1 = '';
+        $tmp2 = '';
     } elseif($factor === 'month') {
         $date = date('Y-m-d', strtotime('-1 month'));
-        $popularity = // todo: ändra så att om entry och rating är från samma tillfälle så räknas endast en av dem med
-            "(SELECT COUNT(*) FROM `ratings` WHERE `ratings`.`item_id` = `items`.`id` AND `ratings`.`created_date` > '$date')
-            + 
-            (SELECT COUNT(*) FROM `entries` WHERE `entries`.`item_id` = `items`.`id` AND `entries`.`log_date` > '$date')
-        ";
+        $tmp1 = "AND `ratings`.`created_date` > '$date'"; 
+        $tmp2 = "AND `entries`.`log_date` > '$date'"; 
     } elseif($factor === 'week') {
         $date = date('Y-m-d', strtotime('-1 week'));
-        $popularity = 
-            "(SELECT COUNT(*) FROM `ratings` WHERE `ratings`.`item_id` = `items`.`id` AND `ratings`.`created_date` > '$date') 
-            + 
-            (SELECT COUNT(*) FROM `entries` WHERE `entries`.`item_id` = `items`.`id` AND `entries`.`log_date` > '$date')
-        ";
+        $tmp1 = "AND `ratings`.`created_date` > '$date'"; 
+        $tmp2 = "AND `entries`.`log_date` > '$date'"; 
     } else {
         header("location: /?error");
         exit;
     }
+
+    $popularity = // todo: ändra så att om entry och rating är från samma tillfälle så räknas endast en av dem med
+        "(SELECT COUNT(*) FROM `ratings` WHERE `ratings`.`item_id` = `items`.`id` $tmp1)
+        + 
+        (SELECT COUNT(*) FROM `entries` WHERE `entries`.`item_id` = `items`.`id` $tmp2)
+    ";
 
     $sql = "SELECT 
     `items`.`id`, 
@@ -206,7 +190,7 @@ function renderListPopular($popular, $factor) { // view
     }
     $list .= 
     '<li class="special_container item show_more">
-    <a class="link show_more" href="/popular">
+    <a class="link show_more" href="/popular?by='.$factor.'">
     <p class="text">Show more</p>
     <div class="plus"></div>
     </a>

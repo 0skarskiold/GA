@@ -1,13 +1,13 @@
 <?php
 
-function renderHeader($user_uid, $item_id) {
+function renderHeader($user_uid, $item_id, $search_users) {
 
-    if($item_id) {
+    if($item_id !== false) {
         $insert_id = '<input type="hidden" name="itemid" value="'.$item_id.'">';
     } else {
         $insert_id = '';
     }
-    if($user_uid) {
+    if($user_uid !== false) {
 
         $create = 
         '<form action="/create" method="get" class="create_form">
@@ -26,17 +26,29 @@ function renderHeader($user_uid, $item_id) {
         $profile = '';
         $acc = '<a href="/forms" class="button">Log in</a>';
     }
+    if($search_users) {
+        $form =
+        '<form action="/browse_recieve.php" method="get" class="search_form">
+        <input type="hidden" name="users">
+        <input class="search_bar" type="text" name="search" placeholder="Search">
+        <button class="button" type="submit">Search</button>
+        </form>';
+    } else {
+        $form =
+        '<form action="/browse_recieve.php" method="get" class="search_form">
+        <input class="search_bar" type="text" name="search" placeholder="Search">
+        <button class="button" type="submit">Search</button>
+        </form>';
+    }
 
     $html = 
     '<header>
     <a href="/" class="button">Home</a>
     <a href="/browse" class="button">Browse</a>
-    '.$profile.'
-    <form action="/browse_recieve.php" method="get" class="search_form">
-    <input class="search_bar" type="text" name="search" placeholder="Search">
-    <button class="button" type="submit">Search</button>
-    </form>
-    '.$create.$acc.'
+    '.$profile
+    .$form
+    .$create
+    .$acc.'
     </div>
     </nav>
     </header>';

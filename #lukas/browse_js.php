@@ -2,6 +2,8 @@
 
 $(document).ready(function() {
 
+    $('.list_section h2').text($('input[name="browse-title"]').val());
+
     $('select[name="sort-by"]').change(function() {
         var option_popularity = $('select[name="sort-by"] option[value="popularity"]');
         var option_rating = $('select[name="sort-by"] option[value="rating"]');
