@@ -84,21 +84,27 @@ function fetchRecent($conn, $user_id) { // model
 
 function renderListRecent($recent) { // view
 
-    if(!(count($recent) > 0)) {
-        return;
-    }
-
     $list = '';
     foreach($recent as $r) {
         $list .= prepareActivityContainer($r['username'], $r['user_uid'], $r['entry_id'], $r['rating'], $r['date'], $r['rewatch'], $r['text'], $r['spoilers'], $r['item_name'], $r['item_uid'], $r['item_year'], $r['item_type'], 'list');
     }
-    $list .= 
-    '<li class="special_container activity show_more">
-    <a class="link show_more" href="/recent-activity">
-    <p class="text">Show more</p>
-    <p class="plus">+</p>
-    </a>
-    </li>';
+    if(!(count($recent) > 0)) {
+        $list .= 
+        '<li class="special_container activity find_more">
+        <a class="link find_more" href="/users">
+        <p class="text">Find others to follow</p>
+        <div class="plus"></div>
+        </a>
+        </li>';
+    } else {
+        $list .= 
+        '<li class="special_container activity show_more">
+        <a class="link show_more" href="/recent-activity">
+        <p class="text">Show more</p>
+        <p class="plus">+</p>
+        </a>
+        </li>';
+    }
 
     $html =
     '<section class="list_section horizontal" list-name="recent">

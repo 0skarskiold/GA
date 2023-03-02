@@ -46,7 +46,7 @@ $(document).ready(function() {
                 for(let i = 0.5; i <= lim; i+=0.5) {
                     $('.half_star[data-nbr="'+i+'"').addClass('hover');
                 }
-                for(let i = lim+1; i <= 5; i+=0.5) {
+                for(let i = lim+0.5; i <= 5; i+=0.5) {
                     $('.half_star[data-nbr="'+i+'"').removeClass('hover');
                 }
             };

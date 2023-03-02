@@ -1,7 +1,7 @@
 <?php
 
 function fetchTypes($conn) {
-    $sql = "SELECT * FROM `types` ORDER BY `name`;";
+    $sql = "SELECT * FROM `types` ORDER BY `id`;";
     $result = mysqli_query($conn, $sql);
     $types = mysqli_fetch_all($result, MYSQLI_ASSOC);
     mysqli_free_result($result);
