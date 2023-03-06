@@ -939,13 +939,13 @@ body#item section#item_grid_container #title_container > p.creators > a {
 body#item section#item_grid_container #title_container > p.creators > a:hover {
     text-decoration-color: var(--global-color-4-1);
 }
-body#item section#item_grid_container #description_container > p.desc {
+body#item section#item_grid_container #description_container {
     padding-top: var(--global-gap);
-    text-align: justify;
 }
 body#item section#item_grid_container #description_container > p.desc {
     font-size: calc(var(--global-font-size-1) * 1.6);
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    text-align: justify;
     color: var(--global-color-4-1);
     letter-spacing: calc(var(--global-border-width-2) / 4);
 }
@@ -1243,6 +1243,8 @@ body#create section#create_section .like_button:hover {
 
 
 body#entry .entry_container {
+    --entry-len: calc(var(--global-poster-width) / 4);
+
     margin: 0 auto;
     margin-top: var(--global-gap);
     width: max-content;
@@ -1293,11 +1295,51 @@ body#entry .entry_container > .top_container > p.by > a:hover {
 body#entry .entry_container > .poster_parent {
     display: flex;
 }
-body#entry .entry_container > .text_container {
-    width: calc(var(--global-poster-height) * 2);
-    height: max-content;
+body#entry .entry_container > .poster_parent > .item_container {
+    width: calc(var(--global-poster-width) * 1.4 + var(--global-border-width-1) * 2);
+    height: calc(var(--global-poster-height) * 1.4 + var(--global-border-width-1) * 2);
 }
 body#entry .entry_container > .text_container {
-    width: calc(var(--global-poster-height) * 2);
+    width: calc(var(--global-poster-height) * 3);
+    min-height: 100%;
     height: max-content;
+    padding: 
+        calc(var(--global-gap) / 3)
+        calc(var(--global-gap) / 2)
+        calc(var(--global-gap) / 3)
+        calc(var(--global-gap) / 2);
+    box-sizing: border-box;
+    border: var(--global-border-width-1) solid var(--global-color-4-1);
+    border-radius: var(--global-border-radius);
+}
+body#entry .entry_container > .text_container > p.review {
+    font-size: calc(var(--global-font-size-1) * 1.6);
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    text-align: justify;
+    color: var(--global-color-4-1);
+    letter-spacing: calc(var(--global-border-width-2) / 4);
+}
+body#entry .entry_container > .bottom_container_left {
+    display: flex;
+    justify-content: center;
+}
+body#entry .entry_container > .bottom_container_left .like_button {
+    width: var(--entry-len);
+    height: var(--entry-len);
+    border-radius: calc(var(--entry-len) / 2);
+}
+body#entry .entry_container > .bottom_container_left .like_button.off {
+    background: linear-gradient(var(--global-color-2-2), var(--global-color-2-1))
+}
+body#entry .entry_container > .bottom_container_left .like_button.on {
+    background: linear-gradient(var(--global-color-4-1), var(--global-color-4-2))
+}
+body#entry .entry_container > .bottom_container_left .like_button:hover {
+    filter: brightness(1.2);
+}
+body#entry .entry_container > .bottom_container_right {
+
+}
+body#entry .entry_container > .bottom_container_right ul.star_container {
+    --size: var(--entry-len);
 }

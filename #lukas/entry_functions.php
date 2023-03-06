@@ -12,7 +12,7 @@ function fetchEntry($conn, $entry_id, $user_id) {
 
         $subsql = 
         ", 
-        IF(`user_id` = ?, 0, 1) AS `yours`,
+        IF(`user_id` = ?, 1, 0) AS `yours`,
         (".$str.") AS `liked`";
     }
 
@@ -101,10 +101,16 @@ function renderEntry($entry) {
         $like = '<div class="icon like"></div>';
     } else { $like = ''; }
 
-    if($entry['liked'] == 1) { 
-        $like_button = '<div class="like_button on"></div>';
-    } else { $like_button = '<div class="like_button off"></div>'; }
-
+    if($entry['yours'] == 1) {
+        $button = '<button class="button" name="delete-review" data-entry-id="'.$entry['id'].'">Delete</button>';
+    } elseif($entry['yours'] == 0) {
+        if($entry['liked'] == 1) { 
+            $button = '<div class="like_button on" data-entry-id="'.$entry['id'].'"></div>';
+        } else { 
+            $button = '<div class="like_button off" data-entry-id="'.$entry['id'].'"></div>'; 
+        }    
+    }
+   
     $html =
     '<div class="entry_container">
     <div class="top_container">
@@ -115,13 +121,12 @@ function renderEntry($entry) {
     '.prepareItemContainer($entry['item_name'], $entry['item_uid'], $entry['item_year'], $entry['item_type'], 'non-list').'
     </div>
     <div class="text_container"><p class="review">'.$entry['text'].'</p></div>
-    <div class="bottom_container">
-    <div class="right">
+    <div class="bottom_container_left">
+    '.$button.'
+    </div>
+    <div class="bottom_container_right">
     '.prepareClosedStars($entry['rating']).'
     '.$like.'
-    </div>
-    <div class="left">
-    '.$like_button.'
     </div>
     </div>';
 

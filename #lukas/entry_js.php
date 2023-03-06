@@ -1,40 +1,50 @@
 <script>
 
 $(document).ready(function() {
-    $('.like_review').click(function() {
+    $('.like_button').click(function() {
 
-        if($(this).hasClass('inactive')) {
+        if($(this).hasClass('off')) {
             var action = 'like';
-        } else if($(this).hasClass('active')) {
+        } else if($(this).hasClass('on')) {
             var action = 'unlike';
         }
 
-        var entry_id = $(this).data("entryid");
+        var entry_id = $(this).data("entry-id");
         var user_id = <?php if(isset($_SESSION['user-id'])) { echo $_SESSION['user-id']; } else { echo "null"; } ?>;	
 
         $.ajax({
 
             context: this,
-            url:'/includes/entry2.inc.php',
+            url:'entry_recieve.php',
             method:"POST",
             data:{user_id:user_id, entry_id:entry_id, action:action},
 
             success: function() {
 
-                console.log(action);
                 if(action === "like") {
-                    $(this).removeClass('inactive');
-                    $(this).addClass('active');
-                    $(this).css('background-color', 'magenta');
+                    $(this).removeClass('off');
+                    $(this).addClass('on');
                     action = "unlike";
                 } else if(action === "unlike") {
-                    $(this).removeClass('active');
-                    $(this).addClass('inactive');
-                    $(this).css('background-color', 'blue');
+                    $(this).removeClass('on');
+                    $(this).addClass('off');
                     action = "like";
                 }
 
             }
+        });
+    });
+
+    $('.button[name="delete"]').click(function() {
+
+        var entry_id = $(this).data("entry-id");
+        var user_id = <?php if(isset($_SESSION['user-id'])) { echo $_SESSION['user-id']; } else { echo "null"; } ?>;	
+        var action = 'delete';
+
+        $.ajax({
+            url:'entry_recieve.php',
+            method:"POST",
+            data:{user_id:user_id, entry_id:entry_id, action:action}
         });
     });
 });
