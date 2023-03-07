@@ -3,6 +3,7 @@
 $(document).ready(function() {
     $('.like_button').click(function() {
 
+        console.log('hey');
         if($(this).hasClass('off')) {
             var action = 'like';
         } else if($(this).hasClass('on')) {
@@ -15,7 +16,7 @@ $(document).ready(function() {
         $.ajax({
 
             context: this,
-            url:'entry_recieve.php',
+            url:'/entry_recieve.php',
             method:"POST",
             data:{user_id:user_id, entry_id:entry_id, action:action},
 
@@ -24,13 +25,10 @@ $(document).ready(function() {
                 if(action === "like") {
                     $(this).removeClass('off');
                     $(this).addClass('on');
-                    action = "unlike";
                 } else if(action === "unlike") {
                     $(this).removeClass('on');
                     $(this).addClass('off');
-                    action = "like";
                 }
-
             }
         });
     });

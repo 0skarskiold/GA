@@ -112,11 +112,11 @@ select:hover {
 
 
 .icon {
-    --local-icon-size: calc();
+    --local-icon-size: var(--global-len);
 
     width: var(--local-icon-size);
     height: var(--local-icon-size);
-    border-radius: calc(var(--width) * 0.5);
+    border-radius: calc(var(--local-icon-size) * 0.5);
 }
 
 
@@ -1338,8 +1338,14 @@ body#entry .entry_container > .bottom_container_left .like_button:hover {
     filter: brightness(1.2);
 }
 body#entry .entry_container > .bottom_container_right {
-
+    display: flex;
 }
 body#entry .entry_container > .bottom_container_right ul.star_container {
     --size: var(--entry-len);
+}
+body#entry .entry_container > .bottom_container_right .icon.like {
+    background: linear-gradient(var(--global-color-3-3), var(--global-color-5-3));
+
+    --local-icon-size: var(--entry-len);
+    margin-left: calc(var(--entry-len) / 2);
 }

@@ -32,5 +32,6 @@
     } else { header("location: /?error"); } ?>
     </main>
     <?php include_once("section_footer.php"); ?>
+    <?php include_once("entry_js.php"); ?>
 </body>
 </html>

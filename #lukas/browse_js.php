@@ -66,7 +66,7 @@ $(document).ready(function() {
         $.ajax({
 
             context: this,
-            url:'profile_receive.php',
+            url:'/profile_receive.php',
             method:"POST",
             data:{to_id:to_id, from_id:from_id, action:action},
             
