@@ -157,19 +157,77 @@ function renderEntry($entry) {
     // </div>
     // </div>  
 }
- 
-function fetchReviews($conn, $user_uid) {
 
-    $sql = "SELECT `entries`.*, 
+function fetchUserRatings($conn, $user_uid) {
+    $sql = "SELECT `ratings`.*, 
     `items`.`name` AS `item_name`, 
     `items`.`year` AS `item_year`, 
     `items`.`uid` AS `item_uid`, 
-    `items`.`type` AS `item_type`
+    `types`.`uid` AS `item_type`
+    FROM `ratings` 
+    INNER JOIN `users` ON `ratings`.`user_id` = `users`.`id` 
+    INNER JOIN `items` ON `ratings`.`item_id` = `items`.`id` 
+
+
+    WHERE `ratings`.`created_date` IS NOT NULL AND `users`.`uid` = ? 
+    ORDER BY `ratings`.`rating` DESC;";
+
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: /?error");
+        exit;
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $user_uid);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    mysqli_stmt_close($stmt);
+    $ratings = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    mysqli_free_result($result);
+
+    return $ratings;
+}
+
+function renderUserRatings($ratings) {
+
+    $list = '';
+    if(count($ratings) > 0) {
+        foreach($ratings as $rating) {
+            $list .= prepareRatingContainer($rating['rating'], $rating['like'], $rating['item_name'], $rating['item_uid'], $rating['item_year'], $rating['item_type'], 'list');
+        }
+    }
+    
+    $html = 
+    '<section class="list_section grid items" list-name="browse">
+    <h2></h2>
+    <div class="list_container">
+    <div class="list_limits">
+    <ul class="list">
+    '.$list.'
+    </ul>
+    </div>
+    </div>
+    </section>';
+
+    echo $html;
+    return;
+}
+ 
+function fetchUserReviews($conn, $user_uid) {
+
+    $sql = "SELECT `entries`.*, 
+    `users`.`name` AS `username`, 
+    `users`.`uid` AS `user_uid`, 
+    `items`.`name` AS `item_name`, 
+    `items`.`year` AS `item_year`, 
+    `items`.`uid` AS `item_uid`, 
+    `types`.`uid` AS `item_type`
     FROM `entries` 
     INNER JOIN `users` ON `entries`.`user_id` = `users`.`id` 
     INNER JOIN `items` ON `entries`.`item_id` = `items`.`id` 
+    INNER JOIN `types` ON `items`.`type_id` = `types`.`id` 
     WHERE `review_date` IS NOT NULL AND `users`.`uid` = ? 
-    ORDER BY `review_date`;";
+    ORDER BY `review_date` DESC;";
 
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)) {
@@ -187,52 +245,26 @@ function fetchReviews($conn, $user_uid) {
     return $reviews;
 }
 
-function renderReviews($reviews) {
-
-    $username = $reviews[0]['username'];
+function renderUserReviews($reviews) {
 
     $list = '';
-    foreach($reviews as $review) {
-
-        $i = 0;
-        $stars = '';
-
-        for($j = $review['rating']; $j > 0; $j -= 0.5) {
-            if($i % 2 == 0) {
-                $stars .= '<div class="review half-star l"></div>';
-            } else {
-                $stars .= '<div class="review half-star r"></div>';
-            }
-            $i++;
+    if(count($reviews) > 0) {
+        foreach($reviews as $review) {
+            $list .= prepareReviewContainer($review['username'], $review['user_uid'], $review['id'], $review['rating'], $review['like'], $review['text'], $review['spoilers'], $review['item_name'], $review['item_uid'], $review['item_year'], $review['item_type'], 'list');
         }
-
-        if($review['like'] == 1) { 
-            $like = '<div class="review_like"></div>';
-        } else { $like = ''; }
-        if($review['spoilers'] == 1) { 
-            $text = 
-            '<p>This review may include spoilers!</p>
-            <button type="button name="reveal-spoilers">Reveal</button>
-            <p class="review-text" hidden>'.$review['text'].'</p>';
-        } else {
-            $text = 
-            '<p class="review-text">'.$review['text'].'</p>';
-        }
-
-        $list .= 
-        '<li class="review_container">
-        <h3 class="reviewer">'.$review['username'].'</h3>
-        <div class="review_stars">'.$stars.'</div>
-        '.$like.'
-        <div class="review_text">'.$text.'</div>
-        </li>';
     }
-
+    
     $html = 
-    '<h2>'.$username.'</h2>
-    <ul class="list_reviews">
+    '<section class="list_section grid items" list-name="browse">
+    <h2></h2>
+    <div class="list_container">
+    <div class="list_limits">
+    <ul class="list">
     '.$list.'
-    </ul>';
+    </ul>
+    </div>
+    </div>
+    </section>';
 
     echo $html;
     return;
@@ -241,15 +273,18 @@ function renderReviews($reviews) {
 function fetchDiary($conn, $user_uid) {
 
     $sql = "SELECT `entries`.*, 
+    `users`.`name` AS `username`, 
+    `users`.`uid` AS `user_uid`, 
     `items`.`name` AS `item_name`, 
     `items`.`year` AS `item_year`, 
     `items`.`uid` AS `item_uid`, 
-    `items`.`type` AS `item_type`
+    `types`.`uid` AS `item_type`
     FROM `entries` 
     INNER JOIN `users` ON `entries`.`user_id` = `users`.`id` 
     INNER JOIN `items` ON `entries`.`item_id` = `items`.`id` 
+    INNER JOIN `types` ON `items`.`type_id` = `types`.`id` 
     WHERE `log_date` IS NOT NULL AND `users`.`uid` = ? 
-    ORDER BY `log_date`;";
+    ORDER BY `log_date` DESC;";
 
     $stmt = mysqli_stmt_init($conn);
     if(!mysqli_stmt_prepare($stmt, $sql)) {
@@ -261,8 +296,37 @@ function fetchDiary($conn, $user_uid) {
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     mysqli_stmt_close($stmt);
-    $diary = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $logs = mysqli_fetch_all($result, MYSQLI_ASSOC);
     mysqli_free_result($result);
 
-    return $diary;
+    return $logs;
+}
+
+function prepareLogContainer() {
+    
+}
+
+function renderDiary($logs) {
+
+    $list = '';
+    if(count($logs) > 0) {
+        foreach($logs as $log) {
+            $list .= prepareLogContainer($log['username'], $review['user_uid'], $review['id'], $review['rating'], $review['like'], $review['text'], $review['spoilers'], $review['item_name'], $review['item_uid'], $review['item_year'], $review['item_type'], 'list');
+        }
+    }
+    
+    $html = 
+    '<section class="list_section grid items" list-name="browse">
+    <h2></h2>
+    <div class="list_container">
+    <div class="list_limits">
+    <ul class="list">
+    '.$list.'
+    </ul>
+    </div>
+    </div>
+    </section>';
+
+    echo $html;
+    return;
 }

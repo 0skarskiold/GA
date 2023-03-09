@@ -109,6 +109,32 @@ function prepareActivityContainer($user, $user_uid, $entry_id, $rating, $date, $
     return $html;
 }
 
+function prepareRatingContainer($rating, $like, $item_name, $item_uid, $item_year, $item_type, $for) {
+    $img_path = "'/img/".$item_type."/".$item_uid."/".$item_uid."-poster-small.jpg'";
+    $item_url = '/type-'.$item_type.'/'.$item_uid;
+
+    if($like === 1) {
+        $like_str = '<div class="icon like"></div>';
+    } elseif($like === 0) {
+        $like_str = '';
+    }
+
+    $stars = prepareClosedStars($rating);
+
+    $html = 
+    '<li class="rating_container" data-item-name="'.$item_name.'" data-item-year="'.$item_year.'">
+    <a class="item_link" href="'.$item_url.'">
+    <div class="poster" style="background-image: url('.$img_path.');"></div>
+    <div class="rating">
+    '.$stars.'
+    '.$like_str.'
+    </div>
+    </a>
+    </li>';
+
+    return $html;
+}
+
 function prepareReviewContainer($user, $user_uid, $entry_id, $rating, $like, $review, $spoilers, $item_name, $item_uid, $item_year, $item_type, $for) {
     $img_path = "'/img/".$item_type."/".$item_uid."/".$item_uid."-poster-small.jpg'";
     $item_url = '/'.$item_type.'/'.$item_uid;

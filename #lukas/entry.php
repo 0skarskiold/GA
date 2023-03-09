@@ -16,18 +16,18 @@
 
     } elseif($_GET['list'] === 'ratings') {
 
-        // $entry = fetchUserRatings($conn, $_GET['user_uid']);
-        // renderListRatings($entry);
+        $entry = fetchUserRatings($conn, $_GET['user_uid']);
+        renderUserRatings($entry);
 
     } elseif($_GET['list'] === 'reviews') {
 
-        // $reviews = fetchUserReviews($conn, $_GET['user_uid']);
-        // renderListReviews($reviews);
+        $reviews = fetchUserReviews($conn, $_GET['user_uid']);
+        renderUserReviews($reviews);
 
     } elseif($_GET['list'] === 'logs') {
 
-        // $entry = fetchUserEntries($conn, $_GET['user_uid']);
-        // renderListDiary($entry);
+        $logs = fetchDiary($conn, $_GET['user_uid']);
+        renderDiary($entry);
 
     } else { header("location: /?error"); } ?>
     </main>
