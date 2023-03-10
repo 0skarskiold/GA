@@ -988,37 +988,34 @@ body#item section#item_grid_container #actions {
     flex-direction: column;
     row-gap: var(--global-gap);
 }
-body#item section#item_grid_container #actions > div.top {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+body#item section#item_grid_container #actions > * {
+    height: max-content;
+}
+body#item section#item_grid_container #actions > .buttons {
+    display: flex;
+    column-gap: var(--global-gap);
 }
 body#item section#item_grid_container #actions .check_button, 
 body#item section#item_grid_container #actions .like_button {
-    width: calc(var(--global-icon-size-1) * 4);
-    height: calc(var(--global-icon-size-1) * 4);
-    border-radius: calc(var(--global-icon-size-1) * 2);
+    width: calc(var(--global-len) * 4);
+    height: calc(var(--global-len) * 4);
+    border-radius: calc(var(--global-len) * 2);
+}
+body#item section#item_grid_container #actions .check_button:hover, 
+body#item section#item_grid_container #actions .like_button:hover {
+    filter: brightness(1.2);
 }
 body#item section#item_grid_container #actions .check_button.on {
-    background: radial-gradient(var(--global-color-4-2), var(--global-color-4-1))
+    background: purple;
 }
 body#item section#item_grid_container #actions .like_button.on {
-    background: radial-gradient(var(--global-color-3-2), var(--global-color-3-1))
+    background: linear-gradient(var(--global-color-4-1), var(--global-color-4-2));
 }
 body#item section#item_grid_container #actions .check_button.off, 
 body#item section#item_grid_container #actions .like_button.off {
-    background: radial-gradient(var(--global-color-2-1), var(--global-color-2-2))
+    background: linear-gradient(var(--global-color-2-2), var(--global-color-2-1));
 }
-body#item section#item_grid_container #actions .check_button {
-    grid-row-end: span 2;
-    margin: auto;
-}
-body#item section#item_grid_container #actions .like_button {
-    grid-column: 3;
-    grid-row-end: span 2;
-    margin: auto;
-}
-body#item section#item_grid_container #actions p.check_label,
+/* body#item section#item_grid_container #actions p.check_label,
 body#item section#item_grid_container #actions p.like_label {
     grid-column: 2;
 
@@ -1039,23 +1036,23 @@ body#item section#item_grid_container #actions p.check_label {
 body#item section#item_grid_container #actions p.like_label {
     text-align: right;
     margin-left: var(--global-gap);
+} */
+body#item section#item_grid_container #actions > .rate > ul.star_container {
+    --size: calc(var(--global-len) * 2.6);
 }
-body#item section#item_grid_container #actions > div.bottom {
-    max-width: 100% !important;
-    height: 100%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-body#item section#item_grid_container #actions ul.star_container {
-    transform: rotate(87deg);
-}
-body#item section#item_grid_container #actions ul.star_container:hover {
+body#item section#item_grid_container #actions > .rate > ul.star_container:hover {
     cursor: pointer;
 }
-
-body#item section.list_section.multiple.vertical {
+body#item section#item_grid_container #actions > .avg > p {
+    font: 
+        800 
+        var(--global-font-size-1)
+        var(--global-font-1);
+    font-style: italic;
+    color: var(--global-color-3-1);
+    letter-spacing: calc(var(--global-border-width-2) / 2);
+}
+/* body#item section.list_section.multiple.vertical {
     width: 100%;
 
     display: grid !important;
@@ -1111,7 +1108,7 @@ body#item section.list_section.multiple.vertical .list  {
     display: flex;
     flex-direction: column;
     row-gap: var(--global-gap) !important;
-}
+} */
 
 
 

@@ -129,7 +129,7 @@ function fetchItemReviews($conn, $item_id, $list, $lim) {
     return $reviews;
 }
 
-function fetchItem($conn, $type, $uid) {
+function fetchItem($conn, $type, $uid, $user_id) {
 
     str_replace('-', '_', $type);
 
@@ -151,6 +151,7 @@ function fetchItem($conn, $type, $uid) {
         FROM `ratings` 
         WHERE `ratings`.`item_id` = `items`.`id`
     ) AS `rating`,
+    NULL AS `your_rating`,
     $attr_table.*
     FROM `items` 
     INNER JOIN `types` ON `types`.`id` = `items`.`type_id`
@@ -164,13 +165,53 @@ function fetchItem($conn, $type, $uid) {
         header("location: /?error");
         exit;
     }
-    
+
     mysqli_stmt_bind_param($stmt, "ss", $type, $uid);
+
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     mysqli_stmt_close($stmt);
     $item = mysqli_fetch_assoc($result);
     mysqli_free_result($result);
+
+    if($user_id) {
+
+        $sql = 
+        "SELECT *
+        FROM `ratings` 
+        WHERE `item_id` = ? AND `user_id` = ?
+        LIMIT 1
+        ;";
+    
+        $stmt = mysqli_stmt_init($conn);
+        if(!mysqli_stmt_prepare($stmt, $sql)) {
+            header("location: /?error");
+            exit;
+        }
+    
+        mysqli_stmt_bind_param($stmt, "ii", $item['id'], $user_id);
+    
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        mysqli_stmt_close($stmt);
+        $your = mysqli_fetch_assoc($result);
+        mysqli_free_result($result);
+
+        if(isset($your) && count($your) > 0) {
+            $item['your_completed'] = 1;
+            $item['your_rating'] = $your['rating'];
+            $item['your_liked'] = $your['like'];
+        } else {
+            $item['your_completed'] = 0;
+            $item['your_rating'] = 0;
+            $item['your_liked'] = 0;
+        }
+        
+    } else {
+        $item['your_completed'] = 0;
+        $item['your_rating'] = 0;
+        $item['your_liked'] = 0;
+    }
 
     $genres = fetchItemGenres($conn, $item['id']);
     $tags = fetchItemGenres($conn, $item['id']);
@@ -227,7 +268,7 @@ function prepareReviewList($reviews, $name) {
     return $html;
 }
 
-function renderItem($item) {
+function renderItem($item, $user_id) {
 
     $review_list_popular = prepareReviewList($item['reviews_popular'], 'popular');
     $review_list_recent = prepareReviewList($item['reviews_recent'], 'recent');
@@ -267,47 +308,86 @@ function renderItem($item) {
         }
     }
 
-    $stars = prepareOpenStars(3.5, 'on'); /* todo: sätt in användarens nuvarande rating */
+    if($user_id) {
+        if($item['your_completed'] === 1) {
+            $check = '<div class="check_button on"></div>';
+        } else {
+            $check = '<div class="check_button off"></div>';
+        }
+        if($item['your_liked'] === 1) {
+            $like = '<div class="like_button on"></div>';
+        } else {
+            $like = '<div class="like_button off"></div>';
+        }
+        if($item['your_rating'] === NULL) {
+            $stars = prepareOpenStars(0, 'on');
+        } else {
+            $stars = prepareOpenStars($item['your_rating'], 'on');
+        }
+
+        $actions = 
+        '<div id="actions">
+        <div class="buttons">
+        '.$check.'
+        '.$like.'
+        </div>
+        <div class="rate">
+        '.$stars.'
+        </div>
+        <div class="avg">
+        <p>Avg: '.$item['rating'].'</p>
+        </div>
+        <div class="to_reviews">
+        <a href="'.$_SERVER['REQUEST_URI'].'/reviews" class="button">See all reviews</a>
+        </div>
+        </div>';
+    } else {
+        $actions = 
+        '<div id="actions">
+        <div class="avg">
+        <p>Avg: '.$item['rating'].'</p>
+        </div>
+        <div class="to_reviews">
+        <a href="'.$_SERVER['REQUEST_URI'].'/reviews" class="button">See all reviews</a>
+        </div>
+        </div>';
+    }
 
     $section1 = 
     '<section id="item_grid_container">
+
     <div class="left_container">
     <div id="main_poster" style="background-image: url('.$poster_path.');"></div>
     </div>
+
     <div id="title_container">
     <p class="main"><span class="title">'.$item['name'].'</span>  <a class="release" href="#">'.$item['year'].'</a>  <a class="type" href="#">'.$item['type_name'].'</a></p>
     <p class="creators">'.$creators_str.'</p>
     </div>
+
     <div class="right_container">
-    <div id="actions">
-    <div class="top">
-    <div class="check_button on"></div>
-    <p class="check_label">Mark as</br>watched</p>
-    <div class="like_button on"></div>
-    <p class="like_label">Like</br>series</p>
+    '.$actions.'
     </div>
-    <div class="bottom">
-    '.$stars.'
-    </div>
-    </div>
-    </div>
+
     <div id="description_container">
     <p class="desc">'.$item['description'].'</p>
     </div>
+
     </section>';
 
-    $section2 = 
-    '<section class="list_section multiple vertical">
-    <div class="button_container"><button type="button" class="button">See all reviews</button></div>'.
-    $review_list_popular.
-    $review_list_recent.
-    $review_list_random.'
-    </section>';
+    // $section2 = 
+    // '<section class="list_section multiple vertical">
+    // <div class="button_container"><button type="button" class="button">See all reviews</button></div>'.
+    // $review_list_popular.
+    // $review_list_recent.
+    // $review_list_random.'
+    // </section>';
 
     // '<div id="bg" style="background-image: url('.$bg_path.');"></div>'
 
     $html = 
-    $section1.$section2;
+    // $section1.$section2;
+    $section1;
     
     
 

@@ -12,11 +12,17 @@
 
     <main>
         <?php
-            $item = fetchItem($conn, $_GET['type'], $_GET['uid']);
-            renderItem($item);
+            if(isset($_SESSION['user-id'])) {
+                $user_id = $_SESSION['user-id'];
+            } else {
+                $user_id = false;
+            }
+            $item = fetchItem($conn, $_GET['type'], $_GET['uid'], $user_id);
+            renderItem($item, $user_id);
         ?>
     </main>
 
+    <?php include_once("item_js.php"); ?>
     <?php include_once("section_footer.php"); ?>
 </body>
 </html>
