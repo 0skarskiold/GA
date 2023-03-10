@@ -179,7 +179,7 @@ function prepareReviewContainer($user, $user_uid, $entry_id, $rating, $like, $re
     return $html;
 }
 
-function prepareReviewContainerPosterless($user, $user_uid, $entry_id, $rating, $like, $review, $spoilers, $for) {
+function prepareReviewContainerPosterless($user, $user_uid, $entry_id, $likes, $rating, $like, $review, $spoilers, $for) {
     $user_url = '/users/'.$user_uid;
     $entry_url = $user_url.'/entry?id='.$entry_id;
 
@@ -211,7 +211,7 @@ function prepareReviewContainerPosterless($user, $user_uid, $entry_id, $rating, 
     </div>
     <div class="grid bottom">
     <a href="'.$entry_url.'" class="button">Full</a>
-    <div class="like_box"><div class="like_button"></div><p class="like_count">167</p></div>
+    <div class="like_box"><div class="like_button"></div><p class="like_count">'.$likes.'</p></div>
     </div>
     </li>';
 

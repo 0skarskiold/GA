@@ -195,7 +195,7 @@ function prepareReviewList($reviews, $name) {
     $list = '';
     if(count($reviews) > 0) {
         foreach($reviews as $review) {
-            $list .= prepareReviewContainerPosterless($review['username'], $review['user_uid'], $review['entry_id'], $review['rating'], $review['like'], $review['text'], $review['spoilers'], 'list');
+            $list .= prepareReviewContainerPosterless($review['username'], $review['user_uid'], $review['entry_id'], $review['likes'], $review['rating'], $review['like'], $review['text'], $review['spoilers'], 'list');
         }
         if(count($reviews) === 11) {
             $list .= 
@@ -229,10 +229,7 @@ function prepareReviewList($reviews, $name) {
 
 function renderItem($item) {
 
-    $reviewcool = ['username' => 'guy', 'user_uid' => 'guy', 'entry_id' => 100, 'rating' => 4.5, 'like' => 1, 'text' => 'serobuh uahrg uqotuhwqpr qpw34ghi hg3w HO3WH W5HQ4UTQ34 09U GWEGH HX9C8 W8 GP9', 'spoilers' => 1];
-    $reviews10 = [$reviewcool, $reviewcool, $reviewcool];
-
-    $review_list_popular = prepareReviewList($reviews10, 'popular');
+    $review_list_popular = prepareReviewList($item['reviews_popular'], 'popular');
     $review_list_recent = prepareReviewList($item['reviews_recent'], 'recent');
     $review_list_random = prepareReviewList($item['reviews_random'], 'random');
 
@@ -307,7 +304,10 @@ function renderItem($item) {
     $review_list_random.'
     </section>';
 
-    $html = $section1.'<div id="bg" style="background-image: url('.$bg_path.');"></div>'.$section2;
+    // '<div id="bg" style="background-image: url('.$bg_path.');"></div>'
+
+    $html = 
+    $section1.$section2;
     
     
 

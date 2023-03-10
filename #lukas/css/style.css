@@ -1059,11 +1059,10 @@ body#item section.list_section.multiple.vertical {
     width: 100%;
 
     display: grid !important;
-    grid-template-columns: repeat(3, minmax(max-content, 1fr));
-    row-gap: unset;
+    grid-auto-rows: max-content;
+    row-gap: calc(2*var(--global-gap));
 }
 body#item section.list_section.multiple.vertical .button_container {
-    grid-column-end: span 3;
     width: 100%;
 
     display: flex;
@@ -1088,12 +1087,14 @@ body#item section.list_section.multiple.vertical .title_container > .arrow {
 }
 body#item section.list_section.multiple.vertical > div {
     width: 100%;
-    min-width: max-content;
     height: max-content;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 body#item section.list_section.multiple.vertical .list_container {
-    width: 100%;
-    min-width: max-content;
+    width: max-content;
     height: max-content;
 
     display: flex;
