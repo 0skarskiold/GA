@@ -7,6 +7,7 @@ RewriteRule ^create$ create.php [L]
 RewriteRule ^types/?$ browse.php?types=on [L]
 RewriteRule ^type-([^/]+)/?$ browse.php?type=$1 [L]
 RewriteRule ^type-([^/]+)/([^/]+)/?$ item.php?type=$1&uid=$2 [L]
+RewriteRule ^type-([^/]+)/([^/]+)/reviews/?$ entry.php?type=$1&uid=$2&list=item-reviews [L]
 
 RewriteRule ^users$ browse.php?users [L]
 RewriteRule ^user-([^/]+)/?$ profile.php?uid=$1 [L]

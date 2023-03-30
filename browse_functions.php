@@ -673,7 +673,7 @@ function renderListBrowse($from_id, $fetched, $type) {
         $list = 
         '<li class="special_container activity find_more">
         <a class="link find_more" href="/users">
-        <p class="text">Find others to follow</p>
+        <p class="text">Find people to follow</p>
         <div class="plus"></div>
         </a>
         </li>';

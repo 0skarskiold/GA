@@ -330,3 +330,85 @@ function renderDiary($logs) {
     echo $html;
     return;
 }
+
+function fetchItemReviews($conn, $user_id, $item_uid) {
+
+    $subsql = "";
+    $str2 = "";
+    $types = "s";
+    $params = [$item_uid];
+    if(isset($user_id)) {
+        $str = "SELECT COUNT(*) 
+        FROM `review_likes` 
+        WHERE `entry_id` = `entries`.`id` 
+        LIMIT 1";
+
+        $subsql = 
+        ", 
+        IF(`user_id` = ?, 1, 0) AS `yours`,
+        (".$str.") AS `liked`";
+
+        $str2 = "AND NOT `users`.`uid` = ?";
+
+        $types = "isi";
+        $params = [$user_id, $item_uid, $user_id];
+    }
+
+
+    $sql = "SELECT `entries`.*, 
+    `users`.`name` AS `username`, 
+    `users`.`uid` AS `user_uid`, 
+    `items`.`name` AS `item_name`, 
+    `items`.`year` AS `item_year`, 
+    `items`.`uid` AS `item_uid`, 
+    `types`.`uid` AS `item_type`
+    $subsql
+    FROM `entries` 
+    INNER JOIN `users` ON `entries`.`user_id` = `users`.`id` 
+    INNER JOIN `items` ON `entries`.`item_id` = `items`.`id` 
+    INNER JOIN `types` ON `items`.`type_id` = `types`.`id` 
+    WHERE `review_date` IS NOT NULL 
+    AND `items`.`uid` = ? 
+    $str2
+    ORDER BY `review_date` DESC;";
+
+    $stmt = mysqli_stmt_init($conn);
+    if(!mysqli_stmt_prepare($stmt, $sql)) {
+        header("location: /?error");
+        exit;
+    }
+
+    mysqli_stmt_bind_param($stmt, $types, ...$params);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    mysqli_stmt_close($stmt);
+    $reviews = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    mysqli_free_result($result);
+
+    return $reviews;
+}
+
+function renderItemReviews($reviews) {
+
+    $list = '';
+    if(count($reviews) > 0) {
+        foreach($reviews as $review) {
+            $list .= prepareReviewContainer($review['username'], $review['user_uid'], $review['id'], $review['rating'], $review['like'], $review['text'], $review['spoilers'], $review['item_name'], $review['item_uid'], $review['item_year'], $review['item_type'], 'list');
+        }
+    }
+    
+    $html = 
+    '<section class="list_section grid items" list-name="browse">
+    <h2></h2>
+    <div class="list_container">
+    <div class="list_limits">
+    <ul class="list">
+    '.$list.'
+    </ul>
+    </div>
+    </div>
+    </section>';
+
+    echo $html;
+    return;
+}

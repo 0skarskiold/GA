@@ -335,7 +335,7 @@ function renderItem($item, $user_id) {
         '.$stars.'
         </div>
         <div class="avg">
-        <p>Avg: '.$item['rating'].'</p>
+        <p>Avg: '.round($item['rating'], 2, PHP_ROUND_HALF_UP).'</p>
         </div>
         <div class="to_reviews">
         <a href="'.$_SERVER['REQUEST_URI'].'/reviews" class="button">See all reviews</a>
@@ -345,7 +345,7 @@ function renderItem($item, $user_id) {
         $actions = 
         '<div id="actions">
         <div class="avg">
-        <p>Avg: '.$item['rating'].'</p>
+        <p>Avg: '.round($item['rating'], 2, PHP_ROUND_HALF_UP).'</p>
         </div>
         <div class="to_reviews">
         <a href="'.$_SERVER['REQUEST_URI'].'/reviews" class="button">See all reviews</a>

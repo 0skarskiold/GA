@@ -29,6 +29,13 @@
         $logs = fetchDiary($conn, $_GET['user_uid']);
         renderDiary($entry);
 
+    } elseif($_GET['list'] === 'item-reviews') {
+
+        $item_uid = $_GET['uid'];
+
+        $reviews = fetchItemReviews($conn, $_SESSION['user-id'], $item_uid);
+        renderItemReviews($reviews);
+
     } else { header("location: /?error"); } ?>
     </main>
     <?php include_once("section_footer.php"); ?>

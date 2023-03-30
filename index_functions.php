@@ -15,12 +15,14 @@ function fetchRecent($conn, $user_id) { // model
     $result = mysqli_stmt_get_result($stmt);
     mysqli_stmt_close($stmt);
     $following = [];
-    while ($id = mysqli_fetch_array($result, MYSQLI_NUM)[0]) {
-        array_push($following, $id);  
+    while($id = mysqli_fetch_array($result, MYSQLI_NUM)[0]) {
+        if(isset($id)) {
+            array_push($following, $id);  
+        }
     }
     mysqli_free_result($result);
 
-    if(!(isset($following) || count($following) === 0)) {
+    if(!isset($following) || count($following) === 0) {
         return [];
     }
 
@@ -92,7 +94,7 @@ function renderListRecent($recent) { // view
         $list .= 
         '<li class="special_container activity find_more">
         <a class="link find_more" href="/users">
-        <p class="text">Find others to follow</p>
+        <p class="text">Find people to follow</p>
         <div class="plus"></div>
         </a>
         </li>';
@@ -101,7 +103,7 @@ function renderListRecent($recent) { // view
         '<li class="special_container activity show_more">
         <a class="link show_more" href="/recent-activity">
         <p class="text">Show more</p>
-        <p class="plus">+</p>
+        <div class="plus"></div>
         </a>
         </li>';
     }
